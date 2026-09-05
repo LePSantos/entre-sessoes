@@ -1,11 +1,15 @@
 {
   "name": "entre-sessoes",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Sistema web para acompanhamento terapêutico entre sessões por meio de diário emocional.",
+  "main": "src/server.js",
   "scripts": {
-    "start": "node src/server.js",
-    "dev": "node --watch src/server.js"
+    "start": "node database/init.js && node database/seed.js && node src/server.js",
+    "dev": "node --watch src/server.js",
+    "init-db": "node database/init.js && node database/seed.js"
+  },
+  "engines": {
+    "node": ">=24 <25"
   },
   "keywords": [],
   "author": "",
