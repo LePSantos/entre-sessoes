@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Minha área - EntreSessões
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="/css/style.css"
+    >
+
+</head>
+
+
+<body class="patient-home-page">
+
+
+<%
+    const cleanPatientName =
+        String(user.name || 'Paciente')
+            .replace(/^Sr\.?\s*/i, '')
+            .replace(/^Sra\.?\s*/i, '');
+
+    const patientFirstName =
+        cleanPatientName
+            .split(' ')[0];
+%>
+
+
+<div class="patient-home-wrapper">
+
+
+    <!-- =========================================
+         CABEÇALHO DA MARCA
+    ========================================== -->
+
+    <header class="patient-home-brand-header">
+
+
+        <div class="brand-dashboard-title">
+
+            <h1>
+                EntreSessões
+            </h1>
+
+            <p>
+                SEU ESPAÇO ENTRE UM ENCONTRO E OUTRO
+            </p>
+
+        </div>
+
+
+
+        <div class="brand-dashboard-message patient-home-brand-message">
+
+            <span class="brand-dashboard-message-line"></span>
+
+            <p>
+                Um espaço para registrar,<br>
+                acompanhar e cuidar do que acontece<br>
+                entre as sessões.
+            </p>
+
+        </div>
+
+
+
+        <img
+            src="/images/folhas-dashboard.png"
+            alt=""
+            class="patient-home-flower"
+        >
+
+
+    </header>
+
+
+
+    <!-- =========================================
+         CARD PRINCIPAL
+    ========================================== -->
+
+    <main class="patient-home-card">
+
+
+        <!-- =====================================
+             TOPO
+        ====================================== -->
+
+        <header class="patient-home-welcome">
+
+
+            <div>
+
+
+                <span class="patient-home-eyebrow">
+                    SUA ÁREA DE ACOMPANHAMENTO
+                </span>
+
+
+                <h2>
+                    Olá, <%= patientFirstName %>
+                </h2>
+
+
+                <p>
+                    Acompanhe suas sessões, registre como você
+                    tem se sentido e acesse os recursos disponíveis
+                    entre os atendimentos.
+                </p>
+
+
+            </div>
+
+
+
+            <div class="patient-home-user">
+
+
+                <div class="patient-home-user-avatar">
+
+                    <%= patientFirstName
+                        .charAt(0)
+                        .toUpperCase()
+                    %>
+
+                </div>
+
+
+                <div>
+
+                    <strong>
+                        <%= cleanPatientName %>
+                    </strong>
+
+                    <span>
+                        Área do paciente
+                    </span>
+
+                </div>
+
+
+                <a
+                    href="/logout"
+                    class="patient-home-logout"
+                >
+                    Sair
+                </a>
+
+
+            </div>
+
+
+        </header>
+
+
+
+        <!-- =====================================
+             DESTAQUE - DIÁRIO
+        ====================================== -->
+
+        <section class="patient-home-highlight">
+
+
+            <div class="patient-home-highlight-content">
+
+
+                <div class="patient-home-highlight-icon">
+                    ♡
+                </div>
+
+
+                <div>
+
+                    <span>
+                        DIÁRIO EMOCIONAL
+                    </span>
+
+
+                    <h3>
+                        Como você está se sentindo hoje?
+                    </h3>
+
+
+                    <p>
+                        Registre acontecimentos, sentimentos
+                        e situações importantes para você.
+                        Esses registros podem ajudar no
+                        acompanhamento entre uma sessão e outra.
+                    </p>
+
+
+                    <a
+                        href="/my-diary"
+                        class="patient-home-primary-button"
+                    >
+                        Registrar como estou me sentindo
+                        <span>→</span>
+                    </a>
+
+                </div>
+
+
+            </div>
+
+
+
+            <div class="patient-home-highlight-quote">
+
+                <span>
+                    ENTRE SESSÕES
+                </span>
+
+                <p>
+                    “Dar palavras ao que sentimos
+                    também faz parte do processo.”
+                </p>
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- =====================================
+             RECURSOS
+        ====================================== -->
+
+        <section class="patient-home-section-heading">
+
+
+            <div>
+
+                <span>
+                    MEU ACOMPANHAMENTO
+                </span>
+
+                <h3>
+                    O que você precisa acessar?
+                </h3>
+
+            </div>
+
+
+            <p>
+                Seus principais recursos estão reunidos aqui.
+            </p>
+
+
+        </section>
+
+
+
+        <section class="patient-home-grid">
+
+
+            <!-- =================================
+                 MINHAS SESSÕES
+            ================================== -->
+
+            <a
+                href="/patient/sessions"
+                class="patient-home-resource-card"
+            >
+
+
+                <div class="patient-home-resource-top">
+
+
+                    <div class="patient-home-resource-icon">
+                        ◫
+                    </div>
+
+
+                    <span class="patient-home-resource-number">
+                        01
+                    </span>
+
+
+                </div>
+
+
+
+                <div class="patient-home-resource-content">
+
+
+                    <span>
+                        MINHAS SESSÕES
+                    </span>
+
+
+                    <h4>
+                        Consultar meus atendimentos
+                    </h4>
+
+
+                    <p>
+                        Veja suas sessões agendadas,
+                        realizadas e o histórico
+                        de seus atendimentos.
+                    </p>
+
+
+                </div>
+
+
+
+                <div class="patient-home-resource-link">
+                    Ver minhas sessões
+                    <span>→</span>
+                </div>
+
+
+            </a>
+
+
+
+            <!-- =================================
+                 AGENDAR
+            ================================== -->
+
+            <a
+                href="/patient/book-session"
+                class="patient-home-resource-card"
+            >
+
+
+                <div class="patient-home-resource-top">
+
+
+                    <div class="patient-home-resource-icon">
+                        +
+                    </div>
+
+
+                    <span class="patient-home-resource-number">
+                        02
+                    </span>
+
+
+                </div>
+
+
+
+                <div class="patient-home-resource-content">
+
+
+                    <span>
+                        AGENDAR SESSÃO
+                    </span>
+
+
+                    <h4>
+                        Escolher um horário disponível
+                    </h4>
+
+
+                    <p>
+                        Consulte os horários disponibilizados
+                        pela profissional e solicite
+                        uma nova sessão.
+                    </p>
+
+
+                </div>
+
+
+
+                <div class="patient-home-resource-link">
+                    Agendar sessão
+                    <span>→</span>
+                </div>
+
+
+            </a>
+
+
+
+            <!-- =================================
+                 PAGAMENTOS
+            ================================== -->
+
+            <a
+                href="/patient/sessions"
+                class="patient-home-resource-card"
+            >
+
+
+                <div class="patient-home-resource-top">
+
+
+                    <div class="patient-home-resource-icon">
+                        $
+                    </div>
+
+
+                    <span class="patient-home-resource-number">
+                        03
+                    </span>
+
+
+                </div>
+
+
+
+                <div class="patient-home-resource-content">
+
+
+                    <span>
+                        PAGAMENTOS
+                    </span>
+
+
+                    <h4>
+                        Acompanhar valores e pagamentos
+                    </h4>
+
+
+                    <p>
+                        Consulte o status financeiro
+                        das suas sessões e acesse
+                        as opções de pagamento disponíveis.
+                    </p>
+
+
+                </div>
+
+
+
+                <div class="patient-home-resource-link">
+                    Ver pagamentos
+                    <span>→</span>
+                </div>
+
+
+            </a>
+
+
+        </section>
+
+
+
+        <!-- =====================================
+             CONTATO PRIORITÁRIO
+        ====================================== -->
+
+        <section class="patient-home-priority">
+
+
+            <div class="patient-home-priority-icon">
+                !
+            </div>
+
+
+
+            <div class="patient-home-priority-text">
+
+
+                <span>
+                    PRECISA FALAR COM A PROFISSIONAL?
+                </span>
+
+
+                <h3>
+                    Solicitar contato prioritário
+                </h3>
+
+
+                <p>
+                    Use este recurso quando desejar sinalizar
+                    que gostaria de um contato com prioridade.
+                    A solicitação não é um serviço de emergência
+                    e não garante resposta imediata.
+                </p>
+
+
+            </div>
+
+
+
+            <a
+                href="/support-request"
+                class="patient-home-priority-button"
+            >
+                Acessar
+                <span>→</span>
+            </a>
+
+
+        </section>
+
+
+
+        <!-- =====================================
+             AVISO
+        ====================================== -->
+
+        <section class="patient-home-notice">
+
+
+            <div>
+                i
+            </div>
+
+
+            <p>
+                <strong>Importante:</strong>
+                o EntreSessões é um recurso de acompanhamento
+                entre atendimentos. Em situações de emergência,
+                procure os serviços de urgência adequados da sua região.
+            </p>
+
+
+        </section>
+
+
+    </main>
+
+
+
+    <!-- =========================================
+         RODAPÉ
+    ========================================== -->
+
+    <footer class="patient-home-footer">
+
+
+        <div class="patient-home-footer-brand">
+
+            <strong>
+                EntreSessões
+            </strong>
+
+            <span>
+                Um espaço de continuidade entre encontros.
+            </span>
+
+        </div>
+
+
+
+        <div class="patient-home-footer-items">
+
+
+            <div>
+
+                <strong>
+                    REGISTRAR
+                </strong>
+
+                <span>
+                    Dar espaço ao que você sente.
+                </span>
+
+            </div>
+
+
+
+            <div>
+
+                <strong>
+                    ACOMPANHAR
+                </strong>
+
+                <span>
+                    Organizar seus atendimentos.
+                </span>
+
+            </div>
+
+
+
+            <div>
+
+                <strong>
+                    CUIDAR
+                </strong>
+
+                <span>
+                    Construir possibilidades.
+                </span>
+
+            </div>
+
+
+        </div>
+
+
+    </footer>
+
+
+</div>
+
+
+</body>
+
+</html>

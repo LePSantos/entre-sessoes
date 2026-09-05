@@ -1,0 +1,1018 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Relatórios - EntreSessões
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="/css/style.css"
+    >
+
+</head>
+
+
+<body class="brand-dashboard-page">
+
+
+<%
+    const reportSessions =
+        typeof sessions !== 'undefined'
+            ? sessions
+            : [];
+
+
+    const reportActivePatients =
+        typeof activePatients !== 'undefined'
+            ? Number(activePatients || 0)
+            : 0;
+
+
+    const totalSessions =
+        reportSessions.length;
+
+
+    const completedSessions =
+        reportSessions.filter(
+            item =>
+                item.status === 'COMPLETED'
+        ).length;
+
+
+    const scheduledSessions =
+        reportSessions.filter(
+            item =>
+                item.status === 'SCHEDULED'
+                ||
+                item.status === 'CONFIRMED'
+        ).length;
+
+
+    const canceledSessions =
+        reportSessions.filter(
+            item =>
+                item.status === 'CANCELED'
+        ).length;
+
+
+    const noShowSessions =
+        reportSessions.filter(
+            item =>
+                item.status === 'NO_SHOW'
+        ).length;
+
+
+    const paidAmount =
+        reportSessions
+            .filter(
+                item =>
+                    item.payment_status === 'PAID'
+            )
+            .reduce(
+                (total, item) =>
+                    total +
+                    Number(item.price || 0),
+                0
+            );
+
+
+    const pendingAmountReport =
+        reportSessions
+            .filter(
+                item =>
+                    item.payment_status === 'PENDING'
+                    &&
+                    item.status !== 'CANCELED'
+            )
+            .reduce(
+                (total, item) =>
+                    total +
+                    Number(item.price || 0),
+                0
+            );
+
+
+    const completedPercent =
+        totalSessions > 0
+            ? Math.round(
+                (
+                    completedSessions /
+                    totalSessions
+                ) * 100
+            )
+            : 0;
+
+
+    const scheduledPercent =
+        totalSessions > 0
+            ? Math.round(
+                (
+                    scheduledSessions /
+                    totalSessions
+                ) * 100
+            )
+            : 0;
+
+
+    const canceledPercent =
+        totalSessions > 0
+            ? Math.round(
+                (
+                    canceledSessions /
+                    totalSessions
+                ) * 100
+            )
+            : 0;
+
+
+    const noShowPercent =
+        totalSessions > 0
+            ? Math.round(
+                (
+                    noShowSessions /
+                    totalSessions
+                ) * 100
+            )
+            : 0;
+
+
+    const latestSessions =
+        reportSessions.slice(0, 5);
+%>
+
+
+<div class="brand-dashboard-wrapper">
+
+
+    <!-- =========================================
+         IDENTIDADE ENTRESESSÕES
+    ========================================== -->
+
+    <header class="brand-dashboard-brand-header">
+
+
+        <div class="brand-dashboard-title">
+
+            <h1>
+                EntreSessões
+            </h1>
+
+            <p>
+                SISTEMA PARA CONSULTÓRIOS DE PSICOLOGIA
+            </p>
+
+        </div>
+
+
+
+        <div class="brand-dashboard-message">
+
+            <span class="brand-dashboard-message-line"></span>
+
+            <p>
+                Mais que um sistema,<br>
+                um espaço para o que importa:<br>
+                pessoas, escuta e possibilidades.
+            </p>
+
+        </div>
+
+
+
+        <img
+            src="/images/folhas-dashboard.png"
+            alt=""
+            class="brand-dashboard-flower"
+        >
+
+
+    </header>
+
+
+
+    <!-- =========================================
+         CARD PRINCIPAL
+    ========================================== -->
+
+    <div class="brand-dashboard-card">
+
+
+        <!-- MENU -->
+
+        <%- include('partials/sidebar', {
+            activePage: 'reports'
+        }) %>
+
+
+
+        <!-- =====================================
+             CONTEÚDO
+        ====================================== -->
+
+        <main class="brand-dashboard-main">
+
+
+            <!-- CABEÇALHO -->
+
+            <header class="professional-page-header">
+
+
+                <div>
+
+                    <span class="professional-page-eyebrow">
+                        GESTÃO
+                    </span>
+
+                    <h2>
+                        Relatórios
+                    </h2>
+
+                    <p>
+                        Visualize indicadores gerais
+                        do consultório e acompanhe
+                        seus atendimentos.
+                    </p>
+
+                </div>
+
+
+            </header>
+
+
+
+            <!-- =====================================
+                 INDICADORES PRINCIPAIS
+            ====================================== -->
+
+            <section class="reports-summary-grid">
+
+
+                <!-- PACIENTES -->
+
+                <article class="reports-summary-card">
+
+
+                    <div class="reports-summary-top">
+
+                        <span>
+                            Pacientes ativos
+                        </span>
+
+                        <div class="reports-summary-icon">
+                            ♡
+                        </div>
+
+                    </div>
+
+
+                    <strong>
+                        <%= reportActivePatients %>
+                    </strong>
+
+
+                    <small>
+                        Em acompanhamento
+                    </small>
+
+
+                </article>
+
+
+
+                <!-- SESSÕES -->
+
+                <article class="reports-summary-card">
+
+
+                    <div class="reports-summary-top">
+
+                        <span>
+                            Total de sessões
+                        </span>
+
+                        <div class="reports-summary-icon">
+                            ◫
+                        </div>
+
+                    </div>
+
+
+                    <strong>
+                        <%= totalSessions %>
+                    </strong>
+
+
+                    <small>
+                        Sessões registradas
+                    </small>
+
+
+                </article>
+
+
+
+                <!-- RECEBIDO -->
+
+                <article class="reports-summary-card">
+
+
+                    <div class="reports-summary-top">
+
+                        <span>
+                            Valores recebidos
+                        </span>
+
+                        <div class="reports-summary-icon">
+                            $
+                        </div>
+
+                    </div>
+
+
+                    <strong class="reports-money">
+
+                        R$
+                        <%= paidAmount
+                            .toFixed(2)
+                            .replace('.', ',')
+                        %>
+
+                    </strong>
+
+
+                    <small>
+                        Pagamentos confirmados
+                    </small>
+
+
+                </article>
+
+
+
+                <!-- PENDENTE -->
+
+                <article class="reports-summary-card">
+
+
+                    <div class="reports-summary-top">
+
+                        <span>
+                            Valores pendentes
+                        </span>
+
+                        <div class="reports-summary-icon reports-icon-warning">
+                            !
+                        </div>
+
+                    </div>
+
+
+                    <strong class="reports-money">
+
+                        R$
+                        <%= pendingAmountReport
+                            .toFixed(2)
+                            .replace('.', ',')
+                        %>
+
+                    </strong>
+
+
+                    <small>
+                        Valores a receber
+                    </small>
+
+
+                </article>
+
+
+            </section>
+
+
+
+            <!-- =====================================
+                 DISTRIBUIÇÃO DAS SESSÕES
+            ====================================== -->
+
+            <section class="reports-content-grid">
+
+
+                <article class="professional-panel reports-status-panel">
+
+
+                    <header class="professional-panel-header">
+
+
+                        <div>
+
+                            <h3>
+                                Situação das sessões
+                            </h3>
+
+                            <p>
+                                Distribuição dos atendimentos
+                                registrados no sistema.
+                            </p>
+
+                        </div>
+
+
+                    </header>
+
+
+
+                    <div class="reports-status-content">
+
+
+                        <!-- REALIZADAS -->
+
+                        <div class="reports-status-item">
+
+
+                            <div class="reports-status-header">
+
+                                <div>
+
+                                    <strong>
+                                        Realizadas
+                                    </strong>
+
+                                    <span>
+                                        <%= completedSessions %>
+                                        sessão(ões)
+                                    </span>
+
+                                </div>
+
+
+                                <strong>
+                                    <%= completedPercent %>%
+                                </strong>
+
+                            </div>
+
+
+                            <progress
+    class="reports-progress reports-progress-success"
+    max="100"
+    value="<%= completedPercent %>"
+>
+    <%= completedPercent %>%
+</progress>
+
+
+                        </div>
+
+
+
+                        <!-- AGENDADAS -->
+
+                        <div class="reports-status-item">
+
+
+                            <div class="reports-status-header">
+
+                                <div>
+
+                                    <strong>
+                                        Agendadas / confirmadas
+                                    </strong>
+
+                                    <span>
+                                        <%= scheduledSessions %>
+                                        sessão(ões)
+                                    </span>
+
+                                </div>
+
+
+                                <strong>
+                                    <%= scheduledPercent %>%
+                                </strong>
+
+                            </div>
+
+
+                           <progress
+    class="reports-progress reports-progress-scheduled"
+    max="100"
+    value="<%= scheduledPercent %>"
+>
+    <%= scheduledPercent %>%
+</progress>
+
+
+                        </div>
+
+
+
+                        <!-- CANCELADAS -->
+
+                        <div class="reports-status-item">
+
+
+                            <div class="reports-status-header">
+
+                                <div>
+
+                                    <strong>
+                                        Canceladas
+                                    </strong>
+
+                                    <span>
+                                        <%= canceledSessions %>
+                                        sessão(ões)
+                                    </span>
+
+                                </div>
+
+
+                                <strong>
+                                    <%= canceledPercent %>%
+                                </strong>
+
+                            </div>
+
+
+                           <progress
+    class="reports-progress reports-progress-canceled"
+    max="100"
+    value="<%= canceledPercent %>"
+>
+    <%= canceledPercent %>%
+</progress>
+
+
+                        </div>
+
+
+
+                        <!-- FALTAS -->
+
+                        <div class="reports-status-item">
+
+
+                            <div class="reports-status-header">
+
+                                <div>
+
+                                    <strong>
+                                        Faltas
+                                    </strong>
+
+                                    <span>
+                                        <%= noShowSessions %>
+                                        sessão(ões)
+                                    </span>
+
+                                </div>
+
+
+                                <strong>
+                                    <%= noShowPercent %>%
+                                </strong>
+
+                            </div>
+
+
+                            <progress
+    class="reports-progress reports-progress-noshow"
+    max="100"
+    value="<%= noShowPercent %>"
+>
+    <%= noShowPercent %>%
+</progress>
+
+
+                        </div>
+
+
+                    </div>
+
+
+                </article>
+
+
+
+                <!-- =================================
+                     RESUMO FINANCEIRO
+                ================================== -->
+
+                <article class="professional-panel reports-finance-panel">
+
+
+                    <header class="professional-panel-header">
+
+
+                        <div>
+
+                            <h3>
+                                Resumo financeiro
+                            </h3>
+
+                            <p>
+                                Visão geral dos pagamentos.
+                            </p>
+
+                        </div>
+
+
+                    </header>
+
+
+
+                    <div class="reports-finance-content">
+
+
+                        <div class="reports-finance-line">
+
+                            <div>
+
+                                <span>
+                                    Recebido
+                                </span>
+
+                                <small>
+                                    Pagamentos confirmados
+                                </small>
+
+                            </div>
+
+                            <strong class="reports-finance-paid">
+
+                                R$
+                                <%= paidAmount
+                                    .toFixed(2)
+                                    .replace('.', ',')
+                                %>
+
+                            </strong>
+
+                        </div>
+
+
+
+                        <div class="reports-finance-line">
+
+                            <div>
+
+                                <span>
+                                    Pendente
+                                </span>
+
+                                <small>
+                                    Aguardando pagamento
+                                </small>
+
+                            </div>
+
+                            <strong class="reports-finance-pending">
+
+                                R$
+                                <%= pendingAmountReport
+                                    .toFixed(2)
+                                    .replace('.', ',')
+                                %>
+
+                            </strong>
+
+                        </div>
+
+
+
+                        <div class="reports-finance-total">
+
+                            <span>
+                                Total
+                            </span>
+
+                            <strong>
+
+                                R$
+                                <%= (
+                                    paidAmount +
+                                    pendingAmountReport
+                                )
+                                .toFixed(2)
+                                .replace('.', ',')
+                                %>
+
+                            </strong>
+
+                        </div>
+
+
+                    </div>
+
+
+                </article>
+
+
+            </section>
+
+
+
+            <!-- =====================================
+                 ÚLTIMOS REGISTROS
+            ====================================== -->
+
+            <section class="professional-panel reports-latest-panel">
+
+
+                <header class="professional-panel-header">
+
+
+                    <div>
+
+                        <h3>
+                            Atendimentos recentes
+                        </h3>
+
+                        <p>
+                            Últimas sessões registradas
+                            no EntreSessões.
+                        </p>
+
+                    </div>
+
+
+                    <span class="professional-panel-count">
+
+                        Últimos
+                        <%= latestSessions.length %>
+
+                    </span>
+
+
+                </header>
+
+
+
+                <div class="reports-latest-content">
+
+
+                    <% if (
+                        latestSessions.length === 0
+                    ) { %>
+
+
+                        <div class="reports-empty-state">
+
+                            Nenhuma sessão registrada.
+
+                        </div>
+
+
+                    <% } else { %>
+
+
+
+                        <% latestSessions.forEach(
+                            sessionItem => {
+                        %>
+
+
+                            <a
+                                href="/sessions/<%= sessionItem.id %>"
+                                class="reports-session-row"
+                            >
+
+
+                                <div class="reports-session-avatar">
+
+                                    <%= (
+                                        sessionItem.patient_name
+                                        || '?'
+                                    )
+                                    .charAt(0)
+                                    .toUpperCase()
+                                    %>
+
+                                </div>
+
+
+
+                                <div class="reports-session-patient">
+
+                                    <strong>
+                                        <%= sessionItem.patient_name %>
+                                    </strong>
+
+                                    <span>
+
+                                        <%= sessionItem.date_formatted %>
+
+                                        <% if (
+                                            sessionItem.time_formatted
+                                        ) { %>
+
+                                            ·
+                                            <%= sessionItem.time_formatted %>
+
+                                        <% } %>
+
+                                    </span>
+
+                                </div>
+
+
+
+                                <div class="reports-session-value">
+
+                                    R$
+                                    <%= Number(
+                                        sessionItem.price || 0
+                                    )
+                                    .toFixed(2)
+                                    .replace('.', ',')
+                                    %>
+
+                                </div>
+
+
+
+                                <div>
+
+
+                                    <% if (
+                                        sessionItem.status === 'COMPLETED'
+                                    ) { %>
+
+                                        <span class="brand-status brand-status-confirmed">
+                                            Realizada
+                                        </span>
+
+
+                                    <% } else if (
+                                        sessionItem.status === 'CANCELED'
+                                    ) { %>
+
+                                        <span class="brand-status brand-status-priority">
+                                            Cancelada
+                                        </span>
+
+
+                                    <% } else if (
+                                        sessionItem.status === 'NO_SHOW'
+                                    ) { %>
+
+                                        <span class="brand-status brand-status-priority">
+                                            Falta
+                                        </span>
+
+
+                                    <% } else { %>
+
+                                        <span class="brand-status brand-status-scheduled">
+                                            Agendada
+                                        </span>
+
+                                    <% } %>
+
+
+                                </div>
+
+
+
+                                <div class="reports-session-arrow">
+                                    →
+                                </div>
+
+
+                            </a>
+
+
+                        <% }) %>
+
+
+                    <% } %>
+
+
+                </div>
+
+
+            </section>
+
+
+        </main>
+
+
+    </div>
+
+
+
+    <!-- =========================================
+         RODAPÉ
+    ========================================== -->
+
+    <footer class="brand-dashboard-footer">
+
+
+        <div class="brand-footer-features">
+
+
+            <div class="brand-footer-feature">
+
+                <div class="brand-footer-icon">
+                    ◉
+                </div>
+
+                <div>
+
+                    <strong>
+                        ORGANIZAÇÃO
+                    </strong>
+
+                    <span>
+                        Mais tempo para o que realmente importa.
+                    </span>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="brand-footer-feature">
+
+                <div class="brand-footer-icon">
+                    ♡
+                </div>
+
+                <div>
+
+                    <strong>
+                        ACOLHIMENTO
+                    </strong>
+
+                    <span>
+                        Tecnologia a favor da escuta.
+                    </span>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="brand-footer-feature">
+
+                <div class="brand-footer-icon">
+                    ◇
+                </div>
+
+                <div>
+
+                    <strong>
+                        POSSIBILIDADES
+                    </strong>
+
+                    <span>
+                        Um consultório mais leve e humano.
+                    </span>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+
+        <div class="brand-dashboard-signature">
+
+            <strong>
+                EntreSessões
+            </strong>
+
+            <span>
+                PSICOLOGIA NA PRÁTICA,<br>
+                TODOS OS DIAS.
+            </span>
+
+        </div>
+
+
+    </footer>
+
+
+</div>
+
+
+<%- include('partials/priority-alert') %>
+
+
+</body>
+
+</html>

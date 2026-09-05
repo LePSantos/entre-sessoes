@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Contato prioritário - EntreSessões
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="/css/style.css"
+    >
+
+</head>
+
+
+<body class="patient-support-page">
+
+
+<%
+    const cleanPatientName =
+        String(user.name || 'Paciente')
+            .replace(/^Sr\.?\s*/i, '')
+            .replace(/^Sra\.?\s*/i, '');
+
+    const patientFirstName =
+        cleanPatientName
+            .split(' ')[0];
+%>
+
+
+<div class="patient-home-wrapper">
+
+
+    <!-- =========================================
+         IDENTIDADE ENTRESESSÕES
+    ========================================== -->
+
+    <header class="patient-home-brand-header">
+
+
+        <div class="brand-dashboard-title">
+
+            <h1>
+                EntreSessões
+            </h1>
+
+            <p>
+                SEU ESPAÇO ENTRE UM ENCONTRO E OUTRO
+            </p>
+
+        </div>
+
+
+
+        <div class="brand-dashboard-message patient-home-brand-message">
+
+            <span class="brand-dashboard-message-line"></span>
+
+            <p>
+                Um espaço para registrar,<br>
+                acompanhar e cuidar do que acontece<br>
+                entre as sessões.
+            </p>
+
+        </div>
+
+
+
+        <img
+            src="/images/folhas-dashboard.png"
+            alt=""
+            class="patient-home-flower"
+        >
+
+
+    </header>
+
+
+
+    <!-- =========================================
+         CONTEÚDO
+    ========================================== -->
+
+    <main class="patient-support-main">
+
+
+        <!-- NAVEGAÇÃO -->
+
+        <div class="patient-support-navigation">
+
+
+            <a href="/patient/dashboard">
+                ← Voltar para minha área
+            </a>
+
+
+
+            <div class="patient-support-user">
+
+
+                <div class="patient-support-user-avatar">
+
+                    <%= patientFirstName
+                        .charAt(0)
+                        .toUpperCase()
+                    %>
+
+                </div>
+
+
+                <div>
+
+                    <strong>
+                        <%= cleanPatientName %>
+                    </strong>
+
+                    <span>
+                        Contato prioritário
+                    </span>
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+
+
+        <!-- CABEÇALHO -->
+
+        <section class="patient-support-heading">
+
+
+            <div>
+
+
+                <span class="patient-home-eyebrow">
+                    CONTATO PRIORITÁRIO
+                </span>
+
+
+                <h2>
+                    Precisa falar com a profissional?
+                </h2>
+
+
+                <p>
+                    Você pode sinalizar que gostaria
+                    de receber um contato com prioridade
+                    da profissional responsável pelo
+                    seu acompanhamento.
+                </p>
+
+
+            </div>
+
+
+
+            <div class="patient-support-heading-icon">
+                !
+            </div>
+
+
+        </section>
+
+
+
+        <!-- =====================================
+             SE JÁ EXISTIR SOLICITAÇÃO
+        ====================================== -->
+
+        <% if (pendingRequest) { %>
+
+
+            <section class="patient-support-active">
+
+
+                <div class="patient-support-active-icon">
+                    ✓
+                </div>
+
+
+
+                <div class="patient-support-active-content">
+
+
+                    <span>
+                        SOLICITAÇÃO EM ACOMPANHAMENTO
+                    </span>
+
+
+                    <h3>
+                        Sua solicitação já foi enviada
+                    </h3>
+
+
+                    <p>
+                        A profissional já pode visualizar
+                        que você solicitou um contato
+                        com prioridade.
+                    </p>
+
+
+
+                    <div class="patient-support-active-date">
+
+                        <span>
+                            Enviada em
+                        </span>
+
+                        <strong>
+                            <%= pendingRequest.created_at_formatted %>
+                        </strong>
+
+                    </div>
+
+
+                </div>
+
+
+            </section>
+
+
+
+            <section class="patient-support-waiting-info">
+
+
+                <div>
+                    i
+                </div>
+
+
+                <p>
+                    Não é necessário enviar uma nova solicitação.
+                    Quando essa solicitação for concluída pela
+                    profissional, você poderá utilizar o recurso
+                    novamente caso precise.
+                </p>
+
+
+            </section>
+
+
+        <% } else { %>
+
+
+            <!-- =====================================
+                 SOLICITAR CONTATO
+            ====================================== -->
+
+            <section class="patient-support-layout">
+
+
+                <article class="patient-support-request-card">
+
+
+                    <span class="patient-support-card-eyebrow">
+                        SOLICITAR CONTATO
+                    </span>
+
+
+                    <h3>
+                        Enviar uma solicitação prioritária
+                    </h3>
+
+
+                    <p class="patient-support-introduction">
+                        Ao utilizar este recurso,
+                        a profissional receberá uma sinalização
+                        de que você gostaria de ser contatado
+                        com prioridade.
+                    </p>
+
+
+
+                    <div class="patient-support-steps">
+
+
+                        <div class="patient-support-step">
+
+
+                            <span>
+                                01
+                            </span>
+
+
+                            <div>
+
+                                <strong>
+                                    Você envia a solicitação
+                                </strong>
+
+                                <p>
+                                    Basta confirmar no botão abaixo.
+                                </p>
+
+                            </div>
+
+
+                        </div>
+
+
+
+                        <div class="patient-support-step">
+
+
+                            <span>
+                                02
+                            </span>
+
+
+                            <div>
+
+                                <strong>
+                                    A profissional é avisada
+                                </strong>
+
+                                <p>
+                                    A solicitação aparecerá
+                                    na área profissional
+                                    do EntreSessões.
+                                </p>
+
+                            </div>
+
+
+                        </div>
+
+
+
+                        <div class="patient-support-step">
+
+
+                            <span>
+                                03
+                            </span>
+
+
+                            <div>
+
+                                <strong>
+                                    O contato poderá ser realizado
+                                </strong>
+
+                                <p>
+                                    O tempo de resposta depende
+                                    da disponibilidade da profissional.
+                                </p>
+
+                            </div>
+
+
+                        </div>
+
+
+                    </div>
+
+
+
+                    <% if (
+                        typeof message !== 'undefined'
+                        && message
+                    ) { %>
+
+
+                        <div class="patient-support-message">
+                            <%= message %>
+                        </div>
+
+
+                    <% } %>
+
+
+
+                    <form
+                        action="/support-request"
+                        method="POST"
+                        class="patient-support-form"
+                    >
+
+
+                        <button
+                            type="submit"
+                            class="patient-support-submit"
+                            onclick="return confirm('Deseja enviar uma solicitação de contato prioritário?')"
+                        >
+                            Solicitar contato prioritário
+
+                            <span>
+                                →
+                            </span>
+                        </button>
+
+
+                    </form>
+
+
+                </article>
+
+
+
+                <!-- =================================
+                     LATERAL
+                ================================== -->
+
+                <aside class="patient-support-side">
+
+
+                    <article class="patient-support-professional">
+
+
+                        <span>
+                            SEU ACOMPANHAMENTO
+                        </span>
+
+
+
+                        <div class="patient-support-professional-profile">
+
+
+                            <div class="patient-support-professional-symbol">
+
+                                <img
+                                    src="/images/simbolo-bruna.png"
+                                    alt=""
+                                >
+
+                            </div>
+
+
+
+                            <div>
+
+                                <h3>
+                                    Bruna Nascimento
+                                </h3>
+
+                                <p>
+                                    Psicologia • Psicanálise
+                                </p>
+
+                            </div>
+
+
+                        </div>
+
+
+
+                        <div class="patient-support-professional-line"></div>
+
+
+                        <p>
+                            Esta solicitação será exibida
+                            diretamente na área profissional
+                            do EntreSessões.
+                        </p>
+
+
+                    </article>
+
+
+
+                    <article class="patient-support-calm-card">
+
+
+                        <div class="patient-support-calm-icon">
+                            ♡
+                        </div>
+
+
+                        <h3>
+                            Este recurso é um pedido de contato
+                        </h3>
+
+
+                        <p>
+                            Ele foi pensado para facilitar
+                            a comunicação entre uma sessão
+                            e outra quando você sentir necessidade
+                            de sinalizar algo à profissional.
+                        </p>
+
+
+                    </article>
+
+
+                </aside>
+
+
+            </section>
+
+
+        <% } %>
+
+
+
+        <!-- =====================================
+             AVISO IMPORTANTE
+        ====================================== -->
+
+        <section class="patient-support-emergency">
+
+
+            <div class="patient-support-emergency-icon">
+                !
+            </div>
+
+
+
+            <div>
+
+
+                <span>
+                    IMPORTANTE
+                </span>
+
+
+                <h3>
+                    Este não é um serviço de emergência
+                </h3>
+
+
+                <p>
+                    A solicitação de contato prioritário
+                    <strong>não garante resposta imediata</strong>
+                    e o EntreSessões
+                    <strong>não é monitorado 24 horas por dia.</strong>
+                    Em uma situação de emergência ou risco imediato,
+                    procure os serviços de urgência adequados
+                    da sua região.
+                </p>
+
+
+            </div>
+
+
+        </section>
+
+
+    </main>
+
+
+
+    <!-- =========================================
+         RODAPÉ
+    ========================================== -->
+
+    <footer class="patient-home-footer">
+
+
+        <div class="patient-home-footer-brand">
+
+            <strong>
+                EntreSessões
+            </strong>
+
+            <span>
+                Um espaço de continuidade entre encontros.
+            </span>
+
+        </div>
+
+
+
+        <div class="patient-home-footer-items">
+
+
+            <div>
+
+                <strong>
+                    REGISTRAR
+                </strong>
+
+                <span>
+                    Dar espaço ao que você sente.
+                </span>
+
+            </div>
+
+
+
+            <div>
+
+                <strong>
+                    ACOMPANHAR
+                </strong>
+
+                <span>
+                    Organizar seus atendimentos.
+                </span>
+
+            </div>
+
+
+
+            <div>
+
+                <strong>
+                    CUIDAR
+                </strong>
+
+                <span>
+                    Construir possibilidades.
+                </span>
+
+            </div>
+
+
+        </div>
+
+
+    </footer>
+
+
+</div>
+
+
+</body>
+
+</html>

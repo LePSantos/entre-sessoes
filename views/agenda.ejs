@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Agenda - EntreSessões
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="/css/style.css"
+    >
+
+</head>
+
+
+<body class="brand-dashboard-page">
+
+
+<div class="brand-dashboard-wrapper">
+
+
+    <!-- =========================================
+         IDENTIDADE ENTRESESSÕES
+    ========================================== -->
+
+    <header class="brand-dashboard-brand-header">
+
+
+        <div class="brand-dashboard-title">
+
+            <h1>
+                EntreSessões
+            </h1>
+
+            <p>
+                SISTEMA PARA CONSULTÓRIOS DE PSICOLOGIA
+            </p>
+
+        </div>
+
+
+
+        <div class="brand-dashboard-message">
+
+            <span class="brand-dashboard-message-line"></span>
+
+            <p>
+                Mais que um sistema,<br>
+                um espaço para o que importa:<br>
+                pessoas, escuta e possibilidades.
+            </p>
+
+        </div>
+
+
+
+        <img
+            src="/images/folhas-dashboard.png"
+            alt=""
+            class="brand-dashboard-flower"
+        >
+
+
+    </header>
+
+
+
+    <!-- =========================================
+         CARD PRINCIPAL
+    ========================================== -->
+
+    <div class="brand-dashboard-card">
+
+
+        <!-- MENU -->
+
+        <%- include('partials/sidebar', {
+            activePage: 'sessions'
+        }) %>
+
+
+
+        <!-- =====================================
+             CONTEÚDO
+        ====================================== -->
+
+        <main class="brand-dashboard-main">
+
+
+            <!-- CABEÇALHO -->
+
+            <header class="professional-page-header">
+
+
+                <div>
+
+                    <span class="professional-page-eyebrow">
+                        AGENDA
+                    </span>
+
+                    <h2>
+                        Agenda
+                    </h2>
+
+                    <p>
+                        Acompanhe e gerencie seus atendimentos.
+                    </p>
+
+                </div>
+
+
+
+                <a
+                    href="/sessions/new"
+                    class="brand-action-button brand-action-primary"
+                >
+                    + Nova sessão
+                </a>
+
+
+            </header>
+
+
+
+            <!-- =====================================
+                 RESUMO
+            ====================================== -->
+
+            <section class="agenda-summary-area">
+
+
+                <article class="agenda-summary-card">
+
+                    <span>
+                        Sessões cadastradas
+                    </span>
+
+                    <strong>
+                        <%= sessions.length %>
+                    </strong>
+
+                    <small>
+                        Total de atendimentos
+                    </small>
+
+                </article>
+
+
+                <article class="agenda-summary-card">
+
+                    <span>
+                        Realizadas
+                    </span>
+
+                    <strong>
+
+                        <%= sessions.filter(
+                            sessionItem =>
+                                sessionItem.status === 'COMPLETED'
+                        ).length %>
+
+                    </strong>
+
+                    <small>
+                        Atendimentos concluídos
+                    </small>
+
+                </article>
+
+
+                <article class="agenda-summary-card">
+
+                    <span>
+                        Agendadas
+                    </span>
+
+                    <strong>
+
+                        <%= sessions.filter(
+                            sessionItem =>
+                                sessionItem.status === 'SCHEDULED'
+                                ||
+                                sessionItem.status === 'CONFIRMED'
+                        ).length %>
+
+                    </strong>
+
+                    <small>
+                        Próximos atendimentos
+                    </small>
+
+                </article>
+
+
+            </section>
+
+
+
+            <!-- =====================================
+                 LISTA DE SESSÕES
+            ====================================== -->
+
+            <section class="professional-panel">
+
+
+                <header class="professional-panel-header">
+
+
+                    <div>
+
+                        <h3>
+                            Sessões
+                        </h3>
+
+                        <p>
+                            Consulte os atendimentos cadastrados.
+                        </p>
+
+                    </div>
+
+
+                    <span class="professional-panel-count">
+
+                        <%= sessions.length %>
+                        sessão(ões)
+
+                    </span>
+
+
+                </header>
+
+
+
+                <div class="professional-panel-body agenda-panel-body">
+
+
+                    <% if (
+                        sessions.length === 0
+                    ) { %>
+
+
+                        <div class="agenda-empty-state">
+
+
+                            <div class="agenda-empty-icon">
+                                ◷
+                            </div>
+
+
+                            <h4>
+                                Nenhuma sessão cadastrada
+                            </h4>
+
+
+                            <p>
+                                Agende uma nova sessão para
+                                iniciar sua agenda.
+                            </p>
+
+
+                            <a
+                                href="/sessions/new"
+                                class="brand-action-button brand-action-primary"
+                            >
+                                + Nova sessão
+                            </a>
+
+
+                        </div>
+
+
+                    <% } else { %>
+
+
+
+                        <div class="agenda-modern-list">
+
+
+                            <% sessions.forEach(sessionItem => { %>
+
+
+                                <a
+                                    href="/sessions/<%= sessionItem.id %>"
+                                    class="agenda-modern-row"
+                                >
+
+
+                                    <!-- DATA -->
+
+                                    <div class="agenda-modern-date">
+
+                                        <strong>
+                                            <%= sessionItem.date_formatted %>
+                                        </strong>
+
+                                    </div>
+
+
+
+                                    <!-- HORÁRIO -->
+
+                                    <div class="agenda-modern-time">
+
+                                        <strong>
+                                            <%= sessionItem.time_formatted %>
+                                        </strong>
+
+                                    </div>
+
+
+
+                                    <!-- PACIENTE -->
+
+                                    <div class="agenda-modern-patient">
+
+                                        <strong>
+                                            <%= sessionItem.patient_name %>
+                                        </strong>
+
+                                        <span>
+                                            Sessão individual
+                                        </span>
+
+                                    </div>
+
+
+
+                                    <!-- STATUS DA SESSÃO -->
+
+                                    <div class="agenda-modern-status">
+
+
+                                        <% if (
+                                            sessionItem.status === 'COMPLETED'
+                                        ) { %>
+
+                                            <span class="brand-status brand-status-confirmed">
+                                                Realizada
+                                            </span>
+
+
+                                        <% } else if (
+                                            sessionItem.status === 'CONFIRMED'
+                                        ) { %>
+
+                                            <span class="brand-status brand-status-confirmed">
+                                                Confirmada
+                                            </span>
+
+
+                                        <% } else if (
+                                            sessionItem.status === 'SCHEDULED'
+                                        ) { %>
+
+                                            <span class="brand-status brand-status-scheduled">
+                                                Agendada
+                                            </span>
+
+
+                                        <% } else if (
+                                            sessionItem.status === 'CANCELED'
+                                        ) { %>
+
+                                            <span class="brand-status brand-status-priority">
+                                                Cancelada
+                                            </span>
+
+
+                                        <% } else { %>
+
+                                            <span class="brand-status brand-status-priority">
+                                                Falta
+                                            </span>
+
+                                        <% } %>
+
+
+                                    </div>
+
+
+
+                                    <!-- FINANCEIRO -->
+
+                                    <div class="agenda-modern-finance">
+
+
+                                        <strong>
+
+                                            R$
+                                            <%= Number(
+                                                sessionItem.price || 0
+                                            )
+                                            .toFixed(2)
+                                            .replace('.', ',') %>
+
+                                        </strong>
+
+
+                                        <% if (
+                                            sessionItem.payment_status === 'PAID'
+                                        ) { %>
+
+                                            <span class="agenda-payment-paid">
+                                                Pago
+                                            </span>
+
+                                        <% } else { %>
+
+                                            <span class="agenda-payment-pending">
+                                                Pendente
+                                            </span>
+
+                                        <% } %>
+
+
+                                    </div>
+
+
+
+                                    <!-- SETA -->
+
+                                    <div class="agenda-modern-arrow">
+                                        →
+                                    </div>
+
+
+                                </a>
+
+
+                            <% }) %>
+
+
+                        </div>
+
+
+                    <% } %>
+
+
+                </div>
+
+
+            </section>
+
+
+        </main>
+
+
+    </div>
+
+
+
+    <!-- =========================================
+         RODAPÉ
+    ========================================== -->
+
+    <footer class="brand-dashboard-footer">
+
+
+        <div class="brand-footer-features">
+
+
+            <div class="brand-footer-feature">
+
+                <div class="brand-footer-icon">
+                    ◉
+                </div>
+
+                <div>
+
+                    <strong>
+                        ORGANIZAÇÃO
+                    </strong>
+
+                    <span>
+                        Mais tempo para o que realmente importa.
+                    </span>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="brand-footer-feature">
+
+                <div class="brand-footer-icon">
+                    ♡
+                </div>
+
+                <div>
+
+                    <strong>
+                        ACOLHIMENTO
+                    </strong>
+
+                    <span>
+                        Tecnologia a favor da escuta.
+                    </span>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="brand-footer-feature">
+
+                <div class="brand-footer-icon">
+                    ◇
+                </div>
+
+                <div>
+
+                    <strong>
+                        POSSIBILIDADES
+                    </strong>
+
+                    <span>
+                        Um consultório mais leve e humano.
+                    </span>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+
+        <div class="brand-dashboard-signature">
+
+            <strong>
+                EntreSessões
+            </strong>
+
+            <span>
+                PSICOLOGIA NA PRÁTICA,<br>
+                TODOS OS DIAS.
+            </span>
+
+        </div>
+
+
+    </footer>
+
+
+</div>
+
+
+
+<%- include('partials/priority-alert') %>
+
+
+</body>
+
+</html>

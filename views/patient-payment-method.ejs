@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Pagamento - EntreSessões
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="/css/style.css"
+    >
+
+</head>
+
+
+<body class="patient-payment-page">
+
+
+<%
+    const paymentSession =
+        typeof sessionItem !== 'undefined'
+            ? sessionItem
+            : (
+                typeof session !== 'undefined'
+                    ? session
+                    : (
+                        typeof payment !== 'undefined'
+                            ? payment
+                            : {}
+                    )
+            );
+
+
+    const cleanPatientName =
+        String(
+            typeof user !== 'undefined' && user
+                ? user.name
+                : 'Paciente'
+        )
+            .replace(/^Sr\.?\s*/i, '')
+            .replace(/^Sra\.?\s*/i, '');
+
+
+    const patientFirstName =
+        cleanPatientName.split(' ')[0];
+
+
+    const paymentAmount =
+        Number(
+            paymentSession.price || 0
+        );
+%>
+
+
+<div class="patient-home-wrapper">
+
+
+    <header class="patient-home-brand-header">
+
+
+        <div class="brand-dashboard-title">
+
+            <h1>
+                EntreSessões
+            </h1>
+
+            <p>
+                SEU ESPAÇO ENTRE UM ENCONTRO E OUTRO
+            </p>
+
+        </div>
+
+
+
+        <div class="brand-dashboard-message patient-home-brand-message">
+
+            <span class="brand-dashboard-message-line"></span>
+
+            <p>
+                Um espaço para registrar,<br>
+                acompanhar e cuidar do que acontece<br>
+                entre as sessões.
+            </p>
+
+        </div>
+
+
+
+        <img
+            src="/images/folhas-dashboard.png"
+            alt=""
+            class="patient-home-flower"
+        >
+
+
+    </header>
+
+
+
+    <main class="patient-payment-main">
+
+
+        <!-- NAVEGAÇÃO -->
+
+        <div class="patient-payment-navigation">
+
+
+            <a href="/patient/sessions">
+                ← Voltar para minhas sessões
+            </a>
+
+
+
+            <div class="patient-payment-user">
+
+
+                <div class="patient-payment-user-avatar">
+
+                    <%= patientFirstName
+                        .charAt(0)
+                        .toUpperCase()
+                    %>
+
+                </div>
+
+
+                <div>
+
+                    <strong>
+                        <%= cleanPatientName %>
+                    </strong>
+
+                    <span>
+                        Pagamentos
+                    </span>
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+
+
+        <!-- CABEÇALHO -->
+
+        <section class="patient-payment-heading">
+
+
+            <span class="patient-home-eyebrow">
+                PAGAMENTO
+            </span>
+
+
+            <h2>
+                Escolha como deseja pagar
+            </h2>
+
+
+            <p>
+                Selecione uma das formas de pagamento
+                disponíveis para esta sessão.
+            </p>
+
+
+        </section>
+
+
+
+        <!-- RESUMO -->
+
+        <section class="patient-payment-session-summary">
+
+
+            <div>
+
+
+                <span>
+                    SESSÃO
+                </span>
+
+
+                <strong>
+
+                    <%= paymentSession.date_formatted
+                        || 'Data da sessão'
+                    %>
+
+                    <% if (
+                        paymentSession.time_formatted
+                    ) { %>
+
+                        às
+                        <%= paymentSession.time_formatted %>
+
+                    <% } %>
+
+                </strong>
+
+
+            </div>
+
+
+
+            <div>
+
+
+                <span>
+                    PROFISSIONAL
+                </span>
+
+
+                <strong>
+                    Bruna Nascimento
+                </strong>
+
+
+            </div>
+
+
+
+            <div>
+
+
+                <span>
+                    VALOR
+                </span>
+
+
+                <strong class="patient-payment-highlight-value">
+
+                    R$
+                    <%= paymentAmount
+                        .toFixed(2)
+                        .replace('.', ',')
+                    %>
+
+                </strong>
+
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- FORMAS DE PAGAMENTO -->
+
+        <section class="patient-payment-method-grid">
+
+
+            <!-- PIX -->
+
+            <a
+                href="pix"
+                class="patient-payment-method-card"
+            >
+
+
+                <div class="patient-payment-method-icon">
+                    P
+                </div>
+
+
+                <span>
+                    PIX
+                </span>
+
+
+                <h3>
+                    Pagamento por PIX
+                </h3>
+
+
+                <p>
+                    Pagamento demonstrativo
+                    em uma única parcela.
+                </p>
+
+
+                <div class="patient-payment-method-footer">
+
+                    Escolher PIX
+
+                    <span>
+                        →
+                    </span>
+
+                </div>
+
+
+            </a>
+
+
+
+            <!-- CRÉDITO -->
+
+            <a
+                href="credit"
+                class="patient-payment-method-card"
+            >
+
+
+                <div class="patient-payment-method-icon">
+                    C
+                </div>
+
+
+                <span>
+                    CARTÃO DE CRÉDITO
+                </span>
+
+
+                <h3>
+                    Crédito
+                </h3>
+
+
+                <p>
+                    Simule o pagamento
+                    e escolha a quantidade de parcelas.
+                </p>
+
+
+                <div class="patient-payment-method-footer">
+
+                    Escolher crédito
+
+                    <span>
+                        →
+                    </span>
+
+                </div>
+
+
+            </a>
+
+
+
+            <!-- DÉBITO -->
+
+            <a
+                href="debit"
+                class="patient-payment-method-card"
+            >
+
+
+                <div class="patient-payment-method-icon">
+                    D
+                </div>
+
+
+                <span>
+                    CARTÃO DE DÉBITO
+                </span>
+
+
+                <h3>
+                    Débito
+                </h3>
+
+
+                <p>
+                    Simule o pagamento
+                    à vista utilizando débito.
+                </p>
+
+
+                <div class="patient-payment-method-footer">
+
+                    Escolher débito
+
+                    <span>
+                        →
+                    </span>
+
+                </div>
+
+
+            </a>
+
+
+        </section>
+
+
+
+        <!-- AVISO -->
+
+        <section class="patient-payment-demo-notice">
+
+
+            <div>
+                i
+            </div>
+
+
+            <p>
+
+                <strong>
+                    Ambiente demonstrativo.
+                </strong>
+
+                O EntreSessões não realiza cobranças reais
+                e não armazena número do cartão,
+                código de segurança ou outros dados bancários.
+
+            </p>
+
+
+        </section>
+
+
+    </main>
+
+
+
+    <footer class="patient-home-footer">
+
+
+        <div class="patient-home-footer-brand">
+
+            <strong>
+                EntreSessões
+            </strong>
+
+            <span>
+                Um espaço de continuidade entre encontros.
+            </span>
+
+        </div>
+
+
+
+        <div class="patient-home-footer-items">
+
+
+            <div>
+
+                <strong>
+                    REGISTRAR
+                </strong>
+
+                <span>
+                    Dar espaço ao que você sente.
+                </span>
+
+            </div>
+
+
+            <div>
+
+                <strong>
+                    ACOMPANHAR
+                </strong>
+
+                <span>
+                    Organizar seus atendimentos.
+                </span>
+
+            </div>
+
+
+            <div>
+
+                <strong>
+                    CUIDAR
+                </strong>
+
+                <span>
+                    Construir possibilidades.
+                </span>
+
+            </div>
+
+
+        </div>
+
+
+    </footer>
+
+
+</div>
+
+
+</body>
+
+</html>

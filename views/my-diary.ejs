@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Meu diário emocional - EntreSessões
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="/css/style.css"
+    >
+
+</head>
+
+
+<body class="patient-diary-page">
+
+
+<%
+    const cleanPatientName =
+        String(user.name || 'Paciente')
+            .replace(/^Sr\.?\s*/i, '')
+            .replace(/^Sra\.?\s*/i, '');
+
+    const patientFirstName =
+        cleanPatientName
+            .split(' ')[0];
+%>
+
+
+<div class="patient-home-wrapper">
+
+
+    <!-- =========================================
+         CABEÇALHO ENTRESESSÕES
+    ========================================== -->
+
+    <header class="patient-home-brand-header">
+
+
+        <div class="brand-dashboard-title">
+
+            <h1>
+                EntreSessões
+            </h1>
+
+            <p>
+                SEU ESPAÇO ENTRE UM ENCONTRO E OUTRO
+            </p>
+
+        </div>
+
+
+
+        <div class="brand-dashboard-message patient-home-brand-message">
+
+            <span class="brand-dashboard-message-line"></span>
+
+            <p>
+                Um espaço para registrar,<br>
+                acompanhar e cuidar do que acontece<br>
+                entre as sessões.
+            </p>
+
+        </div>
+
+
+
+        <img
+            src="/images/folhas-dashboard.png"
+            alt=""
+            class="patient-home-flower"
+        >
+
+
+    </header>
+
+
+
+    <!-- =========================================
+         CARD PRINCIPAL
+    ========================================== -->
+
+    <main class="patient-diary-main">
+
+
+        <!-- =====================================
+             NAVEGAÇÃO
+        ====================================== -->
+
+        <div class="patient-diary-navigation">
+
+
+            <a href="/patient/dashboard">
+                ← Voltar para minha área
+            </a>
+
+
+            <div class="patient-diary-user">
+
+
+                <div class="patient-diary-user-avatar">
+
+                    <%= patientFirstName
+                        .charAt(0)
+                        .toUpperCase()
+                    %>
+
+                </div>
+
+
+                <div>
+
+                    <strong>
+                        <%= cleanPatientName %>
+                    </strong>
+
+                    <span>
+                        Meu diário
+                    </span>
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+
+
+        <!-- =====================================
+             CABEÇALHO
+        ====================================== -->
+
+        <section class="patient-diary-heading">
+
+
+            <div>
+
+
+                <span class="patient-home-eyebrow">
+                    DIÁRIO EMOCIONAL
+                </span>
+
+
+                <h2>
+                    Um espaço para o que você sente.
+                </h2>
+
+
+                <p>
+                    Registre acontecimentos, sentimentos,
+                    pensamentos ou situações que você considere
+                    importantes entre uma sessão e outra.
+                </p>
+
+
+            </div>
+
+
+
+            <div class="patient-diary-heading-symbol">
+                ♡
+            </div>
+
+
+        </section>
+
+
+
+        <!-- =====================================
+             CONTEÚDO
+        ====================================== -->
+
+        <section class="patient-diary-layout">
+
+
+            <!-- =================================
+                 NOVO REGISTRO
+            ================================== -->
+
+            <article class="patient-diary-write-card">
+
+
+                <header class="patient-diary-card-header">
+
+
+                    <div>
+
+                        <span>
+                            NOVO REGISTRO
+                        </span>
+
+                        <h3>
+                            Como você está hoje?
+                        </h3>
+
+                    </div>
+
+
+                    <div class="patient-diary-pencil">
+                        ✎
+                    </div>
+
+
+                </header>
+
+
+
+                <p class="patient-diary-introduction">
+                    Não existe uma forma certa de escrever.
+                    Registre da maneira que fizer sentido para você.
+                </p>
+
+
+
+                <% if (
+                    typeof error !== 'undefined'
+                    && error
+                ) { %>
+
+
+                    <div class="patient-diary-error">
+
+                        <div>
+                            !
+                        </div>
+
+                        <span>
+                            <%= error %>
+                        </span>
+
+                    </div>
+
+
+                <% } %>
+
+
+
+                <form
+                    action="/my-diary"
+                    method="POST"
+                    class="patient-diary-form"
+                >
+
+
+                    <!-- HUMOR -->
+
+                    <fieldset class="patient-diary-mood">
+
+
+                        <legend>
+                            Como você descreveria seu estado emocional?
+                        </legend>
+
+
+                        <p>
+                            Essa informação é opcional.
+                        </p>
+
+
+
+                        <div class="patient-diary-mood-options">
+
+
+                            <label class="patient-diary-mood-option">
+
+                                <input
+                                    type="radio"
+                                    name="mood_level"
+                                    value="1"
+                                >
+
+                                <span class="patient-diary-mood-circle">
+                                    1
+                                </span>
+
+                                <small>
+                                    Muito difícil
+                                </small>
+
+                            </label>
+
+
+
+                            <label class="patient-diary-mood-option">
+
+                                <input
+                                    type="radio"
+                                    name="mood_level"
+                                    value="2"
+                                >
+
+                                <span class="patient-diary-mood-circle">
+                                    2
+                                </span>
+
+                                <small>
+                                    Difícil
+                                </small>
+
+                            </label>
+
+
+
+                            <label class="patient-diary-mood-option">
+
+                                <input
+                                    type="radio"
+                                    name="mood_level"
+                                    value="3"
+                                >
+
+                                <span class="patient-diary-mood-circle">
+                                    3
+                                </span>
+
+                                <small>
+                                    Neutro
+                                </small>
+
+                            </label>
+
+
+
+                            <label class="patient-diary-mood-option">
+
+                                <input
+                                    type="radio"
+                                    name="mood_level"
+                                    value="4"
+                                >
+
+                                <span class="patient-diary-mood-circle">
+                                    4
+                                </span>
+
+                                <small>
+                                    Bem
+                                </small>
+
+                            </label>
+
+
+
+                            <label class="patient-diary-mood-option">
+
+                                <input
+                                    type="radio"
+                                    name="mood_level"
+                                    value="5"
+                                >
+
+                                <span class="patient-diary-mood-circle">
+                                    5
+                                </span>
+
+                                <small>
+                                    Muito bem
+                                </small>
+
+                            </label>
+
+
+                        </div>
+
+
+                    </fieldset>
+
+
+
+                    <!-- TEXTO -->
+
+                    <div class="patient-diary-field">
+
+
+                        <label for="content">
+                            O que você gostaria de registrar?
+                        </label>
+
+
+                        <textarea
+                            id="content"
+                            name="content"
+                            rows="9"
+                            maxlength="5000"
+                            required
+                            placeholder="Você pode escrever sobre algo que aconteceu, como se sentiu, algum pensamento que apareceu ou qualquer coisa que considere importante..."
+                        ></textarea>
+
+
+                        <div class="patient-diary-field-footer">
+
+                            <span>
+                                Escreva no seu ritmo.
+                            </span>
+
+                            <span>
+                                Até 5000 caracteres
+                            </span>
+
+                        </div>
+
+
+                    </div>
+
+
+
+                    <!-- PRIVACIDADE -->
+
+                    <div class="patient-diary-privacy">
+
+
+                        <div>
+                            ♡
+                        </div>
+
+
+                        <p>
+                            <strong>
+                                Seu registro faz parte do seu acompanhamento.
+                            </strong>
+
+                            Ele poderá ser visualizado por você
+                            e pela profissional responsável pelo
+                            seu atendimento.
+                        </p>
+
+
+                    </div>
+
+
+
+                    <button
+                        type="submit"
+                        class="patient-diary-save-button"
+                    >
+                        Salvar registro
+
+                        <span>
+                            →
+                        </span>
+                    </button>
+
+
+                </form>
+
+
+            </article>
+
+
+
+            <!-- =================================
+                 LATERAL
+            ================================== -->
+
+            <aside class="patient-diary-side">
+
+
+                <article class="patient-diary-side-card">
+
+
+                    <span>
+                        SOBRE ESTE ESPAÇO
+                    </span>
+
+
+                    <h3>
+                        Entre um encontro e outro
+                    </h3>
+
+
+                    <p>
+                        Nem sempre conseguimos lembrar durante
+                        uma sessão de tudo o que aconteceu
+                        nos dias anteriores.
+                    </p>
+
+
+                    <p>
+                        O diário pode ajudar você a registrar
+                        experiências importantes no momento
+                        em que elas acontecem.
+                    </p>
+
+
+                    <div class="patient-diary-side-line"></div>
+
+
+                    <p class="patient-diary-side-quote">
+                        “Algumas coisas precisam primeiro
+                        encontrar palavras.”
+                    </p>
+
+
+                </article>
+
+
+
+                <article class="patient-diary-reminder">
+
+
+                    <div class="patient-diary-reminder-icon">
+                        i
+                    </div>
+
+
+                    <div>
+
+                        <strong>
+                            Lembrete
+                        </strong>
+
+
+                        <p>
+                            Este espaço não substitui uma sessão
+                            e não funciona como canal de emergência.
+                        </p>
+
+                    </div>
+
+
+                </article>
+
+
+            </aside>
+
+
+        </section>
+
+
+
+        <!-- =====================================
+             HISTÓRICO
+        ====================================== -->
+
+        <section class="patient-diary-history-section">
+
+
+            <details class="patient-diary-history-details">
+
+
+                <summary>
+
+
+                    <div>
+
+
+                        <span class="patient-home-eyebrow">
+                            MEUS REGISTROS
+                        </span>
+
+
+                        <h3>
+                            Histórico do diário
+                        </h3>
+
+
+                        <p>
+                            Consulte o que você registrou anteriormente.
+                        </p>
+
+
+                    </div>
+
+
+
+                    <div class="patient-diary-history-summary-right">
+
+
+                        <span class="patient-diary-history-count">
+
+                            <%= entries.length %>
+
+                            <%= entries.length === 1
+                                ? 'registro'
+                                : 'registros'
+                            %>
+
+                        </span>
+
+
+                        <span class="patient-diary-history-chevron">
+                            ↓
+                        </span>
+
+
+                    </div>
+
+
+                </summary>
+
+
+
+                <div class="patient-diary-history-content">
+
+
+                    <% if (
+                        entries.length === 0
+                    ) { %>
+
+
+                        <div class="patient-diary-empty">
+
+
+                            <div>
+                                ♡
+                            </div>
+
+
+                            <h4>
+                                Seu diário começa aqui
+                            </h4>
+
+
+                            <p>
+                                Quando você fizer seu primeiro registro,
+                                ele aparecerá neste histórico.
+                            </p>
+
+
+                        </div>
+
+
+                    <% } else { %>
+
+
+
+                        <div class="patient-diary-history-list">
+
+
+                            <% entries.forEach(
+                                entry => {
+                            %>
+
+
+                                <article class="patient-diary-history-entry">
+
+
+                                    <header>
+
+
+                                        <div>
+
+
+                                            <span>
+                                                REGISTRO
+                                            </span>
+
+
+                                            <strong>
+                                                <%= entry.created_at_formatted %>
+                                            </strong>
+
+
+                                        </div>
+
+
+
+                                        <% if (
+                                            entry.mood_level
+                                        ) { %>
+
+
+                                            <div
+                                                class="patient-diary-history-mood patient-diary-history-mood-<%= entry.mood_level %>"
+                                            >
+
+                                                <span>
+                                                    Estado emocional
+                                                </span>
+
+                                                <strong>
+                                                    <%= entry.mood_level %>/5
+                                                </strong>
+
+                                            </div>
+
+
+                                        <% } %>
+
+
+                                    </header>
+
+
+
+                                    <p class="patient-diary-history-text">
+                                        <%= entry.content %>
+                                    </p>
+
+
+                                </article>
+
+
+                            <% }) %>
+
+
+                        </div>
+
+
+                    <% } %>
+
+
+                </div>
+
+
+            </details>
+
+
+        </section>
+
+
+    </main>
+
+
+
+    <!-- =========================================
+         RODAPÉ
+    ========================================== -->
+
+    <footer class="patient-home-footer">
+
+
+        <div class="patient-home-footer-brand">
+
+            <strong>
+                EntreSessões
+            </strong>
+
+            <span>
+                Um espaço de continuidade entre encontros.
+            </span>
+
+        </div>
+
+
+
+        <div class="patient-home-footer-items">
+
+
+            <div>
+
+                <strong>
+                    REGISTRAR
+                </strong>
+
+                <span>
+                    Dar espaço ao que você sente.
+                </span>
+
+            </div>
+
+
+
+            <div>
+
+                <strong>
+                    ACOMPANHAR
+                </strong>
+
+                <span>
+                    Organizar seus atendimentos.
+                </span>
+
+            </div>
+
+
+
+            <div>
+
+                <strong>
+                    CUIDAR
+                </strong>
+
+                <span>
+                    Construir possibilidades.
+                </span>
+
+            </div>
+
+
+        </div>
+
+
+    </footer>
+
+
+</div>
+
+
+</body>
+
+</html>

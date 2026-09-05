@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Nova sessão - EntreSessões
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="/css/style.css"
+    >
+
+</head>
+
+
+<body class="brand-dashboard-page professional-session-page">
+
+
+<%
+    const professionalUser =
+        typeof user !== 'undefined' && user
+            ? user
+            : {
+                name: 'Bruna Nascimento'
+            };
+
+    const availablePatients =
+        typeof patients !== 'undefined'
+            ? patients
+            : [];
+%>
+
+
+<div class="brand-dashboard-wrapper">
+
+
+    <!-- IDENTIDADE -->
+
+    <header class="brand-dashboard-brand-header">
+
+
+        <div class="brand-dashboard-title">
+
+            <h1>
+                EntreSessões
+            </h1>
+
+            <p>
+                SISTEMA PARA CONSULTÓRIOS DE PSICOLOGIA
+            </p>
+
+        </div>
+
+
+
+        <div class="brand-dashboard-message">
+
+            <span class="brand-dashboard-message-line"></span>
+
+            <p>
+                Mais que um sistema, um espaço para o que importa:
+                pessoas, escuta e possibilidades.
+            </p>
+
+        </div>
+
+
+
+        <img
+            src="/images/folhas-dashboard.png"
+            alt=""
+            class="brand-dashboard-flower"
+        >
+
+
+    </header>
+
+
+
+    <div class="brand-dashboard-card">
+
+
+        <%- include(
+            'partials/sidebar',
+            {
+                activePage: 'agenda',
+                user: professionalUser
+            }
+        ) %>
+
+
+
+        <main class="professional-session-main">
+
+
+            <!-- TOPO -->
+
+            <div class="professional-session-topbar">
+
+
+                <a
+                    href="/sessions"
+                    class="professional-session-back"
+                >
+                    ← Voltar para agenda
+                </a>
+
+
+
+                <div class="professional-session-user">
+
+
+                    <div class="professional-session-avatar">
+                        B
+                    </div>
+
+
+                    <div>
+
+                        <strong>
+                            Bruna Nascimento
+                        </strong>
+
+                        <span>
+                            Área profissional
+                        </span>
+
+                    </div>
+
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- CABEÇALHO -->
+
+            <section class="professional-session-heading">
+
+
+                <span>
+                    AGENDA
+                </span>
+
+
+                <h2>
+                    Nova sessão
+                </h2>
+
+
+                <p>
+                    Selecione o paciente, escolha a data
+                    e defina o valor do atendimento.
+                </p>
+
+
+            </section>
+
+
+
+            <% if (
+                typeof error !== 'undefined'
+                && error
+            ) { %>
+
+
+                <div class="professional-session-error">
+
+                    <div>
+                        !
+                    </div>
+
+                    <span>
+                        <%= error %>
+                    </span>
+
+                </div>
+
+
+            <% } %>
+
+
+
+            <div class="professional-session-layout">
+
+
+                <!-- FORMULÁRIO -->
+
+                <section class="professional-session-form-card">
+
+
+                    <div class="professional-session-card-header">
+
+
+                        <div>
+
+                            <span>
+                                NOVO ATENDIMENTO
+                            </span>
+
+                            <h3>
+                                Dados da sessão
+                            </h3>
+
+                            <p>
+                                Preencha as informações abaixo
+                                para adicionar o atendimento à agenda.
+                            </p>
+
+                        </div>
+
+
+                        <div class="professional-session-card-icon">
+                            +
+                        </div>
+
+
+                    </div>
+
+
+
+                    <form
+                        action="/sessions/new"
+                        method="POST"
+                        class="professional-session-form"
+                    >
+
+
+                        <!-- PACIENTE -->
+
+                        <div class="professional-session-field">
+
+
+                            <label for="patient_id">
+                                Paciente
+                            </label>
+
+
+                            <select
+                                id="patient_id"
+                                name="patient_id"
+                                required
+                            >
+
+                                <option value="">
+                                    Selecione um paciente
+                                </option>
+
+
+                                <% availablePatients.forEach(
+                                    patientItem => {
+                                %>
+
+                                    <option
+                                        value="<%= patientItem.id %>"
+                                    >
+                                        <%= patientItem.name %>
+                                    </option>
+
+                                <% }) %>
+
+
+                            </select>
+
+
+                        </div>
+
+
+
+                        <!-- DATA E HORA -->
+
+                        <div class="professional-session-field">
+
+
+                            <label for="scheduled_at">
+                                Data e horário
+                            </label>
+
+
+                            <input
+                                type="datetime-local"
+                                id="scheduled_at"
+                                name="scheduled_at"
+                                required
+                            >
+
+
+                        </div>
+
+
+
+                        <!-- VALOR -->
+
+                        <div class="professional-session-field">
+
+
+                            <label for="price">
+                                Valor da sessão
+                            </label>
+
+
+                            <div class="professional-session-money">
+
+                                <span>
+                                    R$
+                                </span>
+
+                                <input
+                                    type="number"
+                                    id="price"
+                                    name="price"
+                                    min="0"
+                                    step="0.01"
+                                    placeholder="Deixe vazio para usar o valor padrão"
+                                >
+
+                            </div>
+
+
+                            <small>
+                                Se ficar vazio, o sistema utiliza
+                                o valor padrão cadastrado para o paciente.
+                            </small>
+
+
+                        </div>
+
+
+
+                        <div class="professional-session-actions">
+
+
+                            <a
+                                href="/sessions"
+                                class="professional-session-cancel"
+                            >
+                                Cancelar
+                            </a>
+
+
+                            <button
+                                type="submit"
+                                class="professional-session-submit"
+                            >
+                                Agendar sessão
+
+                                <span>
+                                    →
+                                </span>
+                            </button>
+
+
+                        </div>
+
+
+                    </form>
+
+
+                </section>
+
+
+
+                <!-- LATERAL -->
+
+                <aside class="professional-session-side">
+
+
+                    <article class="professional-session-brand-card">
+
+
+                        <span>
+                            ORGANIZAÇÃO
+                        </span>
+
+
+                        <div class="professional-session-brand-profile">
+
+
+                            <div class="professional-session-brand-symbol">
+
+                                <img
+                                    src="/images/simbolo-bruna.png"
+                                    alt=""
+                                >
+
+                            </div>
+
+
+                            <div>
+
+                                <h3>
+                                    Bruna Nascimento
+                                </h3>
+
+                                <p>
+                                    Área profissional
+                                </p>
+
+                            </div>
+
+
+                        </div>
+
+
+                        <div class="professional-session-line"></div>
+
+
+                        <p>
+                            Depois de criada, a sessão ficará
+                            disponível na agenda profissional
+                            e também na área do paciente.
+                        </p>
+
+
+                    </article>
+
+
+
+                    <article class="professional-session-info-card">
+
+
+                        <span>
+                            APÓS AGENDAR
+                        </span>
+
+
+                        <h3>
+                            O que acontece?
+                        </h3>
+
+
+                        <div class="professional-session-info-row">
+
+                            <strong>
+                                01
+                            </strong>
+
+                            <p>
+                                A sessão entra na agenda.
+                            </p>
+
+                        </div>
+
+
+                        <div class="professional-session-info-row">
+
+                            <strong>
+                                02
+                            </strong>
+
+                            <p>
+                                O pagamento fica pendente.
+                            </p>
+
+                        </div>
+
+
+                        <div class="professional-session-info-row">
+
+                            <strong>
+                                03
+                            </strong>
+
+                            <p>
+                                Depois você poderá registrar
+                                a situação e suas anotações privadas.
+                            </p>
+
+                        </div>
+
+
+                    </article>
+
+
+                </aside>
+
+
+            </div>
+
+
+        </main>
+
+
+    </div>
+
+
+
+    <footer class="brand-dashboard-footer">
+
+        <div>
+            <strong>ORGANIZAÇÃO</strong>
+            <span>Mais tempo para o que realmente importa.</span>
+        </div>
+
+        <div>
+            <strong>ACOLHIMENTO</strong>
+            <span>Tecnologia a favor da escuta.</span>
+        </div>
+
+        <div>
+            <strong>POSSIBILIDADES</strong>
+            <span>Um consultório mais leve e humano.</span>
+        </div>
+
+    </footer>
+
+
+</div>
+
+
+<%- include('partials/priority-alert') %>
+
+
+</body>
+
+</html>

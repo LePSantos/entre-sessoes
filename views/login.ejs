@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Login - EntreSessões
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="/css/style.css"
+    >
+
+</head>
+
+
+<body class="bn-login-page">
+
+
+<div class="bn-login-card">
+
+
+    <!-- ======================================
+         LADO ESQUERDO
+         IDENTIDADE BRUNA NASCIMENTO
+    ======================================= -->
+
+    <section class="bn-login-brand-side">
+
+
+        <div class="bn-brand-content">
+
+
+            <!-- SÍMBOLO -->
+
+            <div class="bn-symbol-frame">
+
+                <img
+                    src="/images/simbolo-bruna.png"
+                    alt="Bruna Nascimento"
+                    class="bn-symbol"
+                >
+
+            </div>
+
+
+
+            <!-- NOME -->
+
+            <h1 class="bn-brand-name">
+                Bruna Nascimento
+            </h1>
+
+
+
+            <!-- PROFISSÃO -->
+
+            <div class="bn-brand-profession">
+
+                <span></span>
+
+                <p>
+                    PSICOLOGIA • PSICANÁLISE
+                </p>
+
+                <span></span>
+
+            </div>
+
+
+
+            <!-- VALORES -->
+
+            <div class="bn-brand-values">
+
+                <span>ESCUTA</span>
+
+                <b>•</b>
+
+                <span>PRESENÇA</span>
+
+                <b>•</b>
+
+                <span>POSSIBILIDADES</span>
+
+            </div>
+
+
+        </div>
+
+
+
+        <!-- FRASE -->
+
+        <div class="bn-brand-quote">
+
+            <span></span>
+
+            <p>
+                “Cuidar também é construir
+                novos começos.”
+            </p>
+
+            <span></span>
+
+        </div>
+
+
+    </section>
+
+
+
+    <!-- ======================================
+         LADO DIREITO
+         LOGIN
+    ======================================= -->
+
+    <section class="bn-login-form-side">
+
+
+        <div class="bn-login-form-content">
+
+
+            <header class="bn-login-header">
+
+                <h2>
+                    Bem-vinda de volta!
+                </h2>
+
+                <p>
+                    Entre para acessar seu consultório
+                </p>
+
+            </header>
+
+
+
+            <% if (error) { %>
+
+                <div class="bn-login-error">
+
+                    <strong>!</strong>
+
+                    <span>
+                        <%= error %>
+                    </span>
+
+                </div>
+
+            <% } %>
+
+
+
+            <form
+                action="/login"
+                method="POST"
+                class="bn-login-form"
+            >
+
+
+                <!-- EMAIL -->
+
+                <div class="bn-login-input">
+
+                    <span>
+                        ✉
+                    </span>
+
+                    <input
+                        type="email"
+                        name="email"
+                        placeholder="E-mail"
+                        autocomplete="email"
+                        required
+                    >
+
+                </div>
+
+
+
+                <!-- SENHA -->
+
+                <div class="bn-login-input">
+
+                    <span>
+                        ◇
+                    </span>
+
+                    <input
+                        type="password"
+                        name="password"
+                        placeholder="Senha"
+                        autocomplete="current-password"
+                        required
+                    >
+
+                </div>
+
+
+
+                <!-- OPÇÕES -->
+
+                <div class="bn-login-options">
+
+
+                    <label>
+
+                        <input
+                            type="checkbox"
+                            name="remember_me"
+                        >
+
+                        Lembrar de mim
+
+                    </label>
+
+
+                    <span>
+                        Esqueceu sua senha?
+                    </span>
+
+
+                </div>
+
+
+
+                <!-- BOTÃO -->
+
+                <button
+                    type="submit"
+                    class="bn-login-button"
+                >
+                    Entrar
+                </button>
+
+
+            </form>
+
+
+
+            <!-- ENTRESESSÕES -->
+
+            <footer class="bn-login-footer">
+
+                <div></div>
+
+                <strong>
+                    EntreSessões
+                </strong>
+
+                <p>
+                    Seu consultório, mais próximo de você.
+                </p>
+
+            </footer>
+
+
+        </div>
+
+
+    </section>
+
+
+</div>
+
+
+</body>
+
+</html>

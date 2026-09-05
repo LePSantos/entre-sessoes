@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Pagamento PIX - EntreSessões
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="/css/style.css"
+    >
+
+</head>
+
+
+<body class="patient-payment-page">
+
+
+<%
+    const paymentSession =
+        typeof sessionItem !== 'undefined'
+            ? sessionItem
+            : (
+                typeof session !== 'undefined'
+                    ? session
+                    : {}
+            );
+
+
+    const cleanPatientName =
+        String(
+            typeof user !== 'undefined' && user
+                ? user.name
+                : 'Paciente'
+        );
+
+
+    const patientFirstName =
+        cleanPatientName.split(' ')[0];
+
+
+    const paymentAmount =
+        Number(
+            paymentSession.price || 0
+        );
+%>
+
+
+<div class="patient-home-wrapper">
+
+
+    <header class="patient-home-brand-header">
+
+
+        <div class="brand-dashboard-title">
+
+            <h1>
+                EntreSessões
+            </h1>
+
+            <p>
+                SEU ESPAÇO ENTRE UM ENCONTRO E OUTRO
+            </p>
+
+        </div>
+
+
+
+        <div class="brand-dashboard-message patient-home-brand-message">
+
+            <span class="brand-dashboard-message-line"></span>
+
+            <p>
+                Um espaço para registrar,<br>
+                acompanhar e cuidar do que acontece<br>
+                entre as sessões.
+            </p>
+
+        </div>
+
+
+
+        <img
+            src="/images/folhas-dashboard.png"
+            alt=""
+            class="patient-home-flower"
+        >
+
+
+    </header>
+
+
+
+    <main class="patient-payment-main">
+
+
+        <div class="patient-payment-navigation">
+
+
+            <a href="pay">
+                ← Escolher outra forma
+            </a>
+
+
+
+            <div class="patient-payment-user">
+
+
+                <div class="patient-payment-user-avatar">
+
+                    <%= patientFirstName
+                        .charAt(0)
+                        .toUpperCase()
+                    %>
+
+                </div>
+
+
+                <div>
+
+                    <strong>
+                        <%= cleanPatientName %>
+                    </strong>
+
+                    <span>
+                        Pagamento PIX
+                    </span>
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+
+
+        <section class="patient-payment-heading">
+
+
+            <span class="patient-home-eyebrow">
+                PIX
+            </span>
+
+
+            <h2>
+                Pagamento por PIX
+            </h2>
+
+
+            <p>
+                Esta etapa simula um pagamento PIX
+                para fins de demonstração do projeto.
+            </p>
+
+
+        </section>
+
+
+
+        <section class="patient-payment-two-columns">
+
+
+            <!-- PAGAMENTO -->
+
+            <article class="patient-payment-box">
+
+
+                <span class="patient-payment-box-eyebrow">
+                    PAGAMENTO
+                </span>
+
+
+                <h3>
+                    Valor da sessão
+                </h3>
+
+
+
+                <div class="patient-payment-big-value">
+
+                    R$
+                    <%= paymentAmount
+                        .toFixed(2)
+                        .replace('.', ',')
+                    %>
+
+                </div>
+
+
+
+                <div class="patient-payment-session-data">
+
+
+                    <div>
+
+                        <span>
+                            Data
+                        </span>
+
+                        <strong>
+                            <%= paymentSession.date_formatted
+                                || '—'
+                            %>
+                        </strong>
+
+                    </div>
+
+
+
+                    <div>
+
+                        <span>
+                            Horário
+                        </span>
+
+                        <strong>
+                            <%= paymentSession.time_formatted
+                                || '—'
+                            %>
+                        </strong>
+
+                    </div>
+
+
+
+                    <div>
+
+                        <span>
+                            Profissional
+                        </span>
+
+                        <strong>
+                            Bruna Nascimento
+                        </strong>
+
+                    </div>
+
+
+                </div>
+
+
+
+                <form
+                    method="POST"
+                    action=""
+                >
+
+
+                    <input
+                        type="hidden"
+                        name="payment_method"
+                        value="PIX"
+                    >
+
+
+                    <button
+                        type="submit"
+                        class="patient-payment-confirm"
+                    >
+                        Confirmar pagamento PIX
+
+                        <span>
+                            →
+                        </span>
+                    </button>
+
+
+                </form>
+
+
+            </article>
+
+
+
+            <!-- PIX DEMONSTRATIVO -->
+
+            <aside class="patient-payment-pix-card">
+
+
+                <span>
+                    PIX DEMONSTRATIVO
+                </span>
+
+
+                <div class="patient-payment-fake-qr">
+
+                    <strong>
+                        PIX
+                    </strong>
+
+                    <small>
+                        DEMO
+                    </small>
+
+                </div>
+
+
+                <h3>
+                    Simulação de pagamento
+                </h3>
+
+
+                <p>
+                    Este código é apenas visual.
+                    Nenhuma transferência financeira
+                    será realizada.
+                </p>
+
+
+                <div class="patient-payment-pix-status">
+
+                    <span>
+                        ✓
+                    </span>
+
+                    Ambiente seguro de demonstração
+
+                </div>
+
+
+            </aside>
+
+
+        </section>
+
+
+
+        <section class="patient-payment-demo-notice">
+
+            <div>
+                i
+            </div>
+
+            <p>
+                <strong>Importante:</strong>
+                este PIX é uma simulação acadêmica.
+                Não há chave PIX real ou processamento bancário.
+            </p>
+
+        </section>
+
+
+    </main>
+
+
+
+    <footer class="patient-home-footer">
+
+
+        <div class="patient-home-footer-brand">
+
+            <strong>
+                EntreSessões
+            </strong>
+
+            <span>
+                Um espaço de continuidade entre encontros.
+            </span>
+
+        </div>
+
+
+    </footer>
+
+
+</div>
+
+
+</body>
+
+</html>

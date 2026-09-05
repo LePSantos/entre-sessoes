@@ -1,0 +1,69 @@
+<% if (
+    typeof priorityAlert !== 'undefined'
+    && priorityAlert
+) { %>
+
+    <!-- BORDA VERMELHA EM VOLTA DA TELA -->
+    <div class="priority-screen-border"></div>
+
+
+    <!-- FUNDO ESCURECIDO -->
+    <div class="priority-overlay">
+
+        <div class="priority-alert-modal">
+
+            <div class="priority-alert-icon">
+                !
+            </div>
+
+
+            <div class="priority-alert-content">
+
+                <span class="priority-alert-label">
+                    Solicitação prioritária
+                </span>
+
+                <h2>
+                    <%= priorityAlert.patient_name %>
+                    solicitou contato
+                </h2>
+
+                <p>
+                    Solicitação recebida em
+                    <strong>
+                        <%= priorityAlert.created_at_formatted %>
+                    </strong>.
+                </p>
+
+
+                <div class="priority-alert-warning">
+                    Este recurso não representa atendimento
+                    de emergência e não garante resposta imediata.
+                </div>
+
+
+                <div class="priority-alert-actions">
+
+                    <form
+                        action="/support-requests/<%= priorityAlert.id %>/viewed"
+                        method="POST"
+                    >
+
+                        <button
+                            type="submit"
+                            class="btn btn-priority"
+                        >
+                            Marcar como visualizada
+                        </button>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+<% } %>

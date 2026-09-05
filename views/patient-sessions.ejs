@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Minhas sessões - EntreSessões
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="/css/style.css"
+    >
+
+</head>
+
+
+<body class="patient-sessions-page">
+
+
+<%
+    const patientSessions =
+        typeof sessions !== 'undefined'
+            ? sessions
+            : [];
+
+
+    const cleanPatientName =
+        String(user.name || 'Paciente')
+            .replace(/^Sr\.?\s*/i, '')
+            .replace(/^Sra\.?\s*/i, '');
+
+
+    const patientFirstName =
+        cleanPatientName
+            .split(' ')[0];
+
+
+    const upcomingSessions =
+        patientSessions.filter(
+            sessionItem =>
+                sessionItem.status === 'SCHEDULED'
+                ||
+                sessionItem.status === 'CONFIRMED'
+        );
+
+
+    const completedSessions =
+        patientSessions.filter(
+            sessionItem =>
+                sessionItem.status === 'COMPLETED'
+        );
+
+
+    const pendingPayments =
+        patientSessions.filter(
+            sessionItem =>
+                sessionItem.payment_status === 'PENDING'
+                &&
+                sessionItem.status !== 'CANCELED'
+        );
+
+
+    const pendingAmount =
+        pendingPayments.reduce(
+            (total, sessionItem) =>
+                total
+                + Number(
+                    sessionItem.price || 0
+                ),
+            0
+        );
+%>
+
+
+<div class="patient-home-wrapper">
+
+
+    <!-- =========================================
+         IDENTIDADE ENTRESESSÕES
+    ========================================== -->
+
+    <header class="patient-home-brand-header">
+
+
+        <div class="brand-dashboard-title">
+
+            <h1>
+                EntreSessões
+            </h1>
+
+            <p>
+                SEU ESPAÇO ENTRE UM ENCONTRO E OUTRO
+            </p>
+
+        </div>
+
+
+
+        <div class="brand-dashboard-message patient-home-brand-message">
+
+            <span class="brand-dashboard-message-line"></span>
+
+            <p>
+                Um espaço para registrar,<br>
+                acompanhar e cuidar do que acontece<br>
+                entre as sessões.
+            </p>
+
+        </div>
+
+
+
+        <img
+            src="/images/folhas-dashboard.png"
+            alt=""
+            class="patient-home-flower"
+        >
+
+
+    </header>
+
+
+
+    <!-- =========================================
+         CONTEÚDO PRINCIPAL
+    ========================================== -->
+
+    <main class="patient-sessions-main">
+
+
+        <!-- =====================================
+             NAVEGAÇÃO
+        ====================================== -->
+
+        <div class="patient-sessions-navigation">
+
+
+            <a href="/patient/dashboard">
+                ← Voltar para minha área
+            </a>
+
+
+
+            <div class="patient-sessions-user">
+
+
+                <div class="patient-sessions-user-avatar">
+
+                    <%= patientFirstName
+                        .charAt(0)
+                        .toUpperCase()
+                    %>
+
+                </div>
+
+
+                <div>
+
+                    <strong>
+                        <%= cleanPatientName %>
+                    </strong>
+
+                    <span>
+                        Meus atendimentos
+                    </span>
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+
+
+        <!-- =====================================
+             CABEÇALHO
+        ====================================== -->
+
+        <section class="patient-sessions-heading">
+
+
+            <div>
+
+
+                <span class="patient-home-eyebrow">
+                    ACOMPANHAMENTO
+                </span>
+
+
+                <h2>
+                    Minhas sessões
+                </h2>
+
+
+                <p>
+                    Consulte seus atendimentos,
+                    acompanhe a situação de cada sessão
+                    e visualize seus pagamentos.
+                </p>
+
+
+            </div>
+
+
+
+            <a
+                href="/patient/book-session"
+                class="patient-sessions-book-button"
+            >
+                + Agendar sessão
+            </a>
+
+
+        </section>
+
+
+
+        <!-- =====================================
+             RESUMO
+        ====================================== -->
+
+        <section class="patient-sessions-summary-grid">
+
+
+            <!-- PRÓXIMAS -->
+
+            <article class="patient-sessions-summary-card">
+
+
+                <div class="patient-sessions-summary-top">
+
+                    <span>
+                        Próximas sessões
+                    </span>
+
+                    <div class="patient-sessions-summary-icon">
+                        ◷
+                    </div>
+
+                </div>
+
+
+                <strong>
+                    <%= upcomingSessions.length %>
+                </strong>
+
+
+                <small>
+                    Atendimento(s) agendado(s)
+                </small>
+
+
+            </article>
+
+
+
+            <!-- REALIZADAS -->
+
+            <article class="patient-sessions-summary-card">
+
+
+                <div class="patient-sessions-summary-top">
+
+                    <span>
+                        Sessões realizadas
+                    </span>
+
+                    <div class="patient-sessions-summary-icon">
+                        ✓
+                    </div>
+
+                </div>
+
+
+                <strong>
+                    <%= completedSessions.length %>
+                </strong>
+
+
+                <small>
+                    Atendimento(s) concluído(s)
+                </small>
+
+
+            </article>
+
+
+
+            <!-- PENDENTES -->
+
+            <article class="patient-sessions-summary-card patient-sessions-summary-payment">
+
+
+                <div class="patient-sessions-summary-top">
+
+                    <span>
+                        Valores pendentes
+                    </span>
+
+                    <div class="patient-sessions-summary-icon patient-sessions-warning-icon">
+                        $
+                    </div>
+
+                </div>
+
+
+                <strong class="patient-sessions-summary-money">
+
+                    R$
+                    <%= pendingAmount
+                        .toFixed(2)
+                        .replace('.', ',')
+                    %>
+
+                </strong>
+
+
+                <small>
+                    <%= pendingPayments.length %>
+                    pagamento(s) pendente(s)
+                </small>
+
+
+            </article>
+
+
+        </section>
+
+
+
+        <!-- =====================================
+             LISTA DE SESSÕES
+        ====================================== -->
+
+        <section class="patient-sessions-panel">
+
+
+            <header class="patient-sessions-panel-header">
+
+
+                <div>
+
+                    <span>
+                        HISTÓRICO
+                    </span>
+
+                    <h3>
+                        Seus atendimentos
+                    </h3>
+
+                    <p>
+                        Sessões agendadas, realizadas
+                        e demais registros.
+                    </p>
+
+                </div>
+
+
+
+                <div class="patient-sessions-count">
+
+                    <%= patientSessions.length %>
+
+                    <%= patientSessions.length === 1
+                        ? 'sessão'
+                        : 'sessões'
+                    %>
+
+                </div>
+
+
+            </header>
+
+
+
+            <div class="patient-sessions-panel-content">
+
+
+                <% if (
+                    patientSessions.length === 0
+                ) { %>
+
+
+                    <!-- =================================
+                         SEM SESSÕES
+                    ================================== -->
+
+                    <div class="patient-sessions-empty">
+
+
+                        <div class="patient-sessions-empty-icon">
+                            ◫
+                        </div>
+
+
+                        <h4>
+                            Nenhuma sessão registrada
+                        </h4>
+
+
+                        <p>
+                            Quando você agendar ou realizar
+                            um atendimento, ele aparecerá aqui.
+                        </p>
+
+
+                        <a
+                            href="/patient/book-session"
+                            class="patient-sessions-book-button"
+                        >
+                            + Agendar sessão
+                        </a>
+
+
+                    </div>
+
+
+                <% } else { %>
+
+
+
+                    <div class="patient-sessions-list">
+
+
+                        <% patientSessions.forEach(
+                            sessionItem => {
+                        %>
+
+
+                            <article class="patient-session-card">
+
+
+                                <!-- =========================
+                                     ESQUERDA
+                                ========================== -->
+
+                                <div class="patient-session-main">
+
+
+                                    <div class="patient-session-calendar">
+                                        ◫
+                                    </div>
+
+
+
+                                    <div class="patient-session-identification">
+
+
+                                        <span>
+                                            SESSÃO
+                                        </span>
+
+
+                                        <h4>
+
+                                            <%= sessionItem.date_formatted %>
+
+                                            às
+
+                                            <%= sessionItem.time_formatted %>
+
+                                        </h4>
+
+
+                                        <p>
+
+                                            <%= sessionItem.psychologist_name
+                                                || 'Bruna Nascimento'
+                                            %>
+
+                                        </p>
+
+
+                                    </div>
+
+
+                                </div>
+
+
+
+                                <!-- =========================
+                                     SITUAÇÃO
+                                ========================== -->
+
+                                <div class="patient-session-info">
+
+
+                                    <span class="patient-session-label">
+                                        Situação
+                                    </span>
+
+
+
+                                    <% if (
+                                        sessionItem.status === 'COMPLETED'
+                                    ) { %>
+
+
+                                        <span class="patient-session-status patient-session-status-completed">
+                                            Realizada
+                                        </span>
+
+
+                                    <% } else if (
+                                        sessionItem.status === 'CONFIRMED'
+                                    ) { %>
+
+
+                                        <span class="patient-session-status patient-session-status-confirmed">
+                                            Confirmada
+                                        </span>
+
+
+                                    <% } else if (
+                                        sessionItem.status === 'SCHEDULED'
+                                    ) { %>
+
+
+                                        <span class="patient-session-status patient-session-status-scheduled">
+                                            Agendada
+                                        </span>
+
+
+                                    <% } else if (
+                                        sessionItem.status === 'CANCELED'
+                                    ) { %>
+
+
+                                        <span class="patient-session-status patient-session-status-canceled">
+                                            Cancelada
+                                        </span>
+
+
+                                    <% } else if (
+                                        sessionItem.status === 'NO_SHOW'
+                                    ) { %>
+
+
+                                        <span class="patient-session-status patient-session-status-noshow">
+                                            Falta
+                                        </span>
+
+
+                                    <% } else { %>
+
+
+                                        <span class="patient-session-status">
+                                            <%= sessionItem.status %>
+                                        </span>
+
+
+                                    <% } %>
+
+
+                                </div>
+
+
+
+                                <!-- =========================
+                                     VALOR
+                                ========================== -->
+
+                                <div class="patient-session-info">
+
+
+                                    <span class="patient-session-label">
+                                        Valor
+                                    </span>
+
+
+                                    <strong class="patient-session-price">
+
+                                        R$
+                                        <%= Number(
+                                            sessionItem.price || 0
+                                        )
+                                        .toFixed(2)
+                                        .replace('.', ',')
+                                        %>
+
+                                    </strong>
+
+
+                                </div>
+
+
+
+                                <!-- =========================
+                                     PAGAMENTO
+                                ========================== -->
+
+                                <div class="patient-session-payment">
+
+
+                                    <span class="patient-session-label">
+                                        Pagamento
+                                    </span>
+
+
+
+                                    <% if (
+                                        sessionItem.payment_status === 'PAID'
+                                    ) { %>
+
+
+                                        <div class="patient-session-payment-paid">
+
+                                            <span>
+                                                ✓
+                                            </span>
+
+                                            Pago
+
+                                        </div>
+
+
+                                    <% } else if (
+                                        sessionItem.status === 'CANCELED'
+                                    ) { %>
+
+
+                                        <div class="patient-session-payment-canceled">
+
+                                            Não aplicável
+
+                                        </div>
+
+
+                                    <% } else { %>
+
+
+                                        <div class="patient-session-payment-pending">
+                                            Pendente
+                                        </div>
+
+
+                                    <% } %>
+
+
+                                </div>
+
+
+
+                                <!-- =========================
+                                     AÇÃO
+                                ========================== -->
+
+                                <div class="patient-session-action">
+
+
+                                    <% if (
+                                        sessionItem.payment_status === 'PENDING'
+                                        &&
+                                        sessionItem.status !== 'CANCELED'
+                                    ) { %>
+
+
+                                        <a
+                                            href="/patient/payments/<%= sessionItem.id %>/pay"
+                                            class="patient-session-pay-button"
+                                        >
+                                            Pagar sessão
+                                            <span>→</span>
+                                        </a>
+
+
+                                    <% } else { %>
+
+
+                                        <div class="patient-session-done">
+                                            ✓
+                                        </div>
+
+
+                                    <% } %>
+
+
+                                </div>
+
+
+                            </article>
+
+
+                        <% }) %>
+
+
+                    </div>
+
+
+                <% } %>
+
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- =====================================
+             INFORMAÇÃO
+        ====================================== -->
+
+        <section class="patient-sessions-information">
+
+
+            <div class="patient-sessions-information-icon">
+                i
+            </div>
+
+
+            <div>
+
+                <strong>
+                    Sobre seus pagamentos
+                </strong>
+
+
+                <p>
+                    Sessões com pagamento pendente exibem
+                    a opção “Pagar sessão”. O ambiente de
+                    pagamento deste projeto é demonstrativo
+                    e não coleta dados bancários reais.
+                </p>
+
+            </div>
+
+
+        </section>
+
+
+    </main>
+
+
+
+    <!-- =========================================
+         RODAPÉ
+    ========================================== -->
+
+    <footer class="patient-home-footer">
+
+
+        <div class="patient-home-footer-brand">
+
+            <strong>
+                EntreSessões
+            </strong>
+
+            <span>
+                Um espaço de continuidade entre encontros.
+            </span>
+
+        </div>
+
+
+
+        <div class="patient-home-footer-items">
+
+
+            <div>
+
+                <strong>
+                    REGISTRAR
+                </strong>
+
+                <span>
+                    Dar espaço ao que você sente.
+                </span>
+
+            </div>
+
+
+
+            <div>
+
+                <strong>
+                    ACOMPANHAR
+                </strong>
+
+                <span>
+                    Organizar seus atendimentos.
+                </span>
+
+            </div>
+
+
+
+            <div>
+
+                <strong>
+                    CUIDAR
+                </strong>
+
+                <span>
+                    Construir possibilidades.
+                </span>
+
+            </div>
+
+
+        </div>
+
+
+    </footer>
+
+
+</div>
+
+
+</body>
+
+</html>

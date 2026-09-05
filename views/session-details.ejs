@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Detalhes da sessão - EntreSessões
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="/css/style.css"
+    >
+
+</head>
+
+
+<body class="brand-dashboard-page professional-detail-page">
+
+
+<div class="brand-dashboard-wrapper">
+
+
+    <header class="brand-dashboard-brand-header">
+
+
+        <div class="brand-dashboard-title">
+
+            <h1>
+                EntreSessões
+            </h1>
+
+            <p>
+                SISTEMA PARA CONSULTÓRIOS DE PSICOLOGIA
+            </p>
+
+        </div>
+
+
+
+        <div class="brand-dashboard-message">
+
+            <span class="brand-dashboard-message-line"></span>
+
+            <p>
+                Mais que um sistema, um espaço para o que importa:
+                pessoas, escuta e possibilidades.
+            </p>
+
+        </div>
+
+
+
+        <img
+            src="/images/folhas-dashboard.png"
+            alt=""
+            class="brand-dashboard-flower"
+        >
+
+
+    </header>
+
+
+
+    <div class="brand-dashboard-card">
+
+
+        <%- include(
+            'partials/sidebar',
+            {
+                activePage: 'agenda',
+                user
+            }
+        ) %>
+
+
+
+        <main class="professional-detail-main">
+
+
+            <!-- TOPO -->
+
+            <div class="professional-detail-topbar">
+
+
+                <a
+                    href="/sessions"
+                    class="professional-detail-back"
+                >
+                    ← Voltar para agenda
+                </a>
+
+
+                <div class="professional-detail-user">
+
+
+                    <div class="professional-detail-user-avatar">
+                        B
+                    </div>
+
+
+                    <div>
+
+                        <strong>
+                            Bruna Nascimento
+                        </strong>
+
+                        <span>
+                            Área profissional
+                        </span>
+
+                    </div>
+
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- CABEÇALHO -->
+
+            <section class="professional-detail-heading">
+
+
+                <div>
+
+                    <span>
+                        ATENDIMENTO
+                    </span>
+
+                    <h2>
+                        Detalhes da sessão
+                    </h2>
+
+                    <p>
+                        Acompanhe o atendimento de
+                        <strong><%= sessionItem.patient_name %></strong>
+                        e registre as informações da sessão.
+                    </p>
+
+                </div>
+
+
+
+                <a
+                    href="/patients/<%= sessionItem.patient_id %>"
+                    class="professional-detail-secondary"
+                >
+                    Ver paciente
+                </a>
+
+
+            </section>
+
+
+
+            <!-- RESUMO -->
+
+            <section class="professional-detail-summary">
+
+
+                <article>
+
+                    <span>
+                        PACIENTE
+                    </span>
+
+                    <strong>
+                        <%= sessionItem.patient_name %>
+                    </strong>
+
+                </article>
+
+
+
+                <article>
+
+                    <span>
+                        DATA
+                    </span>
+
+                    <strong>
+                        <%= sessionItem.date_formatted %>
+                    </strong>
+
+                </article>
+
+
+
+                <article>
+
+                    <span>
+                        HORÁRIO
+                    </span>
+
+                    <strong>
+                        <%= sessionItem.time_formatted %>
+                    </strong>
+
+                </article>
+
+
+
+                <article>
+
+                    <span>
+                        VALOR
+                    </span>
+
+                    <strong>
+                        R$
+                        <%= Number(
+                            sessionItem.price || 0
+                        )
+                        .toFixed(2)
+                        .replace('.', ',')
+                        %>
+                    </strong>
+
+                </article>
+
+
+            </section>
+
+
+
+            <form
+                action="/sessions/<%= sessionItem.id %>/update"
+                method="POST"
+                class="professional-detail-layout"
+            >
+
+
+                <!-- SESSÃO -->
+
+                <section class="professional-detail-panel">
+
+
+                    <div class="professional-detail-panel-header">
+
+                        <div>
+
+                            <span>
+                                CONTROLE DA SESSÃO
+                            </span>
+
+                            <h3>
+                                Situação do atendimento
+                            </h3>
+
+                            <p>
+                                Atualize o status da sessão
+                                e do pagamento.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="professional-detail-fields">
+
+
+                        <!-- STATUS -->
+
+                        <div class="professional-detail-field">
+
+
+                            <label for="status">
+                                Situação da sessão
+                            </label>
+
+
+                            <select
+                                id="status"
+                                name="status"
+                                required
+                            >
+
+                                <option
+                                    value="SCHEDULED"
+                                    <%= sessionItem.status === 'SCHEDULED'
+                                        ? 'selected'
+                                        : ''
+                                    %>
+                                >
+                                    Agendada
+                                </option>
+
+
+                                <option
+                                    value="CONFIRMED"
+                                    <%= sessionItem.status === 'CONFIRMED'
+                                        ? 'selected'
+                                        : ''
+                                    %>
+                                >
+                                    Confirmada
+                                </option>
+
+
+                                <option
+                                    value="COMPLETED"
+                                    <%= sessionItem.status === 'COMPLETED'
+                                        ? 'selected'
+                                        : ''
+                                    %>
+                                >
+                                    Realizada
+                                </option>
+
+
+                                <option
+                                    value="CANCELED"
+                                    <%= sessionItem.status === 'CANCELED'
+                                        ? 'selected'
+                                        : ''
+                                    %>
+                                >
+                                    Cancelada
+                                </option>
+
+
+                                <option
+                                    value="NO_SHOW"
+                                    <%= sessionItem.status === 'NO_SHOW'
+                                        ? 'selected'
+                                        : ''
+                                    %>
+                                >
+                                    Falta
+                                </option>
+
+
+                            </select>
+
+
+                        </div>
+
+
+
+                        <!-- PAGAMENTO -->
+
+                        <div class="professional-detail-field">
+
+
+                            <label for="payment_status">
+                                Pagamento
+                            </label>
+
+
+                            <select
+                                id="payment_status"
+                                name="payment_status"
+                                required
+                            >
+
+                                <option
+                                    value="PENDING"
+                                    <%= sessionItem.payment_status === 'PENDING'
+                                        ? 'selected'
+                                        : ''
+                                    %>
+                                >
+                                    Pendente
+                                </option>
+
+
+                                <option
+                                    value="PAID"
+                                    <%= sessionItem.payment_status === 'PAID'
+                                        ? 'selected'
+                                        : ''
+                                    %>
+                                >
+                                    Pago
+                                </option>
+
+
+                            </select>
+
+
+                        </div>
+
+
+                    </div>
+
+
+
+                    <!-- ANOTAÇÃO PRIVADA -->
+
+                    <div class="professional-detail-note">
+
+
+                        <div class="professional-detail-note-heading">
+
+                            <div>
+
+                                <span>
+                                    REGISTRO PROFISSIONAL
+                                </span>
+
+                                <h3>
+                                    Anotação privada da sessão
+                                </h3>
+
+                            </div>
+
+
+                            <div class="professional-detail-lock">
+                                ●
+                            </div>
+
+                        </div>
+
+
+
+                        <p>
+                            Este conteúdo é de uso profissional
+                            e não aparece na área do paciente.
+                        </p>
+
+
+
+                        <textarea
+                            name="clinical_note"
+                            maxlength="10000"
+                            placeholder="Registre aqui suas observações privadas sobre a sessão..."
+                        ><%= clinicalNote
+                            ? clinicalNote.content
+                            : ''
+                        %></textarea>
+
+
+                    </div>
+
+
+
+                    <div class="professional-detail-actions">
+
+
+                        <a
+                            href="/sessions"
+                            class="professional-detail-cancel"
+                        >
+                            Cancelar
+                        </a>
+
+
+                        <button
+                            type="submit"
+                            class="professional-detail-save"
+                        >
+                            Salvar alterações
+
+                            <span>
+                                →
+                            </span>
+                        </button>
+
+
+                    </div>
+
+
+                </section>
+
+
+
+                <!-- LATERAL -->
+
+                <aside class="professional-detail-side">
+
+
+                    <article class="professional-detail-status-card">
+
+
+                        <span>
+                            SITUAÇÃO ATUAL
+                        </span>
+
+
+                        <h3>
+                            Sessão
+                        </h3>
+
+
+
+                        <% if (
+                            sessionItem.status === 'COMPLETED'
+                        ) { %>
+
+                            <div class="professional-detail-badge success">
+                                Realizada
+                            </div>
+
+                        <% } else if (
+                            sessionItem.status === 'CONFIRMED'
+                        ) { %>
+
+                            <div class="professional-detail-badge success">
+                                Confirmada
+                            </div>
+
+                        <% } else if (
+                            sessionItem.status === 'SCHEDULED'
+                        ) { %>
+
+                            <div class="professional-detail-badge warning">
+                                Agendada
+                            </div>
+
+                        <% } else if (
+                            sessionItem.status === 'CANCELED'
+                        ) { %>
+
+                            <div class="professional-detail-badge danger">
+                                Cancelada
+                            </div>
+
+                        <% } else { %>
+
+                            <div class="professional-detail-badge danger">
+                                Falta
+                            </div>
+
+                        <% } %>
+
+
+
+                        <div class="professional-detail-side-line"></div>
+
+
+
+                        <span>
+                            PAGAMENTO
+                        </span>
+
+
+                        <% if (
+                            sessionItem.payment_status === 'PAID'
+                        ) { %>
+
+                            <div class="professional-detail-payment-paid">
+                                ✓ Pago
+                            </div>
+
+                        <% } else { %>
+
+                            <div class="professional-detail-payment-pending">
+                                Pendente
+                            </div>
+
+                        <% } %>
+
+
+                    </article>
+
+
+
+                    <article class="professional-detail-private-card">
+
+
+                        <div>
+                            ♡
+                        </div>
+
+
+                        <h3>
+                            Privacidade profissional
+                        </h3>
+
+
+                        <p>
+                            As anotações registradas nesta tela
+                            são privadas da área profissional.
+                            O paciente não possui acesso
+                            a esse conteúdo.
+                        </p>
+
+
+                    </article>
+
+
+                </aside>
+
+
+            </form>
+
+
+        </main>
+
+
+    </div>
+
+
+
+    <footer class="brand-dashboard-footer">
+
+        <div>
+            <strong>ORGANIZAÇÃO</strong>
+            <span>Mais tempo para o que realmente importa.</span>
+        </div>
+
+        <div>
+            <strong>ACOLHIMENTO</strong>
+            <span>Tecnologia a favor da escuta.</span>
+        </div>
+
+        <div>
+            <strong>POSSIBILIDADES</strong>
+            <span>Um consultório mais leve e humano.</span>
+        </div>
+
+    </footer>
+
+
+</div>
+
+
+<%- include('partials/priority-alert') %>
+
+
+</body>
+
+</html>

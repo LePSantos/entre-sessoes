@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Dashboard - EntreSessões
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="/css/style.css"
+    >
+
+</head>
+
+
+<body class="brand-dashboard-page">
+
+
+<div class="brand-dashboard-wrapper">
+
+
+    <!-- ==================================================
+         IDENTIDADE ENTRESESSÕES
+    =================================================== -->
+
+    <header class="brand-dashboard-brand-header">
+
+
+        <div class="brand-dashboard-title">
+
+            <h1>
+                EntreSessões
+            </h1>
+
+            <p>
+                SISTEMA PARA CONSULTÓRIOS DE PSICOLOGIA
+            </p>
+
+        </div>
+
+
+
+        <div class="brand-dashboard-message">
+
+            <span class="brand-dashboard-message-line"></span>
+
+            <p>
+                Mais que um sistema,<br>
+                um espaço para o que importa:<br>
+                pessoas, escuta e possibilidades.
+            </p>
+
+        </div>
+
+
+
+        <!-- FOLHAS DECORATIVAS -->
+<img
+    src="/images/folhas-dashboard.png"
+    alt=""
+    class="brand-dashboard-flower"
+>
+            <!-- hastes -->
+
+            <path
+                d="M405 215 C335 132, 287 70, 205 4"
+                fill="none"
+                stroke="#93846d"
+                stroke-width="2.2"
+            />
+
+            <path
+                d="M360 174 C307 128, 263 101, 202 87"
+                fill="none"
+                stroke="#93846d"
+                stroke-width="1.7"
+            />
+
+            <!-- folha superior -->
+
+            <path
+                d="M210 25
+                   C277 15, 332 30, 373 70
+                   C308 84, 254 66, 210 25 Z"
+                fill="#8d967e"
+                fill-opacity="0.72"
+                stroke="#7f8974"
+                stroke-width="1.4"
+            />
+
+            <path
+                d="M219 30
+                   C268 47, 316 59, 359 68"
+                fill="none"
+                stroke="#f2eee4"
+                stroke-width="1.2"
+            />
+
+            <!-- folha direita -->
+
+            <path
+                d="M282 83
+                   C338 70, 381 88, 411 118
+                   C361 132, 319 119, 282 83 Z"
+                fill="#929b84"
+                fill-opacity="0.55"
+                stroke="#818a76"
+                stroke-width="1.3"
+            />
+
+            <path
+                d="M292 87
+                   C333 99, 367 107, 400 116"
+                fill="none"
+                stroke="#f4f1e8"
+                stroke-width="1.1"
+            />
+
+            <!-- folha fina inferior -->
+
+            <path
+                d="M276 129
+                   C322 123, 351 134, 369 151
+                   C330 158, 302 151, 276 129 Z"
+                fill="#f5f3eb"
+                stroke="#8f967f"
+                stroke-width="1.4"
+            />
+
+            <!-- curva decorativa -->
+
+            <path
+                d="M198 0
+                   C182 46, 177 88, 186 124
+                   C198 175, 237 205, 289 208"
+                fill="none"
+                stroke="#aa967a"
+                stroke-width="1.5"
+                stroke-opacity="0.60"
+            />
+
+        </svg>
+
+
+    </header>
+
+
+
+    <!-- ==================================================
+         CARD DO SISTEMA
+    =================================================== -->
+
+    <div class="brand-dashboard-card">
+
+
+        <%- include('partials/sidebar', {
+            activePage: 'dashboard'
+        }) %>
+
+
+
+        <main class="brand-dashboard-main">
+
+
+            <!-- CABEÇALHO INTERNO -->
+
+            <header class="brand-dashboard-inner-header">
+
+
+                <div>
+
+                    <h2>
+                        Olá,
+                        <%= user.name
+                            .replace(/^Dra\.?\s*/i, '')
+                            .split(' ')[0]
+                        %>
+                    </h2>
+
+                    <p>
+                        Aqui está o resumo do seu consultório hoje.
+                    </p>
+
+                </div>
+
+
+
+                <div class="brand-dashboard-actions">
+
+                    <button
+                        type="button"
+                        class="brand-action-button brand-action-soft"
+                        onclick="enableNotifications()"
+                    >
+                        🔔 Ativar notificações
+                    </button>
+
+
+                    <a
+                        href="/sessions/new"
+                        class="brand-action-button brand-action-primary"
+                    >
+                        + Nova sessão
+                    </a>
+
+                </div>
+
+
+            </header>
+
+
+
+            <!-- ==================================================
+                 INDICADORES
+            =================================================== -->
+
+            <section class="brand-summary-grid">
+
+
+                <article class="brand-summary-card">
+
+                    <div>
+
+                        <span class="brand-summary-label">
+                            Sessões hoje
+                        </span>
+
+                        <strong class="brand-summary-value">
+                            <%= todaySessions %>
+                        </strong>
+
+                        <span class="brand-summary-footer">
+                            Atendimentos programados
+                        </span>
+
+                    </div>
+
+                    <div class="brand-summary-icon">
+                        ◫
+                    </div>
+
+                </article>
+
+
+
+                <article class="brand-summary-card">
+
+                    <div>
+
+                        <span class="brand-summary-label">
+                            Pacientes ativos
+                        </span>
+
+                        <strong class="brand-summary-value">
+                            <%= activePatients %>
+                        </strong>
+
+                        <span class="brand-summary-footer">
+                            Em acompanhamento
+                        </span>
+
+                    </div>
+
+                    <div class="brand-summary-icon">
+                        ♡
+                    </div>
+
+                </article>
+
+
+
+                <article class="brand-summary-card">
+
+                    <div>
+
+                        <span class="brand-summary-label">
+                            Solicitações prioritárias
+                        </span>
+
+                        <strong class="brand-summary-value">
+                            <%= activeRequests %>
+                        </strong>
+
+                        <span class="brand-summary-footer">
+                            Aguardando atenção
+                        </span>
+
+                    </div>
+
+                    <div class="brand-summary-icon brand-summary-icon-alert">
+                        !
+                    </div>
+
+                </article>
+
+
+
+                <article class="brand-summary-card">
+
+                    <div>
+
+                        <span class="brand-summary-label">
+                            Valores pendentes
+                        </span>
+
+                        <strong class="brand-summary-value brand-money-value">
+
+                            R$
+                            <%= Number(
+                                pendingAmount || 0
+                            )
+                            .toFixed(2)
+                            .replace('.', ',') %>
+
+                        </strong>
+
+                        <span class="brand-summary-footer">
+                            Sessões a receber
+                        </span>
+
+                    </div>
+
+                    <div class="brand-summary-icon">
+                        $
+                    </div>
+
+                </article>
+
+
+            </section>
+
+
+
+            <!-- ==================================================
+                 PAINÉIS
+            =================================================== -->
+
+            <section class="brand-dashboard-panels">
+
+
+                <!-- PRÓXIMAS SESSÕES -->
+
+                <article class="brand-dashboard-panel">
+
+
+                    <header class="brand-panel-header">
+
+                        <h3>
+                            Próximas sessões
+                        </h3>
+
+                        <a href="/sessions">
+                            Ver agenda →
+                        </a>
+
+                    </header>
+
+
+
+                    <div class="brand-panel-body">
+
+
+                        <% if (
+                            upcomingSessions.length === 0
+                        ) { %>
+
+                            <div class="brand-empty-state">
+                                Nenhuma próxima sessão agendada.
+                            </div>
+
+                        <% } else { %>
+
+
+                            <% upcomingSessions.forEach(
+                                sessionItem => {
+                            %>
+
+
+                                <a
+                                    href="/sessions/<%= sessionItem.id %>"
+                                    class="brand-appointment"
+                                >
+
+
+                                    <strong class="brand-appointment-time">
+
+                                        <%= sessionItem.time_formatted %>
+
+                                    </strong>
+
+
+
+                                    <div class="brand-patient-avatar">
+
+                                        <%= sessionItem
+                                            .patient_name
+                                            .charAt(0)
+                                            .toUpperCase()
+                                        %>
+
+                                    </div>
+
+
+
+                                    <div class="brand-appointment-info">
+
+                                        <strong>
+                                            <%= sessionItem.patient_name %>
+                                        </strong>
+
+                                        <span>
+
+                                            <%= sessionItem.date_formatted %>
+                                            · Sessão individual
+
+                                        </span>
+
+                                    </div>
+
+
+
+                                    <% if (
+                                        sessionItem.status === 'CONFIRMED'
+                                    ) { %>
+
+                                        <span class="brand-status brand-status-confirmed">
+                                            Confirmada
+                                        </span>
+
+                                    <% } else { %>
+
+                                        <span class="brand-status brand-status-scheduled">
+                                            Agendada
+                                        </span>
+
+                                    <% } %>
+
+
+                                </a>
+
+
+                            <% }) %>
+
+
+                        <% } %>
+
+
+                    </div>
+
+
+                </article>
+
+
+
+                <!-- SOLICITAÇÕES -->
+
+                <article class="brand-dashboard-panel">
+
+
+                    <header class="brand-panel-header">
+
+                        <h3>
+                            Solicitações prioritárias
+                        </h3>
+
+                        <a href="/support-requests">
+                            Ver todas →
+                        </a>
+
+                    </header>
+
+
+
+                    <div class="brand-panel-body">
+
+
+                        <% if (
+                            supportRequests.length === 0
+                        ) { %>
+
+                            <div class="brand-empty-state">
+                                Nenhuma solicitação pendente.
+                            </div>
+
+                        <% } else { %>
+
+
+                            <% supportRequests.forEach(
+                                requestItem => {
+                            %>
+
+
+                                <a
+                                    href="/patients/<%= requestItem.patient_id %>"
+                                    class="brand-support-item"
+                                >
+
+
+                                    <div class="brand-patient-avatar">
+
+                                        <%= requestItem
+                                            .patient_name
+                                            .charAt(0)
+                                            .toUpperCase()
+                                        %>
+
+                                    </div>
+
+
+
+                                    <div class="brand-support-info">
+
+                                        <strong>
+                                            <%= requestItem.patient_name %>
+                                        </strong>
+
+                                        <span>
+                                            <%= requestItem.created_at_formatted %>
+                                        </span>
+
+                                    </div>
+
+
+
+                                    <% if (
+                                        requestItem.status === 'PENDING'
+                                    ) { %>
+
+                                        <span class="brand-status brand-status-priority">
+                                            Pendente
+                                        </span>
+
+                                    <% } else { %>
+
+                                        <span class="brand-status brand-status-viewed">
+                                            Visualizada
+                                        </span>
+
+                                    <% } %>
+
+
+                                </a>
+
+
+                            <% }) %>
+
+
+                        <% } %>
+
+
+                    </div>
+
+
+                </article>
+
+
+            </section>
+
+
+        </main>
+
+
+    </div>
+
+
+
+    <!-- ==================================================
+         RODAPÉ INSTITUCIONAL
+    =================================================== -->
+
+    <footer class="brand-dashboard-footer">
+
+
+        <div class="brand-footer-features">
+
+
+            <div class="brand-footer-feature">
+
+                <div class="brand-footer-icon">
+                    ◉
+                </div>
+
+                <div>
+
+                    <strong>
+                        ORGANIZAÇÃO
+                    </strong>
+
+                    <span>
+                        Mais tempo para o que realmente importa.
+                    </span>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="brand-footer-feature">
+
+                <div class="brand-footer-icon">
+                    ♡
+                </div>
+
+                <div>
+
+                    <strong>
+                        ACOLHIMENTO
+                    </strong>
+
+                    <span>
+                        Tecnologia a favor da escuta.
+                    </span>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="brand-footer-feature">
+
+                <div class="brand-footer-icon">
+                    ◇
+                </div>
+
+                <div>
+
+                    <strong>
+                        POSSIBILIDADES
+                    </strong>
+
+                    <span>
+                        Um consultório mais leve e humano.
+                    </span>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+
+        <div class="brand-dashboard-signature">
+
+            <strong>
+                EntreSessões
+            </strong>
+
+            <span>
+                PSICOLOGIA NA PRÁTICA,<br>
+                TODOS OS DIAS.
+            </span>
+
+        </div>
+
+
+    </footer>
+
+
+</div>
+
+
+<%- include('partials/priority-alert') %>
+
+<script src="/js/notifications.js"></script>
+
+
+</body>
+
+</html>

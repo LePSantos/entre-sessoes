@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        <%= patient.name %> - EntreSessões
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="/css/style.css"
+    >
+
+</head>
+
+
+<body class="brand-dashboard-page professional-patient-page">
+
+
+<div class="brand-dashboard-wrapper">
+
+
+    <header class="brand-dashboard-brand-header">
+
+
+        <div class="brand-dashboard-title">
+
+            <h1>
+                EntreSessões
+            </h1>
+
+            <p>
+                SISTEMA PARA CONSULTÓRIOS DE PSICOLOGIA
+            </p>
+
+        </div>
+
+
+
+        <div class="brand-dashboard-message">
+
+            <span class="brand-dashboard-message-line"></span>
+
+            <p>
+                Mais que um sistema, um espaço para o que importa:
+                pessoas, escuta e possibilidades.
+            </p>
+
+        </div>
+
+
+
+        <img
+            src="/images/folhas-dashboard.png"
+            alt=""
+            class="brand-dashboard-flower"
+        >
+
+
+    </header>
+
+
+
+    <div class="brand-dashboard-card">
+
+
+        <%- include(
+            'partials/sidebar',
+            {
+                activePage: 'patients',
+                user
+            }
+        ) %>
+
+
+
+        <main class="professional-patient-main">
+
+
+            <!-- TOPO -->
+
+            <div class="professional-patient-topbar">
+
+
+                <a
+                    href="/patients"
+                    class="professional-patient-back"
+                >
+                    ← Voltar para pacientes
+                </a>
+
+
+
+                <div class="professional-patient-user">
+
+                    <div class="professional-patient-user-avatar">
+                        B
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            Bruna Nascimento
+                        </strong>
+
+                        <span>
+                            Área profissional
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- PERFIL -->
+
+            <section class="professional-patient-profile">
+
+
+                <div class="professional-patient-profile-main">
+
+
+                    <div class="professional-patient-avatar">
+
+                        <%= patient.name
+                            .charAt(0)
+                            .toUpperCase()
+                        %>
+
+                    </div>
+
+
+
+                    <div>
+
+
+                        <span class="professional-patient-eyebrow">
+                            PACIENTE
+                        </span>
+
+
+                        <div class="professional-patient-name-row">
+
+
+                            <h2>
+                                <%= patient.name %>
+                            </h2>
+
+
+                            <% if (
+                                patient.status === 'ACTIVE'
+                            ) { %>
+
+                                <span class="professional-patient-active">
+                                    Ativo
+                                </span>
+
+                            <% } else { %>
+
+                                <span class="professional-patient-inactive">
+                                    Inativo
+                                </span>
+
+                            <% } %>
+
+
+                        </div>
+
+
+                        <p>
+                            <%= patient.email %>
+                        </p>
+
+
+                    </div>
+
+
+                </div>
+
+
+
+                <a
+                    href="/sessions/new"
+                    class="professional-patient-new-session"
+                >
+                    + Nova sessão
+                </a>
+
+
+            </section>
+
+
+
+            <!-- DADOS -->
+
+            <section class="professional-patient-info-grid">
+
+
+                <article>
+
+                    <span>
+                        TELEFONE
+                    </span>
+
+                    <strong>
+                        <%= patient.phone
+                            || 'Não informado'
+                        %>
+                    </strong>
+
+                </article>
+
+
+
+                <article>
+
+                    <span>
+                        NASCIMENTO
+                    </span>
+
+                    <strong>
+                        <%= patient.birth_date
+                            || 'Não informado'
+                        %>
+                    </strong>
+
+                </article>
+
+
+
+                <article>
+
+                    <span>
+                        VALOR PADRÃO
+                    </span>
+
+                    <strong>
+                        R$
+                        <%= Number(
+                            patient.default_session_price || 0
+                        )
+                        .toFixed(2)
+                        .replace('.', ',')
+                        %>
+                    </strong>
+
+                </article>
+
+
+            </section>
+
+
+
+            <!-- RESUMO -->
+
+            <section class="professional-patient-summary-grid">
+
+
+                <article>
+
+
+                    <span>
+                        Última sessão
+                    </span>
+
+
+                    <strong class="professional-patient-summary-date">
+
+                        <% if (lastSession) { %>
+
+                            <%= lastSession.date_formatted %>
+
+                        <% } else { %>
+
+                            —
+
+                        <% } %>
+
+                    </strong>
+
+
+                    <small>
+
+                        <% if (lastSession) { %>
+
+                            às
+                            <%= lastSession.time_formatted %>
+
+                        <% } else { %>
+
+                            Nenhuma realizada
+
+                        <% } %>
+
+                    </small>
+
+
+                </article>
+
+
+
+                <article>
+
+
+                    <span>
+                        Próxima sessão
+                    </span>
+
+
+                    <strong class="professional-patient-summary-date">
+
+                        <% if (nextSession) { %>
+
+                            <%= nextSession.date_formatted %>
+
+                        <% } else { %>
+
+                            —
+
+                        <% } %>
+
+                    </strong>
+
+
+                    <small>
+
+                        <% if (nextSession) { %>
+
+                            às
+                            <%= nextSession.time_formatted %>
+
+                        <% } else { %>
+
+                            Nenhuma agendada
+
+                        <% } %>
+
+                    </small>
+
+
+                </article>
+
+
+
+                <article>
+
+
+                    <span>
+                        Novos registros
+                    </span>
+
+
+                    <strong>
+                        <%= diaryEntries.length %>
+                    </strong>
+
+
+                    <small>
+                        Desde a última sessão
+                    </small>
+
+
+                </article>
+
+
+
+                <article>
+
+
+                    <span>
+                        Pagamentos pendentes
+                    </span>
+
+
+                    <strong class="professional-patient-summary-money">
+
+                        R$
+                        <%= Number(
+                            pendingPayments.total || 0
+                        )
+                        .toFixed(2)
+                        .replace('.', ',')
+                        %>
+
+                    </strong>
+
+
+                    <small>
+                        A receber
+                    </small>
+
+
+                </article>
+
+
+            </section>
+
+
+
+            <!-- CONTEÚDO -->
+
+            <section class="professional-patient-content">
+
+
+                <!-- DIÁRIO -->
+
+                <article class="professional-patient-panel">
+
+
+                    <div class="professional-patient-panel-header">
+
+
+                        <div>
+
+                            <span>
+                                ENTRE SESSÕES
+                            </span>
+
+                            <h3>
+                                Diário emocional
+                            </h3>
+
+                            <p>
+                                Registros realizados pelo paciente
+                                desde o último atendimento.
+                            </p>
+
+                        </div>
+
+
+                        <div class="professional-patient-count">
+                            <%= diaryEntries.length %>
+                        </div>
+
+
+                    </div>
+
+
+
+                    <div class="professional-patient-panel-body">
+
+
+                        <% if (
+                            diaryEntries.length === 0
+                        ) { %>
+
+
+                            <div class="professional-patient-empty">
+
+                                <div>
+                                    ♡
+                                </div>
+
+                                <h4>
+                                    Nenhum registro novo
+                                </h4>
+
+                                <p>
+                                    Não existem novos registros
+                                    no diário emocional desde
+                                    a última sessão.
+                                </p>
+
+                            </div>
+
+
+                        <% } else { %>
+
+
+                            <div class="professional-patient-diary-list">
+
+
+                                <% diaryEntries.forEach(
+                                    entry => {
+                                %>
+
+
+                                    <article class="professional-patient-diary-entry">
+
+
+                                        <div class="professional-patient-diary-top">
+
+
+                                            <strong>
+                                                <%= entry.created_at_formatted %>
+                                            </strong>
+
+
+                                            <% if (
+                                                entry.mood_level
+                                            ) { %>
+
+                                                <span>
+                                                    Humor:
+                                                    <%= entry.mood_level %>/5
+                                                </span>
+
+                                            <% } %>
+
+
+                                        </div>
+
+
+
+                                        <p>
+                                            <%= entry.content %>
+                                        </p>
+
+
+                                    </article>
+
+
+                                <% }) %>
+
+
+                            </div>
+
+
+                        <% } %>
+
+
+                    </div>
+
+
+                </article>
+
+
+
+                <!-- SESSÕES -->
+
+                <article class="professional-patient-panel">
+
+
+                    <div class="professional-patient-panel-header">
+
+
+                        <div>
+
+                            <span>
+                                ATENDIMENTOS
+                            </span>
+
+                            <h3>
+                                Histórico de sessões
+                            </h3>
+
+                            <p>
+                                Acompanhe os atendimentos
+                                registrados para este paciente.
+                            </p>
+
+                        </div>
+
+
+                        <div class="professional-patient-count">
+                            <%= sessionHistory.length %>
+                        </div>
+
+
+                    </div>
+
+
+
+                    <div class="professional-patient-panel-body">
+
+
+                        <% if (
+                            sessionHistory.length === 0
+                        ) { %>
+
+
+                            <div class="professional-patient-empty">
+
+                                <div>
+                                    ◫
+                                </div>
+
+                                <h4>
+                                    Nenhuma sessão registrada
+                                </h4>
+
+                                <p>
+                                    O histórico será exibido
+                                    após o primeiro agendamento.
+                                </p>
+
+                            </div>
+
+
+                        <% } else { %>
+
+
+                            <div class="professional-patient-session-list">
+
+
+                                <% sessionHistory.forEach(
+                                    sessionItem => {
+                                %>
+
+
+                                    <a
+                                        href="/sessions/<%= sessionItem.id %>"
+                                        class="professional-patient-session-row"
+                                    >
+
+
+                                        <div>
+
+
+                                            <span>
+                                                SESSÃO
+                                            </span>
+
+
+                                            <strong>
+                                                <%= sessionItem.date_formatted %>
+                                                às
+                                                <%= sessionItem.time_formatted %>
+                                            </strong>
+
+
+                                        </div>
+
+
+
+                                        <div class="professional-patient-session-price">
+
+                                            R$
+                                            <%= Number(
+                                                sessionItem.price || 0
+                                            )
+                                            .toFixed(2)
+                                            .replace('.', ',')
+                                            %>
+
+                                        </div>
+
+
+
+                                        <div>
+
+
+                                            <% if (
+                                                sessionItem.status === 'COMPLETED'
+                                            ) { %>
+
+                                                <span class="professional-patient-status success">
+                                                    Realizada
+                                                </span>
+
+                                            <% } else if (
+                                                sessionItem.status === 'CONFIRMED'
+                                            ) { %>
+
+                                                <span class="professional-patient-status success">
+                                                    Confirmada
+                                                </span>
+
+                                            <% } else if (
+                                                sessionItem.status === 'SCHEDULED'
+                                            ) { %>
+
+                                                <span class="professional-patient-status warning">
+                                                    Agendada
+                                                </span>
+
+                                            <% } else if (
+                                                sessionItem.status === 'CANCELED'
+                                            ) { %>
+
+                                                <span class="professional-patient-status danger">
+                                                    Cancelada
+                                                </span>
+
+                                            <% } else { %>
+
+                                                <span class="professional-patient-status danger">
+                                                    Falta
+                                                </span>
+
+                                            <% } %>
+
+
+                                        </div>
+
+
+
+                                        <div>
+
+
+                                            <% if (
+                                                sessionItem.payment_status === 'PAID'
+                                            ) { %>
+
+                                                <span class="professional-patient-payment success">
+                                                    Pago
+                                                </span>
+
+                                            <% } else { %>
+
+                                                <span class="professional-patient-payment warning">
+                                                    Pendente
+                                                </span>
+
+                                            <% } %>
+
+
+                                        </div>
+
+
+
+                                        <span class="professional-patient-arrow">
+                                            →
+                                        </span>
+
+
+                                    </a>
+
+
+                                <% }) %>
+
+
+                            </div>
+
+
+                        <% } %>
+
+
+                    </div>
+
+
+                </article>
+
+
+            </section>
+
+
+        </main>
+
+
+    </div>
+
+
+
+    <footer class="brand-dashboard-footer">
+
+        <div>
+            <strong>ORGANIZAÇÃO</strong>
+            <span>Mais tempo para o que realmente importa.</span>
+        </div>
+
+        <div>
+            <strong>ACOLHIMENTO</strong>
+            <span>Tecnologia a favor da escuta.</span>
+        </div>
+
+        <div>
+            <strong>POSSIBILIDADES</strong>
+            <span>Um consultório mais leve e humano.</span>
+        </div>
+
+    </footer>
+
+
+</div>
+
+
+<%- include('partials/priority-alert') %>
+
+
+</body>
+
+</html>

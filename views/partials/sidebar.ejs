@@ -1,0 +1,137 @@
+<aside class="sidebar lovable-sidebar">
+
+
+    <div class="brand-professional-head">
+
+
+        <div class="brand-professional-image">
+
+            <img
+                src="/images/simbolo-bruna.png"
+                alt=""
+            >
+
+        </div>
+
+
+
+        <div class="brand-professional-info">
+
+            <strong>
+
+                <%= user.name
+                    .replace(/^Dra\.?\s*/i, '')
+                %>
+
+            </strong>
+
+            <span class="professional-role">
+                Psicóloga
+            </span>
+
+            <span>
+                Área profissional
+            </span>
+
+        </div>
+
+
+    </div>
+
+
+
+    <nav class="sidebar-nav lovable-nav">
+
+
+        <span class="lovable-nav-section">
+            Consultório
+        </span>
+
+
+        <a
+            href="/dashboard"
+            class="nav-link lovable-nav-link <%= activePage === 'dashboard' ? 'active' : '' %>"
+        >
+            <span class="lovable-nav-icon">⌂</span>
+            <span>Visão geral</span>
+        </a>
+
+
+        <a
+            href="/patients"
+            class="nav-link lovable-nav-link <%= activePage === 'patients' ? 'active' : '' %>"
+        >
+            <span class="lovable-nav-icon">♡</span>
+            <span>Pacientes</span>
+        </a>
+
+
+        <a
+            href="/sessions"
+            class="nav-link lovable-nav-link <%= activePage === 'sessions' ? 'active' : '' %>"
+        >
+            <span class="lovable-nav-icon">◫</span>
+            <span>Agenda</span>
+        </a>
+
+
+        <a
+            href="/availability"
+            class="nav-link lovable-nav-link <%= activePage === 'availability' ? 'active' : '' %>"
+        >
+            <span class="lovable-nav-icon">◷</span>
+            <span>Horários disponíveis</span>
+        </a>
+
+
+
+        <span class="lovable-nav-section lovable-nav-section-second">
+            Gestão
+        </span>
+
+
+        <a
+            href="/support-requests"
+            class="nav-link lovable-nav-link <%= activePage === 'support' ? 'active' : '' %>"
+        >
+            <span class="lovable-nav-icon">!</span>
+            <span>Solicitações</span>
+        </a>
+
+
+        <a
+            href="/finance"
+            class="nav-link lovable-nav-link <%= activePage === 'finance' ? 'active' : '' %>"
+        >
+            <span class="lovable-nav-icon">$</span>
+            <span>Financeiro</span>
+        </a>
+
+
+        <a
+            href="/reports"
+            class="nav-link lovable-nav-link <%= activePage === 'reports' ? 'active' : '' %>"
+        >
+            <span class="lovable-nav-icon">▥</span>
+            <span>Relatórios</span>
+        </a>
+
+
+    </nav>
+
+
+
+    <div class="lovable-sidebar-bottom">
+
+        <a
+            href="/logout"
+            class="lovable-logout"
+        >
+            <span>↪</span>
+            Sair
+        </a>
+
+    </div>
+
+
+</aside>

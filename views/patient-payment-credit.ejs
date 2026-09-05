@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Crédito - EntreSessões
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="/css/style.css"
+    >
+
+</head>
+
+
+<body class="patient-payment-page">
+
+
+<%
+    const paymentSession =
+        typeof sessionItem !== 'undefined'
+            ? sessionItem
+            : (
+                typeof session !== 'undefined'
+                    ? session
+                    : {}
+            );
+
+
+    const cleanPatientName =
+        String(
+            typeof user !== 'undefined' && user
+                ? user.name
+                : 'Paciente'
+        );
+
+
+    const patientFirstName =
+        cleanPatientName.split(' ')[0];
+
+
+    const paymentAmount =
+        Number(
+            paymentSession.price || 0
+        );
+%>
+
+
+<div class="patient-home-wrapper">
+
+
+    <header class="patient-home-brand-header">
+
+
+        <div class="brand-dashboard-title">
+
+            <h1>
+                EntreSessões
+            </h1>
+
+            <p>
+                SEU ESPAÇO ENTRE UM ENCONTRO E OUTRO
+            </p>
+
+        </div>
+
+
+
+        <div class="brand-dashboard-message patient-home-brand-message">
+
+            <span class="brand-dashboard-message-line"></span>
+
+            <p>
+                Um espaço para registrar,<br>
+                acompanhar e cuidar do que acontece<br>
+                entre as sessões.
+            </p>
+
+        </div>
+
+
+
+        <img
+            src="/images/folhas-dashboard.png"
+            alt=""
+            class="patient-home-flower"
+        >
+
+
+    </header>
+
+
+
+    <main class="patient-payment-main">
+
+
+        <div class="patient-payment-navigation">
+
+
+            <a href="pay">
+                ← Escolher outra forma
+            </a>
+
+
+
+            <div class="patient-payment-user">
+
+
+                <div class="patient-payment-user-avatar">
+
+                    <%= patientFirstName
+                        .charAt(0)
+                        .toUpperCase()
+                    %>
+
+                </div>
+
+
+                <div>
+
+                    <strong>
+                        <%= cleanPatientName %>
+                    </strong>
+
+                    <span>
+                        Cartão de crédito
+                    </span>
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+
+
+        <section class="patient-payment-heading">
+
+
+            <span class="patient-home-eyebrow">
+                CARTÃO DE CRÉDITO
+            </span>
+
+
+            <h2>
+                Pagamento no crédito
+            </h2>
+
+
+            <p>
+                Escolha a quantidade de parcelas
+                para simular o pagamento da sessão.
+            </p>
+
+
+        </section>
+
+
+
+        <section class="patient-payment-two-columns">
+
+
+            <!-- FORMULÁRIO -->
+
+            <article class="patient-payment-box">
+
+
+                <span class="patient-payment-box-eyebrow">
+                    PAGAMENTO
+                </span>
+
+
+                <h3>
+                    Escolha as parcelas
+                </h3>
+
+
+
+                <div class="patient-payment-big-value">
+
+                    R$
+                    <%= paymentAmount
+                        .toFixed(2)
+                        .replace('.', ',')
+                    %>
+
+                </div>
+
+
+
+                <form
+                    method="POST"
+                    action=""
+                    class="patient-payment-form"
+                >
+
+
+                    <input
+                        type="hidden"
+                        name="payment_method"
+                        value="CREDIT"
+                    >
+
+
+
+                    <div class="patient-payment-field">
+
+
+                        <label for="payment_installments">
+                            Número de parcelas
+                        </label>
+
+
+                        <select
+                            id="payment_installments"
+                            name="payment_installments"
+                            required
+                        >
+
+                            <option value="1">
+                                1x de R$ <%= paymentAmount.toFixed(2).replace('.', ',') %>
+                            </option>
+
+                            <option value="2">
+                                2x de R$ <%= (paymentAmount / 2).toFixed(2).replace('.', ',') %>
+                            </option>
+
+                            <option value="3">
+                                3x de R$ <%= (paymentAmount / 3).toFixed(2).replace('.', ',') %>
+                            </option>
+
+                            <option value="4">
+                                4x de R$ <%= (paymentAmount / 4).toFixed(2).replace('.', ',') %>
+                            </option>
+
+                            <option value="5">
+                                5x de R$ <%= (paymentAmount / 5).toFixed(2).replace('.', ',') %>
+                            </option>
+
+                            <option value="6">
+                                6x de R$ <%= (paymentAmount / 6).toFixed(2).replace('.', ',') %>
+                            </option>
+
+                        </select>
+
+
+                    </div>
+
+
+
+                    <!-- compatibilidade com a rota -->
+
+                    <input
+                        type="hidden"
+                        id="installments"
+                        name="installments"
+                        value="1"
+                    >
+
+
+
+                    <div class="patient-payment-card-warning">
+
+                        <div>
+                            ♡
+                        </div>
+
+
+                        <p>
+                            Não é necessário informar
+                            número do cartão, validade ou CVV.
+                            O pagamento é apenas uma simulação.
+                        </p>
+
+                    </div>
+
+
+
+                    <button
+                        type="submit"
+                        class="patient-payment-confirm"
+                    >
+                        Simular pagamento no crédito
+
+                        <span>
+                            →
+                        </span>
+                    </button>
+
+
+                </form>
+
+
+            </article>
+
+
+
+            <!-- RESUMO -->
+
+            <aside class="patient-payment-side-card">
+
+
+                <span>
+                    RESUMO
+                </span>
+
+
+                <h3>
+                    Sessão
+                </h3>
+
+
+
+                <div class="patient-payment-side-row">
+
+                    <span>
+                        Data
+                    </span>
+
+                    <strong>
+                        <%= paymentSession.date_formatted
+                            || '—'
+                        %>
+                    </strong>
+
+                </div>
+
+
+
+                <div class="patient-payment-side-row">
+
+                    <span>
+                        Horário
+                    </span>
+
+                    <strong>
+                        <%= paymentSession.time_formatted
+                            || '—'
+                        %>
+                    </strong>
+
+                </div>
+
+
+
+                <div class="patient-payment-side-row">
+
+                    <span>
+                        Profissional
+                    </span>
+
+                    <strong>
+                        Bruna Nascimento
+                    </strong>
+
+                </div>
+
+
+
+                <div class="patient-payment-side-total">
+
+                    <span>
+                        Total
+                    </span>
+
+                    <strong>
+                        R$
+                        <%= paymentAmount
+                            .toFixed(2)
+                            .replace('.', ',')
+                        %>
+                    </strong>
+
+                </div>
+
+
+            </aside>
+
+
+        </section>
+
+
+
+        <section class="patient-payment-demo-notice">
+
+            <div>
+                i
+            </div>
+
+            <p>
+                <strong>Ambiente demonstrativo:</strong>
+                nenhum dado real de cartão é solicitado
+                ou armazenado pelo EntreSessões.
+            </p>
+
+        </section>
+
+
+    </main>
+
+
+
+    <footer class="patient-home-footer">
+
+
+        <div class="patient-home-footer-brand">
+
+            <strong>
+                EntreSessões
+            </strong>
+
+            <span>
+                Um espaço de continuidade entre encontros.
+            </span>
+
+        </div>
+
+
+    </footer>
+
+
+</div>
+
+
+
+<script>
+
+    const installmentSelect =
+        document.getElementById(
+            'payment_installments'
+        );
+
+    const installmentAlternative =
+        document.getElementById(
+            'installments'
+        );
+
+
+    if (
+        installmentSelect
+        &&
+        installmentAlternative
+    ) {
+
+        installmentSelect.addEventListener(
+            'change',
+            function () {
+
+                installmentAlternative.value =
+                    this.value;
+
+            }
+        );
+    }
+
+</script>
+
+
+</body>
+
+</html>

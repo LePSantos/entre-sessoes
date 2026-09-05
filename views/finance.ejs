@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Financeiro - EntreSessões
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="/css/style.css"
+    >
+
+</head>
+
+
+<body class="brand-dashboard-page">
+
+
+<%
+    const financeItems =
+        typeof sessions !== 'undefined'
+            ? sessions
+            : (
+                typeof payments !== 'undefined'
+                    ? payments
+                    : (
+                        typeof financeSessions !== 'undefined'
+                            ? financeSessions
+                            : []
+                    )
+            );
+
+
+    const receivedTotal =
+        typeof receivedAmount !== 'undefined'
+            ? Number(receivedAmount || 0)
+            : financeItems
+                .filter(item =>
+                    item.payment_status === 'PAID'
+                )
+                .reduce(
+                    (total, item) =>
+                        total + Number(item.price || 0),
+                    0
+                );
+
+
+    const pendingTotal =
+        typeof pendingAmount !== 'undefined'
+            ? Number(pendingAmount || 0)
+            : financeItems
+                .filter(item =>
+                    item.payment_status === 'PENDING'
+                    &&
+                    item.status !== 'CANCELED'
+                )
+                .reduce(
+                    (total, item) =>
+                        total + Number(item.price || 0),
+                    0
+                );
+
+
+    const paidCount =
+        financeItems.filter(item =>
+            item.payment_status === 'PAID'
+        ).length;
+
+
+    const pendingCount =
+        financeItems.filter(item =>
+            item.payment_status === 'PENDING'
+            &&
+            item.status !== 'CANCELED'
+        ).length;
+%>
+
+
+<div class="brand-dashboard-wrapper">
+
+
+    <!-- =========================================
+         IDENTIDADE ENTRESESSÕES
+    ========================================== -->
+
+    <header class="brand-dashboard-brand-header">
+
+
+        <div class="brand-dashboard-title">
+
+            <h1>
+                EntreSessões
+            </h1>
+
+            <p>
+                SISTEMA PARA CONSULTÓRIOS DE PSICOLOGIA
+            </p>
+
+        </div>
+
+
+
+        <div class="brand-dashboard-message">
+
+            <span class="brand-dashboard-message-line"></span>
+
+            <p>
+                Mais que um sistema,<br>
+                um espaço para o que importa:<br>
+                pessoas, escuta e possibilidades.
+            </p>
+
+        </div>
+
+
+
+        <img
+            src="/images/folhas-dashboard.png"
+            alt=""
+            class="brand-dashboard-flower"
+        >
+
+
+    </header>
+
+
+
+    <!-- =========================================
+         CARD PRINCIPAL
+    ========================================== -->
+
+    <div class="brand-dashboard-card">
+
+
+        <!-- MENU -->
+
+        <%- include('partials/sidebar', {
+            activePage: 'finance'
+        }) %>
+
+
+
+        <!-- =====================================
+             CONTEÚDO
+        ====================================== -->
+
+        <main class="brand-dashboard-main">
+
+
+            <!-- CABEÇALHO -->
+
+            <header class="professional-page-header">
+
+
+                <div>
+
+                    <span class="professional-page-eyebrow">
+                        GESTÃO
+                    </span>
+
+                    <h2>
+                        Financeiro
+                    </h2>
+
+                    <p>
+                        Acompanhe os valores recebidos
+                        e os pagamentos pendentes das sessões.
+                    </p>
+
+                </div>
+
+
+            </header>
+
+
+
+            <!-- =====================================
+                 RESUMO
+            ====================================== -->
+
+            <section class="finance-summary-grid">
+
+
+                <!-- RECEBIDO -->
+
+                <article class="finance-summary-card">
+
+
+                    <div class="finance-summary-top">
+
+                        <span>
+                            Valores recebidos
+                        </span>
+
+                        <div class="finance-summary-icon">
+                            $
+                        </div>
+
+                    </div>
+
+
+                    <strong>
+
+                        R$
+                        <%= receivedTotal
+                            .toFixed(2)
+                            .replace('.', ',')
+                        %>
+
+                    </strong>
+
+
+                    <small>
+                        <%= paidCount %>
+                        pagamento(s) confirmado(s)
+                    </small>
+
+
+                </article>
+
+
+
+                <!-- PENDENTE -->
+
+                <article class="finance-summary-card finance-summary-pending">
+
+
+                    <div class="finance-summary-top">
+
+                        <span>
+                            Valores pendentes
+                        </span>
+
+                        <div class="finance-summary-icon finance-icon-pending">
+                            !
+                        </div>
+
+                    </div>
+
+
+                    <strong>
+
+                        R$
+                        <%= pendingTotal
+                            .toFixed(2)
+                            .replace('.', ',')
+                        %>
+
+                    </strong>
+
+
+                    <small>
+                        <%= pendingCount %>
+                        pagamento(s) aguardando
+                    </small>
+
+
+                </article>
+
+
+
+                <!-- TOTAL -->
+
+                <article class="finance-summary-card">
+
+
+                    <div class="finance-summary-top">
+
+                        <span>
+                            Total das sessões
+                        </span>
+
+                        <div class="finance-summary-icon">
+                            ◇
+                        </div>
+
+                    </div>
+
+
+                    <strong>
+
+                        R$
+                        <%= (
+                            receivedTotal +
+                            pendingTotal
+                        )
+                        .toFixed(2)
+                        .replace('.', ',')
+                        %>
+
+                    </strong>
+
+
+                    <small>
+                        Valores recebidos + pendentes
+                    </small>
+
+
+                </article>
+
+
+            </section>
+
+
+
+            <!-- =====================================
+                 PAINEL FINANCEIRO
+            ====================================== -->
+
+            <section class="professional-panel">
+
+
+                <header class="professional-panel-header">
+
+
+                    <div>
+
+                        <h3>
+                            Pagamentos das sessões
+                        </h3>
+
+                        <p>
+                            Consulte os valores e a situação
+                            de pagamento de cada atendimento.
+                        </p>
+
+                    </div>
+
+
+                    <span class="professional-panel-count">
+
+                        <%= financeItems.length %>
+                        registro(s)
+
+                    </span>
+
+
+                </header>
+
+
+
+                <div class="finance-list-content">
+
+
+                    <% if (
+                        financeItems.length === 0
+                    ) { %>
+
+
+                        <div class="finance-empty-state">
+
+
+                            <div class="finance-empty-icon">
+                                $
+                            </div>
+
+
+                            <h4>
+                                Nenhum registro financeiro
+                            </h4>
+
+
+                            <p>
+                                Os pagamentos das sessões
+                                aparecerão aqui.
+                            </p>
+
+
+                        </div>
+
+
+                    <% } else { %>
+
+
+
+                        <div class="finance-modern-list">
+
+
+                            <% financeItems.forEach(
+                                sessionItem => {
+                            %>
+
+
+                                <a
+                                    href="/sessions/<%= sessionItem.id %>"
+                                    class="finance-modern-row"
+                                >
+
+
+                                    <!-- PACIENTE -->
+
+                                    <div class="finance-patient">
+
+
+                                        <div class="finance-patient-avatar">
+
+                                            <%= (
+                                                sessionItem.patient_name
+                                                || '?'
+                                            )
+                                            .charAt(0)
+                                            .toUpperCase()
+                                            %>
+
+                                        </div>
+
+
+
+                                        <div class="finance-patient-info">
+
+                                            <strong>
+
+                                                <%= sessionItem.patient_name
+                                                    || 'Paciente'
+                                                %>
+
+                                            </strong>
+
+                                            <span>
+                                                Sessão individual
+                                            </span>
+
+                                        </div>
+
+
+                                    </div>
+
+
+
+                                    <!-- DATA -->
+
+                                    <div class="finance-date">
+
+
+                                        <span>
+                                            Data
+                                        </span>
+
+                                        <strong>
+
+                                            <%= sessionItem.date_formatted
+                                                || '—'
+                                            %>
+
+                                            <% if (
+                                                sessionItem.time_formatted
+                                            ) { %>
+
+                                                às
+                                                <%= sessionItem.time_formatted %>
+
+                                            <% } %>
+
+                                        </strong>
+
+
+                                    </div>
+
+
+
+                                    <!-- VALOR -->
+
+                                    <div class="finance-value">
+
+
+                                        <span>
+                                            Valor
+                                        </span>
+
+                                        <strong>
+
+                                            R$
+                                            <%= Number(
+                                                sessionItem.price || 0
+                                            )
+                                            .toFixed(2)
+                                            .replace('.', ',')
+                                            %>
+
+                                        </strong>
+
+
+                                    </div>
+
+
+
+                                    <!-- PAGAMENTO -->
+
+                                    <div class="finance-payment-status">
+
+
+                                        <% if (
+                                            sessionItem.payment_status
+                                            === 'PAID'
+                                        ) { %>
+
+
+                                            <span class="brand-status brand-status-confirmed">
+
+                                                Pago
+
+                                            </span>
+
+
+                                        <% } else { %>
+
+
+                                            <span class="brand-status brand-status-scheduled">
+
+                                                Pendente
+
+                                            </span>
+
+
+                                        <% } %>
+
+
+                                    </div>
+
+
+
+                                    <!-- SETA -->
+
+                                    <div class="finance-row-arrow">
+                                        →
+                                    </div>
+
+
+                                </a>
+
+
+                            <% }) %>
+
+
+                        </div>
+
+
+                    <% } %>
+
+
+                </div>
+
+
+            </section>
+
+
+        </main>
+
+
+    </div>
+
+
+
+    <!-- =========================================
+         RODAPÉ
+    ========================================== -->
+
+    <footer class="brand-dashboard-footer">
+
+
+        <div class="brand-footer-features">
+
+
+            <div class="brand-footer-feature">
+
+                <div class="brand-footer-icon">
+                    ◉
+                </div>
+
+                <div>
+
+                    <strong>
+                        ORGANIZAÇÃO
+                    </strong>
+
+                    <span>
+                        Mais tempo para o que realmente importa.
+                    </span>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="brand-footer-feature">
+
+                <div class="brand-footer-icon">
+                    ♡
+                </div>
+
+                <div>
+
+                    <strong>
+                        ACOLHIMENTO
+                    </strong>
+
+                    <span>
+                        Tecnologia a favor da escuta.
+                    </span>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="brand-footer-feature">
+
+                <div class="brand-footer-icon">
+                    ◇
+                </div>
+
+                <div>
+
+                    <strong>
+                        POSSIBILIDADES
+                    </strong>
+
+                    <span>
+                        Um consultório mais leve e humano.
+                    </span>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+
+        <div class="brand-dashboard-signature">
+
+            <strong>
+                EntreSessões
+            </strong>
+
+            <span>
+                PSICOLOGIA NA PRÁTICA,<br>
+                TODOS OS DIAS.
+            </span>
+
+        </div>
+
+
+    </footer>
+
+
+</div>
+
+
+
+<%- include('partials/priority-alert') %>
+
+
+</body>
+
+</html>

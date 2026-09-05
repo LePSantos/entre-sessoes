@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Pagamentos - EntreSessões
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="/css/style.css"
+    >
+
+</head>
+
+
+<body class="patient-area-body">
+
+
+<div class="patient-app">
+
+
+    <!-- TOPO -->
+
+    <header class="patient-topbar">
+
+        <a
+            href="/patient/dashboard"
+            class="patient-brand"
+        >
+
+            <div class="brand-mark">
+                E
+            </div>
+
+            <span>
+                EntreSessões
+            </span>
+
+        </a>
+
+
+        <a
+            href="/patient/dashboard"
+            class="patient-logout"
+        >
+            ← Minha área
+        </a>
+
+    </header>
+
+
+
+    <main class="patient-payments-page">
+
+
+        <!-- CABEÇALHO -->
+
+        <section class="patient-payments-header">
+
+            <span class="patient-eyebrow">
+                Financeiro
+            </span>
+
+            <h1>
+                Pagamentos
+            </h1>
+
+            <p>
+                Consulte os valores das suas sessões
+                e acompanhe a situação dos pagamentos.
+            </p>
+
+        </section>
+
+
+
+        <% if (payments.length === 0) { %>
+
+
+            <div class="sessions-empty">
+
+                <strong>
+                    Nenhuma cobrança encontrada
+                </strong>
+
+                <p>
+                    As informações de pagamento das suas
+                    sessões aparecerão aqui.
+                </p>
+
+            </div>
+
+
+        <% } else { %>
+
+
+            <div class="patient-payments-list">
+
+
+                <% payments.forEach(payment => { %>
+
+
+                    <article class="patient-payment-card">
+
+
+                        <!-- SESSÃO -->
+
+                        <div class="patient-payment-session">
+
+                            <span class="payment-small-label">
+                                Sessão
+                            </span>
+
+                            <strong>
+
+                                <%= payment.date_formatted %>
+                                às
+                                <%= payment.time_formatted %>
+
+                            </strong>
+
+                            <small>
+                                <%= payment.psychologist_name %>
+                            </small>
+
+                        </div>
+
+
+
+                        <!-- VALOR -->
+
+                        <div class="patient-payment-value">
+
+                            <span class="payment-small-label">
+                                Valor
+                            </span>
+
+                            <strong>
+
+                                R$
+                                <%= Number(
+                                    payment.price || 0
+                                )
+                                .toFixed(2)
+                                .replace('.', ',') %>
+
+                            </strong>
+
+                        </div>
+
+
+
+                        <!-- STATUS -->
+
+                        <div class="patient-payment-status">
+
+                            <span class="payment-small-label">
+                                Pagamento
+                            </span>
+
+
+                            <% if (
+                                payment.payment_status === 'PAID'
+                            ) { %>
+
+                                <span class="payment-paid">
+                                    Pago
+                                </span>
+
+                            <% } else { %>
+
+                                <span class="payment-pending">
+                                    Pendente
+                                </span>
+
+                            <% } %>
+
+                        </div>
+
+
+
+                        <!-- AÇÃO -->
+
+                        <div class="patient-payment-action">
+
+
+                            <% if (
+                                payment.payment_status === 'PENDING'
+                            ) { %>
+<a
+    href="/patient/payments/<%= payment.id %>/pay"
+    class="btn btn-primary"
+>
+    Pagar sessão
+</a>
+
+                            <% } else { %>
+
+                                <span class="payment-complete-text">
+                                    Pagamento concluído
+                                </span>
+
+                            <% } %>
+
+
+                        </div>
+
+
+                    </article>
+
+
+                <% }) %>
+
+
+            </div>
+
+
+        <% } %>
+
+
+    </main>
+
+
+</div>
+
+
+</body>
+
+</html>

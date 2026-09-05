@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Agendar sessão - EntreSessões
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="/css/style.css"
+    >
+
+</head>
+
+
+<body class="patient-book-page">
+
+
+<%
+    const cleanPatientName =
+        String(
+            typeof user !== 'undefined' && user
+                ? user.name
+                : 'Paciente'
+        )
+            .replace(/^Sr\.?\s*/i, '')
+            .replace(/^Sra\.?\s*/i, '');
+
+
+    const patientFirstName =
+        cleanPatientName
+            .split(' ')[0];
+
+
+    /*
+        Deixei preparado para funcionar mesmo
+        se a rota estiver usando um destes nomes.
+    */
+
+    const bookingSlots =
+        typeof slots !== 'undefined'
+            ? slots
+            : (
+                typeof availableSlots !== 'undefined'
+                    ? availableSlots
+                    : (
+                        typeof availabilitySlots !== 'undefined'
+                            ? availabilitySlots
+                            : []
+                    )
+            );
+
+
+    const bookingError =
+        typeof error !== 'undefined'
+            ? error
+            : null;
+
+
+    const bookingSuccess =
+        typeof message !== 'undefined'
+            ? message
+            : null;
+%>
+
+
+<div class="patient-home-wrapper">
+
+
+    <!-- =========================================
+         IDENTIDADE ENTRESESSÕES
+    ========================================== -->
+
+    <header class="patient-home-brand-header">
+
+
+        <div class="brand-dashboard-title">
+
+            <h1>
+                EntreSessões
+            </h1>
+
+            <p>
+                SEU ESPAÇO ENTRE UM ENCONTRO E OUTRO
+            </p>
+
+        </div>
+
+
+
+        <div class="brand-dashboard-message patient-home-brand-message">
+
+            <span class="brand-dashboard-message-line"></span>
+
+            <p>
+                Um espaço para registrar,<br>
+                acompanhar e cuidar do que acontece<br>
+                entre as sessões.
+            </p>
+
+        </div>
+
+
+
+        <img
+            src="/images/folhas-dashboard.png"
+            alt=""
+            class="patient-home-flower"
+        >
+
+
+    </header>
+
+
+
+    <!-- =========================================
+         CONTEÚDO
+    ========================================== -->
+
+    <main class="patient-book-main">
+
+
+        <!-- =====================================
+             NAVEGAÇÃO
+        ====================================== -->
+
+        <div class="patient-book-navigation">
+
+
+            <a href="/patient/dashboard">
+                ← Voltar para minha área
+            </a>
+
+
+
+            <div class="patient-book-user">
+
+
+                <div class="patient-book-user-avatar">
+
+                    <%= patientFirstName
+                        .charAt(0)
+                        .toUpperCase()
+                    %>
+
+                </div>
+
+
+
+                <div>
+
+                    <strong>
+                        <%= cleanPatientName %>
+                    </strong>
+
+                    <span>
+                        Agendamento
+                    </span>
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+
+
+        <!-- =====================================
+             CABEÇALHO
+        ====================================== -->
+
+        <section class="patient-book-heading">
+
+
+            <div>
+
+
+                <span class="patient-home-eyebrow">
+                    AGENDAR SESSÃO
+                </span>
+
+
+                <h2>
+                    Escolha um horário
+                </h2>
+
+
+                <p>
+                    Consulte os horários disponibilizados
+                    pela profissional e escolha a opção
+                    que melhor se encaixa na sua rotina.
+                </p>
+
+
+            </div>
+
+
+
+            <a
+                href="/patient/sessions"
+                class="patient-book-secondary-button"
+            >
+                Minhas sessões
+            </a>
+
+
+        </section>
+
+
+
+        <!-- =====================================
+             MENSAGENS
+        ====================================== -->
+
+        <% if (
+            bookingError
+        ) { %>
+
+
+            <div class="patient-book-message patient-book-message-error">
+
+
+                <div>
+                    !
+                </div>
+
+
+                <span>
+                    <%= bookingError %>
+                </span>
+
+
+            </div>
+
+
+        <% } %>
+
+
+
+        <% if (
+            bookingSuccess
+        ) { %>
+
+
+            <div class="patient-book-message patient-book-message-success">
+
+
+                <div>
+                    ✓
+                </div>
+
+
+                <span>
+                    <%= bookingSuccess %>
+                </span>
+
+
+            </div>
+
+
+        <% } %>
+
+
+
+        <!-- =====================================
+             ÁREA PRINCIPAL
+        ====================================== -->
+
+        <section class="patient-book-layout">
+
+
+            <!-- =================================
+                 HORÁRIOS
+            ================================== -->
+
+            <section class="patient-book-panel">
+
+
+                <header class="patient-book-panel-header">
+
+
+                    <div>
+
+                        <span>
+                            DISPONIBILIDADE
+                        </span>
+
+
+                        <h3>
+                            Horários disponíveis
+                        </h3>
+
+
+                        <p>
+                            Selecione uma das opções abaixo
+                            para solicitar o agendamento.
+                        </p>
+
+                    </div>
+
+
+
+                    <div class="patient-book-count">
+
+                        <%= bookingSlots.length %>
+
+                        <%= bookingSlots.length === 1
+                            ? 'horário'
+                            : 'horários'
+                        %>
+
+                    </div>
+
+
+                </header>
+
+
+
+                <div class="patient-book-panel-content">
+
+
+                    <% if (
+                        bookingSlots.length === 0
+                    ) { %>
+
+
+                        <!-- =============================
+                             SEM HORÁRIOS
+                        ============================== -->
+
+                        <div class="patient-book-empty">
+
+
+                            <div class="patient-book-empty-icon">
+                                ◷
+                            </div>
+
+
+                            <h4>
+                                Nenhum horário disponível
+                            </h4>
+
+
+                            <p>
+                                No momento não existem novos
+                                horários liberados para agendamento.
+                                Você pode consultar novamente mais tarde.
+                            </p>
+
+
+                            <a
+                                href="/patient/dashboard"
+                                class="patient-book-secondary-button"
+                            >
+                                Voltar para minha área
+                            </a>
+
+
+                        </div>
+
+
+                    <% } else { %>
+
+
+
+                        <div class="patient-book-slots">
+
+
+                            <% bookingSlots.forEach(
+                                slot => {
+
+                                    const slotId =
+                                        slot.id
+                                        || slot.availability_id
+                                        || slot.slot_id;
+
+
+                                    const slotDate =
+                                        slot.date_formatted
+                                        || slot.formatted_date
+                                        || slot.date
+                                        || 'Data disponível';
+
+
+                                    const slotTime =
+                                        slot.time_formatted
+                                        || slot.formatted_time
+                                        || slot.time
+                                        || '';
+
+
+                                    const professionalName =
+                                        slot.psychologist_name
+                                        || slot.professional_name
+                                        || 'Bruna Nascimento';
+                            %>
+
+
+                                <article class="patient-book-slot">
+
+
+                                    <!-- DATA -->
+
+                                    <div class="patient-book-slot-calendar">
+
+
+                                        <div class="patient-book-calendar-icon">
+                                            ◫
+                                        </div>
+
+
+                                        <div>
+
+                                            <span>
+                                                DATA
+                                            </span>
+
+                                            <strong>
+                                                <%= slotDate %>
+                                            </strong>
+
+                                        </div>
+
+
+                                    </div>
+
+
+
+                                    <!-- HORÁRIO -->
+
+                                    <div class="patient-book-slot-time">
+
+
+                                        <span>
+                                            HORÁRIO
+                                        </span>
+
+
+                                        <strong>
+                                            <%= slotTime %>
+                                        </strong>
+
+
+                                    </div>
+
+
+
+                                    <!-- PROFISSIONAL -->
+
+                                    <div class="patient-book-slot-professional">
+
+
+                                        <span>
+                                            PROFISSIONAL
+                                        </span>
+
+
+                                        <strong>
+                                            <%= professionalName %>
+                                        </strong>
+
+
+                                    </div>
+
+
+
+                                    <!-- STATUS -->
+
+                                    <div class="patient-book-slot-status">
+
+                                        <span>
+                                            Disponível
+                                        </span>
+
+                                    </div>
+
+
+
+                                    <!-- AGENDAR -->
+
+                                    <form
+                                        action="/patient/book-session"
+                                        method="POST"
+                                        class="patient-book-slot-form"
+                                    >
+
+
+                                        <!--
+                                            Mantemos nomes compatíveis
+                                            com as versões usadas durante
+                                            o desenvolvimento.
+                                        -->
+
+                                        <input
+                                            type="hidden"
+                                            name="availability_id"
+                                            value="<%= slotId %>"
+                                        >
+
+
+                                        <input
+                                            type="hidden"
+                                            name="slot_id"
+                                            value="<%= slotId %>"
+                                        >
+
+
+                                        <button
+                                            type="submit"
+                                            class="patient-book-confirm-button"
+                                            onclick="return confirm('Deseja agendar esta sessão?')"
+                                        >
+
+                                            Escolher horário
+
+                                            <span>
+                                                →
+                                            </span>
+
+                                        </button>
+
+
+                                    </form>
+
+
+                                </article>
+
+
+                            <% }) %>
+
+
+                        </div>
+
+
+                    <% } %>
+
+
+                </div>
+
+
+            </section>
+
+
+
+            <!-- =================================
+                 LATERAL
+            ================================== -->
+
+            <aside class="patient-book-side">
+
+
+                <!-- PROFISSIONAL -->
+
+                <article class="patient-book-professional-card">
+
+
+                    <span>
+                        SEU ACOMPANHAMENTO
+                    </span>
+
+
+
+                    <div class="patient-book-professional-profile">
+
+
+                        <div class="patient-book-professional-symbol">
+
+                            <img
+                                src="/images/simbolo-bruna.png"
+                                alt=""
+                            >
+
+                        </div>
+
+
+
+                        <div>
+
+                            <h3>
+                                Bruna Nascimento
+                            </h3>
+
+                            <p>
+                                Psicologia • Psicanálise
+                            </p>
+
+                        </div>
+
+
+                    </div>
+
+
+
+                    <div class="patient-book-professional-line"></div>
+
+
+
+                    <p>
+                        Os horários exibidos nesta página
+                        são disponibilizados previamente
+                        pela profissional responsável
+                        pelo seu acompanhamento.
+                    </p>
+
+
+                </article>
+
+
+
+                <!-- COMO FUNCIONA -->
+
+                <article class="patient-book-how-card">
+
+
+                    <span>
+                        COMO FUNCIONA
+                    </span>
+
+
+                    <div class="patient-book-step">
+
+
+                        <strong>
+                            01
+                        </strong>
+
+
+                        <p>
+                            Escolha um dos horários disponíveis.
+                        </p>
+
+
+                    </div>
+
+
+
+                    <div class="patient-book-step">
+
+
+                        <strong>
+                            02
+                        </strong>
+
+
+                        <p>
+                            Confirme o agendamento da sessão.
+                        </p>
+
+
+                    </div>
+
+
+
+                    <div class="patient-book-step">
+
+
+                        <strong>
+                            03
+                        </strong>
+
+
+                        <p>
+                            O atendimento aparecerá em
+                            “Minhas sessões”.
+                        </p>
+
+
+                    </div>
+
+
+                </article>
+
+
+            </aside>
+
+
+        </section>
+
+
+
+        <!-- =====================================
+             AVISO
+        ====================================== -->
+
+        <section class="patient-book-notice">
+
+
+            <div>
+                i
+            </div>
+
+
+            <p>
+                <strong>
+                    Importante:
+                </strong>
+
+                escolha apenas horários em que você
+                realmente possa comparecer. Caso precise
+                alterar um atendimento, entre em contato
+                com a profissional responsável.
+            </p>
+
+
+        </section>
+
+
+    </main>
+
+
+
+    <!-- =========================================
+         RODAPÉ
+    ========================================== -->
+
+    <footer class="patient-home-footer">
+
+
+        <div class="patient-home-footer-brand">
+
+            <strong>
+                EntreSessões
+            </strong>
+
+            <span>
+                Um espaço de continuidade entre encontros.
+            </span>
+
+        </div>
+
+
+
+        <div class="patient-home-footer-items">
+
+
+            <div>
+
+                <strong>
+                    REGISTRAR
+                </strong>
+
+                <span>
+                    Dar espaço ao que você sente.
+                </span>
+
+            </div>
+
+
+
+            <div>
+
+                <strong>
+                    ACOMPANHAR
+                </strong>
+
+                <span>
+                    Organizar seus atendimentos.
+                </span>
+
+            </div>
+
+
+
+            <div>
+
+                <strong>
+                    CUIDAR
+                </strong>
+
+                <span>
+                    Construir possibilidades.
+                </span>
+
+            </div>
+
+
+        </div>
+
+
+    </footer>
+
+
+</div>
+
+
+</body>
+
+</html>

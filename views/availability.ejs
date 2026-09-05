@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Horários disponíveis - EntreSessões
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="/css/style.css"
+    >
+
+</head>
+
+
+<body class="brand-dashboard-page">
+
+
+<div class="brand-dashboard-wrapper">
+
+
+    <!-- =========================================
+         IDENTIDADE ENTRESESSÕES
+    ========================================== -->
+
+    <header class="brand-dashboard-brand-header">
+
+
+        <div class="brand-dashboard-title">
+
+            <h1>
+                EntreSessões
+            </h1>
+
+            <p>
+                SISTEMA PARA CONSULTÓRIOS DE PSICOLOGIA
+            </p>
+
+        </div>
+
+
+
+        <div class="brand-dashboard-message">
+
+            <span class="brand-dashboard-message-line"></span>
+
+            <p>
+                Mais que um sistema,<br>
+                um espaço para o que importa:<br>
+                pessoas, escuta e possibilidades.
+            </p>
+
+        </div>
+
+
+
+        <img
+            src="/images/folhas-dashboard.png"
+            alt=""
+            class="brand-dashboard-flower"
+        >
+
+
+    </header>
+
+
+
+    <!-- =========================================
+         CARD PRINCIPAL
+    ========================================== -->
+
+    <div class="brand-dashboard-card">
+
+
+        <!-- MENU -->
+
+        <%- include('partials/sidebar', {
+            activePage: 'availability'
+        }) %>
+
+
+
+        <!-- =====================================
+             CONTEÚDO
+        ====================================== -->
+
+        <main class="brand-dashboard-main">
+
+
+            <!-- CABEÇALHO -->
+
+            <header class="professional-page-header">
+
+
+                <div>
+
+                    <span class="professional-page-eyebrow">
+                        AGENDA
+                    </span>
+
+                    <h2>
+                        Horários disponíveis
+                    </h2>
+
+                    <p>
+                        Defina os horários que seus pacientes
+                        poderão escolher para agendamento.
+                    </p>
+
+                </div>
+
+
+            </header>
+
+
+
+            <!-- =====================================
+                 RESUMO
+            ====================================== -->
+
+            <section class="availability-summary-grid">
+
+
+                <article class="availability-summary-card">
+
+                    <span>
+                        Total de horários
+                    </span>
+
+                    <strong>
+                        <%= slots.length %>
+                    </strong>
+
+                    <small>
+                        Horários cadastrados
+                    </small>
+
+                </article>
+
+
+
+                <article class="availability-summary-card">
+
+                    <span>
+                        Disponíveis
+                    </span>
+
+                    <strong>
+
+                        <%= slots.filter(
+                            slot =>
+                                slot.status === 'OPEN'
+                        ).length %>
+
+                    </strong>
+
+                    <small>
+                        Podem ser agendados
+                    </small>
+
+                </article>
+
+
+
+                <article class="availability-summary-card">
+
+                    <span>
+                        Reservados
+                    </span>
+
+                    <strong>
+
+                        <%= slots.filter(
+                            slot =>
+                                slot.status === 'BOOKED'
+                        ).length %>
+
+                    </strong>
+
+                    <small>
+                        Já escolhidos por pacientes
+                    </small>
+
+                </article>
+
+
+            </section>
+
+
+
+            <!-- =====================================
+                 CONTEÚDO
+            ====================================== -->
+
+            <section class="availability-modern-grid">
+
+
+                <!-- =================================
+                     DISPONIBILIZAR HORÁRIO
+                ================================== -->
+
+                <article class="professional-panel availability-create-panel">
+
+
+                    <header class="professional-panel-header">
+
+
+                        <div>
+
+                            <h3>
+                                Disponibilizar horário
+                            </h3>
+
+                            <p>
+                                Adicione uma nova data e horário
+                                à sua disponibilidade.
+                            </p>
+
+                        </div>
+
+
+                    </header>
+
+
+
+                    <div class="availability-form-content">
+
+
+                        <% if (
+                            typeof error !== 'undefined'
+                            && error
+                        ) { %>
+
+
+                            <div class="availability-error">
+
+                                <span>
+                                    !
+                                </span>
+
+                                <%= error %>
+
+                            </div>
+
+
+                        <% } %>
+
+
+
+                        <form
+                            action="/availability/new"
+                            method="POST"
+                            class="availability-modern-form"
+                        >
+
+
+                            <div class="availability-modern-field">
+
+
+                                <label for="starts_at">
+                                    Data e horário
+                                </label>
+
+
+                                <input
+                                    type="datetime-local"
+                                    id="starts_at"
+                                    name="starts_at"
+                                    required
+                                >
+
+
+                            </div>
+
+
+
+                            <button
+                                type="submit"
+                                class="brand-action-button brand-action-primary availability-submit"
+                            >
+
+                                + Disponibilizar horário
+
+                            </button>
+
+
+                        </form>
+
+
+
+                        <div class="availability-help">
+
+
+                            <div class="availability-help-icon">
+                                i
+                            </div>
+
+
+                            <p>
+                                Os horários disponíveis aparecerão
+                                para seus pacientes na área de
+                                agendamento.
+                            </p>
+
+
+                        </div>
+
+
+                    </div>
+
+
+                </article>
+
+
+
+                <!-- =================================
+                     MINHA DISPONIBILIDADE
+                ================================== -->
+
+                <article class="professional-panel availability-list-panel">
+
+
+                    <header class="professional-panel-header">
+
+
+                        <div>
+
+                            <h3>
+                                Minha disponibilidade
+                            </h3>
+
+                            <p>
+                                Gerencie os horários cadastrados.
+                            </p>
+
+                        </div>
+
+
+
+                        <span class="professional-panel-count">
+
+                            <%= slots.length %>
+                            horário(s)
+
+                        </span>
+
+
+                    </header>
+
+
+
+                    <div class="availability-list-content">
+
+
+                        <% if (
+                            slots.length === 0
+                        ) { %>
+
+
+                            <div class="availability-empty-state">
+
+
+                                <div class="availability-empty-icon">
+                                    ◷
+                                </div>
+
+
+                                <h4>
+                                    Nenhum horário disponível
+                                </h4>
+
+
+                                <p>
+                                    Adicione um horário para
+                                    começar a receber agendamentos.
+                                </p>
+
+
+                            </div>
+
+
+                        <% } else { %>
+
+
+
+                            <div class="availability-modern-list">
+
+
+                                <% slots.forEach(slot => { %>
+
+
+                                    <div class="availability-modern-row">
+
+
+                                        <!-- DATA -->
+
+                                        <div class="availability-modern-date">
+
+
+                                            <strong>
+                                                <%= slot.date_formatted %>
+                                            </strong>
+
+
+                                            <span>
+                                                às
+                                                <%= slot.time_formatted %>
+                                            </span>
+
+
+                                        </div>
+
+
+
+                                        <!-- STATUS -->
+
+                                        <div class="availability-modern-status">
+
+
+                                            <% if (
+                                                slot.status === 'OPEN'
+                                            ) { %>
+
+
+                                                <span class="brand-status brand-status-confirmed">
+                                                    Disponível
+                                                </span>
+
+
+                                            <% } else if (
+                                                slot.status === 'BOOKED'
+                                            ) { %>
+
+
+                                                <span class="brand-status brand-status-scheduled">
+                                                    Reservado
+                                                </span>
+
+
+                                            <% } else { %>
+
+
+                                                <span class="brand-status brand-status-priority">
+                                                    Cancelado
+                                                </span>
+
+
+                                            <% } %>
+
+
+                                        </div>
+
+
+
+                                        <!-- AÇÕES -->
+
+                                        <div class="availability-modern-actions">
+
+
+                                            <% if (
+                                                slot.status === 'OPEN'
+                                            ) { %>
+
+
+                                                <a
+                                                    href="/availability/<%= slot.id %>/edit"
+                                                    class="availability-action-edit"
+                                                >
+                                                    Editar
+                                                </a>
+
+
+
+                                                <form
+                                                    action="/availability/<%= slot.id %>/cancel"
+                                                    method="POST"
+                                                >
+
+                                                    <button
+                                                        type="submit"
+                                                        class="availability-action-cancel"
+                                                        onclick="return confirm('Deseja cancelar este horário?')"
+                                                    >
+                                                        Cancelar
+                                                    </button>
+
+                                                </form>
+
+
+                                            <% } else { %>
+
+
+                                                <span class="availability-no-action">
+                                                    —
+                                                </span>
+
+
+                                            <% } %>
+
+
+                                        </div>
+
+
+                                    </div>
+
+
+                                <% }) %>
+
+
+                            </div>
+
+
+                        <% } %>
+
+
+                    </div>
+
+
+                </article>
+
+
+            </section>
+
+
+        </main>
+
+
+    </div>
+
+
+
+    <!-- =========================================
+         RODAPÉ
+    ========================================== -->
+
+    <footer class="brand-dashboard-footer">
+
+
+        <div class="brand-footer-features">
+
+
+            <div class="brand-footer-feature">
+
+                <div class="brand-footer-icon">
+                    ◉
+                </div>
+
+                <div>
+
+                    <strong>
+                        ORGANIZAÇÃO
+                    </strong>
+
+                    <span>
+                        Mais tempo para o que realmente importa.
+                    </span>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="brand-footer-feature">
+
+                <div class="brand-footer-icon">
+                    ♡
+                </div>
+
+                <div>
+
+                    <strong>
+                        ACOLHIMENTO
+                    </strong>
+
+                    <span>
+                        Tecnologia a favor da escuta.
+                    </span>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="brand-footer-feature">
+
+                <div class="brand-footer-icon">
+                    ◇
+                </div>
+
+                <div>
+
+                    <strong>
+                        POSSIBILIDADES
+                    </strong>
+
+                    <span>
+                        Um consultório mais leve e humano.
+                    </span>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+
+        <div class="brand-dashboard-signature">
+
+            <strong>
+                EntreSessões
+            </strong>
+
+            <span>
+                PSICOLOGIA NA PRÁTICA,<br>
+                TODOS OS DIAS.
+            </span>
+
+        </div>
+
+
+    </footer>
+
+
+</div>
+
+
+
+<%- include('partials/priority-alert') %>
+
+
+</body>
+
+</html>

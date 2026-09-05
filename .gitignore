@@ -1,0 +1,29 @@
+node_modules/
+.env
+database/*.db
+# Dependências
+node_modules/
+
+# Variáveis e segredos
+.env
+.env.local
+.env.*.local
+
+# Banco SQLite local
+database/*.db
+database/*.db-shm
+database/*.db-wal
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Sistema operacional
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+.idea/

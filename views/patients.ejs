@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Pacientes - EntreSessões
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="/css/style.css"
+    >
+
+</head>
+
+
+<body class="brand-dashboard-page">
+
+
+<div class="brand-dashboard-wrapper">
+
+
+    <!-- =========================================
+         IDENTIDADE ENTRESESSÕES
+    ========================================== -->
+
+    <header class="brand-dashboard-brand-header">
+
+
+        <div class="brand-dashboard-title">
+
+            <h1>
+                EntreSessões
+            </h1>
+
+            <p>
+                SISTEMA PARA CONSULTÓRIOS DE PSICOLOGIA
+            </p>
+
+        </div>
+
+
+
+        <div class="brand-dashboard-message">
+
+            <span class="brand-dashboard-message-line"></span>
+
+            <p>
+                Mais que um sistema,<br>
+                um espaço para o que importa:<br>
+                pessoas, escuta e possibilidades.
+            </p>
+
+        </div>
+
+
+
+        <!-- FOLHAGEM -->
+
+        <img
+            src="/images/folhas-dashboard.png"
+            alt=""
+            class="brand-dashboard-flower"
+        >
+
+
+    </header>
+
+
+
+    <!-- =========================================
+         CARD PRINCIPAL
+    ========================================== -->
+
+    <div class="brand-dashboard-card">
+
+
+        <!-- MENU LATERAL -->
+
+        <%- include('partials/sidebar', {
+            activePage: 'patients'
+        }) %>
+
+
+
+        <!-- =====================================
+             CONTEÚDO
+        ====================================== -->
+
+        <main class="brand-dashboard-main">
+
+
+            <!-- CABEÇALHO -->
+
+            <header class="professional-page-header">
+
+
+                <div>
+
+                    <span class="professional-page-eyebrow">
+                        ACOMPANHAMENTO
+                    </span>
+
+                    <h2>
+                        Pacientes
+                    </h2>
+
+                    <p>
+                        Gerencie as pessoas em acompanhamento
+                        e acesse seus registros.
+                    </p>
+
+                </div>
+
+
+
+                <a
+                    href="/patients/new"
+                    class="brand-action-button brand-action-primary"
+                >
+                    + Novo paciente
+                </a>
+
+
+            </header>
+
+
+
+            <!-- =====================================
+                 RESUMO
+            ====================================== -->
+
+            <section class="patients-page-summary">
+
+
+                <div class="patients-summary-card">
+
+                    <span>
+                        Pacientes cadastrados
+                    </span>
+
+                    <strong>
+                        <%= patients.length %>
+                    </strong>
+
+                    <small>
+                        Total de pacientes
+                    </small>
+
+                </div>
+
+
+
+                <div class="patients-summary-card">
+
+                    <span>
+                        Pacientes ativos
+                    </span>
+
+                    <strong>
+
+                        <%= patients.filter(
+                            patient =>
+                                patient.status === 'ACTIVE'
+                        ).length %>
+
+                    </strong>
+
+                    <small>
+                        Em acompanhamento
+                    </small>
+
+                </div>
+
+
+            </section>
+
+
+
+            <!-- =====================================
+                 LISTA DE PACIENTES
+            ====================================== -->
+
+            <section class="professional-panel">
+
+
+                <header class="professional-panel-header">
+
+
+                    <div>
+
+                        <h3>
+                            Pacientes cadastrados
+                        </h3>
+
+                        <p>
+                            Selecione um paciente para visualizar
+                            seu acompanhamento.
+                        </p>
+
+                    </div>
+
+
+                    <span class="professional-panel-count">
+
+                        <%= patients.length %>
+                        paciente(s)
+
+                    </span>
+
+
+                </header>
+
+
+
+                <div class="professional-panel-body">
+
+
+                    <% if (
+                        patients.length === 0
+                    ) { %>
+
+
+                        <div class="patients-empty">
+
+
+                            <div class="patients-empty-icon">
+                                ♡
+                            </div>
+
+
+                            <h4>
+                                Nenhum paciente cadastrado
+                            </h4>
+
+
+                            <p>
+                                Cadastre o primeiro paciente
+                                para iniciar o acompanhamento.
+                            </p>
+
+
+                            <a
+                                href="/patients/new"
+                                class="brand-action-button brand-action-primary"
+                            >
+                                + Cadastrar paciente
+                            </a>
+
+
+                        </div>
+
+
+                    <% } else { %>
+
+
+
+                        <div class="patients-list-modern">
+
+
+                            <% patients.forEach(patient => { %>
+
+
+                                <a
+                                    href="/patients/<%= patient.id %>"
+                                    class="patient-modern-row"
+                                >
+
+
+                                    <!-- AVATAR -->
+
+                                    <div class="patient-modern-avatar">
+
+                                        <%= patient.name
+                                            .charAt(0)
+                                            .toUpperCase()
+                                        %>
+
+                                    </div>
+
+
+
+                                    <!-- NOME -->
+
+                                    <div class="patient-modern-main">
+
+
+                                        <strong>
+                                            <%= patient.name %>
+                                        </strong>
+
+
+                                        <span>
+                                            <%= patient.email %>
+                                        </span>
+
+
+                                    </div>
+
+
+
+                                    <!-- TELEFONE -->
+
+                                    <div class="patient-modern-info">
+
+
+                                        <span class="patient-modern-label">
+                                            Telefone
+                                        </span>
+
+
+                                        <strong>
+
+                                            <%= patient.phone
+                                                || 'Não informado'
+                                            %>
+
+                                        </strong>
+
+
+                                    </div>
+
+
+
+                                    <!-- STATUS -->
+
+                                    <div class="patient-modern-status">
+
+
+                                        <% if (
+                                            patient.status === 'ACTIVE'
+                                        ) { %>
+
+
+                                            <span class="brand-status brand-status-confirmed">
+
+                                                Ativo
+
+                                            </span>
+
+
+                                        <% } else { %>
+
+
+                                            <span class="brand-status brand-status-viewed">
+
+                                                Inativo
+
+                                            </span>
+
+
+                                        <% } %>
+
+
+                                    </div>
+
+
+
+                                    <!-- SETA -->
+
+                                    <div class="patient-modern-arrow">
+                                        →
+                                    </div>
+
+
+                                </a>
+
+
+                            <% }) %>
+
+
+                        </div>
+
+
+                    <% } %>
+
+
+                </div>
+
+
+            </section>
+
+
+        </main>
+
+
+    </div>
+
+
+
+    <!-- =========================================
+         RODAPÉ
+    ========================================== -->
+
+    <footer class="brand-dashboard-footer">
+
+
+        <div class="brand-footer-features">
+
+
+            <!-- ORGANIZAÇÃO -->
+
+            <div class="brand-footer-feature">
+
+
+                <div class="brand-footer-icon">
+                    ◉
+                </div>
+
+
+                <div>
+
+                    <strong>
+                        ORGANIZAÇÃO
+                    </strong>
+
+                    <span>
+                        Mais tempo para o que realmente importa.
+                    </span>
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- ACOLHIMENTO -->
+
+            <div class="brand-footer-feature">
+
+
+                <div class="brand-footer-icon">
+                    ♡
+                </div>
+
+
+                <div>
+
+                    <strong>
+                        ACOLHIMENTO
+                    </strong>
+
+                    <span>
+                        Tecnologia a favor da escuta.
+                    </span>
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- POSSIBILIDADES -->
+
+            <div class="brand-footer-feature">
+
+
+                <div class="brand-footer-icon">
+                    ◇
+                </div>
+
+
+                <div>
+
+                    <strong>
+                        POSSIBILIDADES
+                    </strong>
+
+                    <span>
+                        Um consultório mais leve e humano.
+                    </span>
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+
+
+        <div class="brand-dashboard-signature">
+
+            <strong>
+                EntreSessões
+            </strong>
+
+            <span>
+                PSICOLOGIA NA PRÁTICA,<br>
+                TODOS OS DIAS.
+            </span>
+
+        </div>
+
+
+    </footer>
+
+
+</div>
+
+
+
+<!-- ALERTA PRIORITÁRIO -->
+
+<%- include('partials/priority-alert') %>
+
+
+</body>
+
+</html>

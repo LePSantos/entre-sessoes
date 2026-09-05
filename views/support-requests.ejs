@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Solicitações - EntreSessões
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="/css/style.css"
+    >
+
+</head>
+
+
+<body class="brand-dashboard-page">
+
+
+<div class="brand-dashboard-wrapper">
+
+
+    <!-- =========================================
+         IDENTIDADE ENTRESESSÕES
+    ========================================== -->
+
+    <header class="brand-dashboard-brand-header">
+
+
+        <div class="brand-dashboard-title">
+
+            <h1>
+                EntreSessões
+            </h1>
+
+            <p>
+                SISTEMA PARA CONSULTÓRIOS DE PSICOLOGIA
+            </p>
+
+        </div>
+
+
+
+        <div class="brand-dashboard-message">
+
+            <span class="brand-dashboard-message-line"></span>
+
+            <p>
+                Mais que um sistema,<br>
+                um espaço para o que importa:<br>
+                pessoas, escuta e possibilidades.
+            </p>
+
+        </div>
+
+
+
+        <img
+            src="/images/folhas-dashboard.png"
+            alt=""
+            class="brand-dashboard-flower"
+        >
+
+
+    </header>
+
+
+
+    <!-- =========================================
+         CARD PRINCIPAL
+    ========================================== -->
+
+    <div class="brand-dashboard-card">
+
+
+        <!-- MENU -->
+
+        <%- include('partials/sidebar', {
+            activePage: 'support'
+        }) %>
+
+
+
+        <!-- =====================================
+             CONTEÚDO
+        ====================================== -->
+
+        <main class="brand-dashboard-main">
+
+
+            <!-- CABEÇALHO -->
+
+            <header class="professional-page-header">
+
+
+                <div>
+
+                    <span class="professional-page-eyebrow">
+                        ACOMPANHAMENTO
+                    </span>
+
+                    <h2>
+                        Solicitações prioritárias
+                    </h2>
+
+                    <p>
+                        Acompanhe os pedidos de contato
+                        enviados pelos seus pacientes.
+                    </p>
+
+                </div>
+
+
+            </header>
+
+
+
+            <!-- =====================================
+                 RESUMO
+            ====================================== -->
+
+            <section class="support-summary-grid">
+
+
+                <!-- PENDENTES -->
+
+                <article class="support-summary-card support-summary-pending">
+
+                    <span>
+                        Pendentes
+                    </span>
+
+                    <strong>
+
+                        <%= requests.filter(
+                            requestItem =>
+                                requestItem.status === 'PENDING'
+                        ).length %>
+
+                    </strong>
+
+                    <small>
+                        Aguardando atenção
+                    </small>
+
+                </article>
+
+
+
+                <!-- VISUALIZADAS -->
+
+                <article class="support-summary-card">
+
+                    <span>
+                        Visualizadas
+                    </span>
+
+                    <strong>
+
+                        <%= requests.filter(
+                            requestItem =>
+                                requestItem.status === 'VIEWED'
+                        ).length %>
+
+                    </strong>
+
+                    <small>
+                        Já foram consultadas
+                    </small>
+
+                </article>
+
+
+
+                <!-- RESOLVIDAS -->
+
+                <article class="support-summary-card">
+
+                    <span>
+                        Resolvidas
+                    </span>
+
+                    <strong>
+
+                        <%= requests.filter(
+                            requestItem =>
+                                requestItem.status === 'RESOLVED'
+                        ).length %>
+
+                    </strong>
+
+                    <small>
+                        Atendimento concluído
+                    </small>
+
+                </article>
+
+
+            </section>
+
+
+
+            <!-- =====================================
+                 AVISO
+            ====================================== -->
+
+            <div class="support-guidance">
+
+
+                <div class="support-guidance-icon">
+                    !
+                </div>
+
+
+                <div>
+
+                    <strong>
+                        Contato prioritário
+                    </strong>
+
+                    <p>
+                        A solicitação indica que o paciente
+                        deseja um contato com prioridade.
+                        Ela não substitui serviços de emergência
+                        e não representa garantia de resposta imediata.
+                    </p>
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- =====================================
+                 LISTA
+            ====================================== -->
+
+            <section class="professional-panel support-main-panel">
+
+
+                <header class="professional-panel-header">
+
+
+                    <div>
+
+                        <h3>
+                            Solicitações recebidas
+                        </h3>
+
+                        <p>
+                            Visualize o paciente e atualize
+                            a situação de cada solicitação.
+                        </p>
+
+                    </div>
+
+
+
+                    <span class="professional-panel-count">
+
+                        <%= requests.length %>
+                        solicitação(ões)
+
+                    </span>
+
+
+                </header>
+
+
+
+                <div class="support-list-content">
+
+
+                    <% if (
+                        requests.length === 0
+                    ) { %>
+
+
+                        <div class="support-empty-state">
+
+
+                            <div class="support-empty-icon">
+                                ✓
+                            </div>
+
+
+                            <h4>
+                                Nenhuma solicitação
+                            </h4>
+
+
+                            <p>
+                                Não há solicitações prioritárias
+                                registradas no momento.
+                            </p>
+
+
+                        </div>
+
+
+                    <% } else { %>
+
+
+
+                        <div class="support-modern-list">
+
+
+                            <% requests.forEach(requestItem => { %>
+
+
+                                <article
+                                    class="support-modern-row <%= requestItem.status === 'PENDING' ? 'support-modern-row-pending' : '' %>"
+                                >
+
+
+                                    <!-- PACIENTE -->
+
+                                    <a
+                                        href="/patients/<%= requestItem.patient_id %>"
+                                        class="support-modern-patient"
+                                    >
+
+
+                                        <div class="support-modern-avatar">
+
+                                            <%= requestItem
+                                                .patient_name
+                                                .charAt(0)
+                                                .toUpperCase()
+                                            %>
+
+                                        </div>
+
+
+
+                                        <div class="support-modern-patient-info">
+
+                                            <strong>
+                                                <%= requestItem.patient_name %>
+                                            </strong>
+
+                                            <span>
+                                                Ver acompanhamento →
+                                            </span>
+
+                                        </div>
+
+
+                                    </a>
+
+
+
+                                    <!-- DATA -->
+
+                                    <div class="support-modern-date">
+
+                                        <span>
+                                            Solicitação enviada
+                                        </span>
+
+                                        <strong>
+                                            <%= requestItem.created_at_formatted %>
+                                        </strong>
+
+                                    </div>
+
+
+
+                                    <!-- STATUS ATUAL -->
+
+                                    <div class="support-modern-current-status">
+
+
+                                        <% if (
+                                            requestItem.status === 'PENDING'
+                                        ) { %>
+
+
+                                            <span class="brand-status brand-status-priority">
+                                                Pendente
+                                            </span>
+
+
+                                        <% } else if (
+                                            requestItem.status === 'VIEWED'
+                                        ) { %>
+
+
+                                            <span class="brand-status brand-status-viewed">
+                                                Visualizada
+                                            </span>
+
+
+                                        <% } else { %>
+
+
+                                            <span class="brand-status brand-status-confirmed">
+                                                Resolvida
+                                            </span>
+
+
+                                        <% } %>
+
+
+                                    </div>
+
+
+
+                                    <!-- ALTERAR STATUS -->
+
+                                    <form
+                                        action="/support-requests/<%= requestItem.id %>/status"
+                                        method="POST"
+                                        class="support-modern-form"
+                                    >
+
+
+                                        <select
+                                            name="status"
+                                            required
+                                            aria-label="Alterar status da solicitação"
+                                        >
+
+                                            <option
+                                                value=""
+                                                disabled
+                                                selected
+                                            >
+                                                Alterar status...
+                                            </option>
+
+                                            <option value="PENDING">
+                                                Pendente
+                                            </option>
+
+                                            <option value="VIEWED">
+                                                Visualizada
+                                            </option>
+
+                                            <option value="RESOLVED">
+                                                Resolvida
+                                            </option>
+
+                                        </select>
+
+
+
+                                        <button
+                                            type="submit"
+                                            class="support-save-button"
+                                        >
+                                            Salvar
+                                        </button>
+
+
+                                    </form>
+
+
+                                </article>
+
+
+                            <% }) %>
+
+
+                        </div>
+
+
+                    <% } %>
+
+
+                </div>
+
+
+            </section>
+
+
+        </main>
+
+
+    </div>
+
+
+
+    <!-- =========================================
+         RODAPÉ
+    ========================================== -->
+
+    <footer class="brand-dashboard-footer">
+
+
+        <div class="brand-footer-features">
+
+
+            <div class="brand-footer-feature">
+
+                <div class="brand-footer-icon">
+                    ◉
+                </div>
+
+                <div>
+
+                    <strong>
+                        ORGANIZAÇÃO
+                    </strong>
+
+                    <span>
+                        Mais tempo para o que realmente importa.
+                    </span>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="brand-footer-feature">
+
+                <div class="brand-footer-icon">
+                    ♡
+                </div>
+
+                <div>
+
+                    <strong>
+                        ACOLHIMENTO
+                    </strong>
+
+                    <span>
+                        Tecnologia a favor da escuta.
+                    </span>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="brand-footer-feature">
+
+                <div class="brand-footer-icon">
+                    ◇
+                </div>
+
+                <div>
+
+                    <strong>
+                        POSSIBILIDADES
+                    </strong>
+
+                    <span>
+                        Um consultório mais leve e humano.
+                    </span>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+
+        <div class="brand-dashboard-signature">
+
+            <strong>
+                EntreSessões
+            </strong>
+
+            <span>
+                PSICOLOGIA NA PRÁTICA,<br>
+                TODOS OS DIAS.
+            </span>
+
+        </div>
+
+
+    </footer>
+
+
+</div>
+
+
+
+<%- include('partials/priority-alert') %>
+
+
+</body>
+
+</html>

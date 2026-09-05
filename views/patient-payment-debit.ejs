@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Débito - EntreSessões
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="/css/style.css"
+    >
+
+</head>
+
+
+<body class="patient-payment-page">
+
+
+<%
+    const paymentSession =
+        typeof sessionItem !== 'undefined'
+            ? sessionItem
+            : (
+                typeof session !== 'undefined'
+                    ? session
+                    : {}
+            );
+
+
+    const cleanPatientName =
+        String(
+            typeof user !== 'undefined' && user
+                ? user.name
+                : 'Paciente'
+        );
+
+
+    const patientFirstName =
+        cleanPatientName.split(' ')[0];
+
+
+    const paymentAmount =
+        Number(
+            paymentSession.price || 0
+        );
+%>
+
+
+<div class="patient-home-wrapper">
+
+
+    <header class="patient-home-brand-header">
+
+
+        <div class="brand-dashboard-title">
+
+            <h1>
+                EntreSessões
+            </h1>
+
+            <p>
+                SEU ESPAÇO ENTRE UM ENCONTRO E OUTRO
+            </p>
+
+        </div>
+
+
+
+        <div class="brand-dashboard-message patient-home-brand-message">
+
+            <span class="brand-dashboard-message-line"></span>
+
+            <p>
+                Um espaço para registrar,<br>
+                acompanhar e cuidar do que acontece<br>
+                entre as sessões.
+            </p>
+
+        </div>
+
+
+
+        <img
+            src="/images/folhas-dashboard.png"
+            alt=""
+            class="patient-home-flower"
+        >
+
+
+    </header>
+
+
+
+    <main class="patient-payment-main">
+
+
+        <div class="patient-payment-navigation">
+
+
+            <a href="pay">
+                ← Escolher outra forma
+            </a>
+
+
+
+            <div class="patient-payment-user">
+
+
+                <div class="patient-payment-user-avatar">
+
+                    <%= patientFirstName
+                        .charAt(0)
+                        .toUpperCase()
+                    %>
+
+                </div>
+
+
+                <div>
+
+                    <strong>
+                        <%= cleanPatientName %>
+                    </strong>
+
+                    <span>
+                        Cartão de débito
+                    </span>
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+
+
+        <section class="patient-payment-heading">
+
+
+            <span class="patient-home-eyebrow">
+                CARTÃO DE DÉBITO
+            </span>
+
+
+            <h2>
+                Pagamento no débito
+            </h2>
+
+
+            <p>
+                Confirme abaixo para simular
+                o pagamento à vista da sua sessão.
+            </p>
+
+
+        </section>
+
+
+
+        <section class="patient-payment-two-columns">
+
+
+            <article class="patient-payment-box">
+
+
+                <span class="patient-payment-box-eyebrow">
+                    PAGAMENTO
+                </span>
+
+
+                <h3>
+                    Pagamento à vista
+                </h3>
+
+
+
+                <div class="patient-payment-big-value">
+
+                    R$
+                    <%= paymentAmount
+                        .toFixed(2)
+                        .replace('.', ',')
+                    %>
+
+                </div>
+
+
+
+                <div class="patient-payment-card-warning">
+
+                    <div>
+                        ♡
+                    </div>
+
+
+                    <p>
+                        Para esta demonstração,
+                        nenhum número de cartão,
+                        senha ou código de segurança
+                        precisa ser informado.
+                    </p>
+
+                </div>
+
+
+
+                <form
+                    method="POST"
+                    action=""
+                >
+
+
+                    <input
+                        type="hidden"
+                        name="payment_method"
+                        value="DEBIT"
+                    >
+
+
+                    <input
+                        type="hidden"
+                        name="payment_installments"
+                        value="1"
+                    >
+
+
+                    <input
+                        type="hidden"
+                        name="installments"
+                        value="1"
+                    >
+
+
+                    <button
+                        type="submit"
+                        class="patient-payment-confirm"
+                    >
+                        Confirmar pagamento no débito
+
+                        <span>
+                            →
+                        </span>
+                    </button>
+
+
+                </form>
+
+
+            </article>
+
+
+
+            <aside class="patient-payment-side-card">
+
+
+                <span>
+                    RESUMO
+                </span>
+
+
+                <h3>
+                    Sua sessão
+                </h3>
+
+
+
+                <div class="patient-payment-side-row">
+
+                    <span>
+                        Data
+                    </span>
+
+                    <strong>
+                        <%= paymentSession.date_formatted
+                            || '—'
+                        %>
+                    </strong>
+
+                </div>
+
+
+
+                <div class="patient-payment-side-row">
+
+                    <span>
+                        Horário
+                    </span>
+
+                    <strong>
+                        <%= paymentSession.time_formatted
+                            || '—'
+                        %>
+                    </strong>
+
+                </div>
+
+
+
+                <div class="patient-payment-side-row">
+
+                    <span>
+                        Forma
+                    </span>
+
+                    <strong>
+                        Débito
+                    </strong>
+
+                </div>
+
+
+
+                <div class="patient-payment-side-total">
+
+                    <span>
+                        Total
+                    </span>
+
+                    <strong>
+                        R$
+                        <%= paymentAmount
+                            .toFixed(2)
+                            .replace('.', ',')
+                        %>
+                    </strong>
+
+                </div>
+
+
+            </aside>
+
+
+        </section>
+
+
+
+        <section class="patient-payment-demo-notice">
+
+            <div>
+                i
+            </div>
+
+            <p>
+                <strong>Ambiente demonstrativo:</strong>
+                o botão apenas simula a confirmação
+                do pagamento dentro do projeto.
+            </p>
+
+        </section>
+
+
+    </main>
+
+
+
+    <footer class="patient-home-footer">
+
+
+        <div class="patient-home-footer-brand">
+
+            <strong>
+                EntreSessões
+            </strong>
+
+            <span>
+                Um espaço de continuidade entre encontros.
+            </span>
+
+        </div>
+
+
+    </footer>
+
+
+</div>
+
+
+</body>
+
+</html>

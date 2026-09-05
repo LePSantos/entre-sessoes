@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Novo paciente - EntreSessões
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="/css/style.css"
+    >
+
+</head>
+
+
+<body class="brand-dashboard-page professional-form-page">
+
+
+<div class="brand-dashboard-wrapper">
+
+
+    <!-- ==================================================
+         IDENTIDADE ENTRESESSÕES
+    =================================================== -->
+
+    <header class="brand-dashboard-brand-header">
+
+
+        <div class="brand-dashboard-title">
+
+            <h1>
+                EntreSessões
+            </h1>
+
+            <p>
+                SISTEMA PARA CONSULTÓRIOS DE PSICOLOGIA
+            </p>
+
+        </div>
+
+
+
+        <div class="brand-dashboard-message">
+
+            <span class="brand-dashboard-message-line"></span>
+
+            <p>
+                Mais que um sistema, um espaço para o que importa:
+                pessoas, escuta e possibilidades.
+            </p>
+
+        </div>
+
+
+
+        <img
+            src="/images/folhas-dashboard.png"
+            alt=""
+            class="brand-dashboard-flower"
+        >
+
+
+    </header>
+
+
+
+    <!-- ==================================================
+         CARD PRINCIPAL
+    =================================================== -->
+
+    <div class="brand-dashboard-card">
+
+
+        <!-- SIDEBAR -->
+
+        <%- include(
+            'partials/sidebar',
+            {
+                activePage: 'patients'
+            }
+        ) %>
+
+
+
+        <!-- CONTEÚDO -->
+
+        <main class="professional-form-main">
+
+
+            <!-- TOPO -->
+
+            <div class="professional-form-topbar">
+
+
+                <a
+                    href="/patients"
+                    class="professional-form-back"
+                >
+                    ← Voltar para pacientes
+                </a>
+
+
+
+                <div class="professional-form-top-user">
+
+                    <div class="professional-form-top-avatar">
+
+                        <%= user
+                            && user.name
+                            ? user.name
+                                .replace(/^Dra\.?\s*/i, '')
+                                .charAt(0)
+                                .toUpperCase()
+                            : 'B'
+                        %>
+
+                    </div>
+
+
+                    <div>
+
+                        <strong>
+                            <%= user
+                                && user.name
+                                ? user.name.replace(/^Dra\.?\s*/i, '')
+                                : 'Bruna Nascimento'
+                            %>
+                        </strong>
+
+                        <span>
+                            Área profissional
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- CABEÇALHO -->
+
+            <section class="professional-form-heading">
+
+
+                <span class="professional-form-eyebrow">
+                    PACIENTES
+                </span>
+
+
+                <h2>
+                    Novo paciente
+                </h2>
+
+
+                <p>
+                    Cadastre as informações básicas do paciente
+                    e defina os dados iniciais de acesso
+                    ao EntreSessões.
+                </p>
+
+
+            </section>
+
+
+
+            <!-- ERRO -->
+
+            <% if (
+                typeof error !== 'undefined'
+                && error
+            ) { %>
+
+
+                <div class="professional-form-error">
+
+                    <div>
+                        !
+                    </div>
+
+                    <span>
+                        <%= error %>
+                    </span>
+
+                </div>
+
+
+            <% } %>
+
+
+
+            <!-- ==================================================
+                 FORMULÁRIO
+            =================================================== -->
+
+            <form
+                action="/patients/new"
+                method="POST"
+                class="professional-form-layout"
+            >
+
+
+                <!-- COLUNA PRINCIPAL -->
+
+                <section class="professional-form-panel">
+
+
+                    <div class="professional-form-panel-header">
+
+                        <div>
+
+                            <span>
+                                DADOS DO PACIENTE
+                            </span>
+
+                            <h3>
+                                Informações pessoais
+                            </h3>
+
+                            <p>
+                                Preencha os principais dados
+                                para iniciar o acompanhamento.
+                            </p>
+
+                        </div>
+
+
+                        <div class="professional-form-panel-icon">
+                            +
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="professional-form-fields">
+
+
+                        <!-- NOME -->
+
+                        <div class="professional-form-field professional-form-field-full">
+
+                            <label for="name">
+                                Nome completo
+                            </label>
+
+                            <input
+                                type="text"
+                                id="name"
+                                name="name"
+                                placeholder="Ex.: João Maria"
+                                required
+                            >
+
+                        </div>
+
+
+
+                        <!-- EMAIL -->
+
+                        <div class="professional-form-field professional-form-field-full">
+
+                            <label for="email">
+                                E-mail
+                            </label>
+
+                            <input
+                                type="email"
+                                id="email"
+                                name="email"
+                                placeholder="paciente@email.com"
+                                required
+                            >
+
+                        </div>
+
+
+
+                        <!-- TELEFONE -->
+
+                        <div class="professional-form-field">
+
+                            <label for="phone">
+                                Telefone
+                            </label>
+
+                            <input
+                                type="text"
+                                id="phone"
+                                name="phone"
+                                placeholder="(00) 00000-0000"
+                            >
+
+                        </div>
+
+
+
+                        <!-- NASCIMENTO -->
+
+                        <div class="professional-form-field">
+
+                            <label for="birth_date">
+                                Data de nascimento
+                            </label>
+
+                            <input
+                                type="date"
+                                id="birth_date"
+                                name="birth_date"
+                            >
+
+                        </div>
+
+
+
+                        <!-- VALOR -->
+
+                        <div class="professional-form-field">
+
+                            <label for="default_session_price">
+                                Valor padrão da sessão
+                            </label>
+
+                            <div class="professional-form-money-input">
+
+                                <span>
+                                    R$
+                                </span>
+
+                                <input
+                                    type="number"
+                                    id="default_session_price"
+                                    name="default_session_price"
+                                    step="0.01"
+                                    min="0"
+                                    placeholder="0,00"
+                                >
+
+                            </div>
+
+                        </div>
+
+
+
+                        <!-- SENHA -->
+
+                        <div class="professional-form-field">
+
+                            <label for="password">
+                                Senha inicial
+                            </label>
+
+                            <input
+                                type="password"
+                                id="password"
+                                name="password"
+                                placeholder="Defina uma senha"
+                                required
+                            >
+
+                        </div>
+
+
+                    </div>
+
+
+
+                    <!-- AÇÕES -->
+
+                    <div class="professional-form-actions">
+
+
+                        <a
+                            href="/patients"
+                            class="professional-form-cancel"
+                        >
+                            Cancelar
+                        </a>
+
+
+                        <button
+                            type="submit"
+                            class="professional-form-submit"
+                        >
+                            Cadastrar paciente
+
+                            <span>
+                                →
+                            </span>
+                        </button>
+
+
+                    </div>
+
+
+                </section>
+
+
+
+                <!-- ==================================================
+                     LATERAL
+                =================================================== -->
+
+                <aside class="professional-form-side">
+
+
+                    <!-- IDENTIDADE -->
+
+                    <article class="professional-form-brand-card">
+
+
+                        <span>
+                            ACOMPANHAMENTO
+                        </span>
+
+
+
+                        <div class="professional-form-brand-profile">
+
+
+                            <div class="professional-form-brand-symbol">
+
+                                <img
+                                    src="/images/simbolo-bruna.png"
+                                    alt=""
+                                >
+
+                            </div>
+
+
+
+                            <div>
+
+                                <h3>
+                                    Bruna Nascimento
+                                </h3>
+
+                                <p>
+                                    Área profissional
+                                </p>
+
+                            </div>
+
+
+                        </div>
+
+
+
+                        <div class="professional-form-brand-line"></div>
+
+
+                        <p>
+                            O paciente cadastrado ficará
+                            vinculado à sua área profissional
+                            e poderá acessar os recursos
+                            destinados ao acompanhamento.
+                        </p>
+
+
+                    </article>
+
+
+
+                    <!-- O QUE SERÁ LIBERADO -->
+
+                    <article class="professional-form-info-card">
+
+
+                        <span>
+                            ACESSO DO PACIENTE
+                        </span>
+
+
+                        <h3>
+                            O que ficará disponível
+                        </h3>
+
+
+
+                        <div class="professional-form-info-item">
+
+                            <div>
+                                ✓
+                            </div>
+
+                            <p>
+                                Diário emocional
+                            </p>
+
+                        </div>
+
+
+
+                        <div class="professional-form-info-item">
+
+                            <div>
+                                ✓
+                            </div>
+
+                            <p>
+                                Sessões e agendamentos
+                            </p>
+
+                        </div>
+
+
+
+                        <div class="professional-form-info-item">
+
+                            <div>
+                                ✓
+                            </div>
+
+                            <p>
+                                Pagamentos demonstrativos
+                            </p>
+
+                        </div>
+
+
+
+                        <div class="professional-form-info-item">
+
+                            <div>
+                                ✓
+                            </div>
+
+                            <p>
+                                Solicitação de contato prioritário
+                            </p>
+
+                        </div>
+
+
+                    </article>
+
+
+                </aside>
+
+
+            </form>
+
+
+
+            <!-- AVISO -->
+
+            <section class="professional-form-notice">
+
+
+                <div>
+                    i
+                </div>
+
+
+                <p>
+                    Para a apresentação acadêmica do projeto,
+                    utilize apenas dados fictícios de pacientes.
+                    O EntreSessões trabalha com informações
+                    sensíveis relacionadas ao acompanhamento terapêutico.
+                </p>
+
+
+            </section>
+
+
+        </main>
+
+
+    </div>
+
+
+
+    <!-- ==================================================
+         RODAPÉ
+    =================================================== -->
+
+    <footer class="brand-dashboard-footer">
+
+
+        <div>
+
+            <strong>
+                ORGANIZAÇÃO
+            </strong>
+
+            <span>
+                Mais tempo para o que realmente importa.
+            </span>
+
+        </div>
+
+
+        <div>
+
+            <strong>
+                ACOLHIMENTO
+            </strong>
+
+            <span>
+                Tecnologia a favor da escuta.
+            </span>
+
+        </div>
+
+
+        <div>
+
+            <strong>
+                POSSIBILIDADES
+            </strong>
+
+            <span>
+                Um consultório mais leve e humano.
+            </span>
+
+        </div>
+
+
+    </footer>
+
+
+</div>
+
+
+<%- include('partials/priority-alert') %>
+
+
+</body>
+
+</html>
