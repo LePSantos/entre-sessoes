@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Convite criado - EntreSessões</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <style>
+        .invite-created-main { width: 100%; padding: 34px; box-sizing: border-box; }
+        .invite-created-card { max-width: 760px; background: #fff; border: 1px solid #e2e7e3; border-radius: 18px; padding: 30px; box-sizing: border-box; }
+        .invite-created-card h2 { margin: 4px 0 10px; font-family: Georgia, serif; font-size: 30px; color: #30463a; }
+        .invite-created-card p { color: #68776f; line-height: 1.65; }
+        .invite-created-status { margin: 22px 0; padding: 16px; border-radius: 13px; background: #fff8e8; color: #756039; line-height: 1.55; }
+        .invite-created-linkbox { margin-top: 20px; padding: 16px; border: 1px solid #dfe5e1; border-radius: 13px; background: #f8faf8; }
+        .invite-created-linkbox label { display: block; margin-bottom: 8px; font-weight: 700; color: #40564a; }
+        .invite-created-row { display: flex; gap: 10px; }
+        .invite-created-row input { min-width: 0; flex: 1; height: 45px; padding: 0 12px; border: 1px solid #dce3de; border-radius: 9px; }
+        .invite-created-button { min-height: 45px; padding: 0 17px; border: 0; border-radius: 10px; background: #58796a; color: #fff; font-weight: 700; text-decoration: none; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; box-sizing: border-box; }
+        .invite-created-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 24px; }
+        .invite-created-secondary { background: #eef2ef; color: #53665c; }
+        @media (max-width: 720px) { .invite-created-main { padding: 22px 18px 40px; } .invite-created-card { padding: 22px; } .invite-created-row { flex-direction: column; } }
+    </style>
+</head>
+<body class="brand-dashboard-page professional-form-page">
+<div class="brand-dashboard-wrapper">
+    <header class="brand-dashboard-brand-header">
+        <div class="brand-dashboard-title">
+            <h1>EntreSessões</h1>
+            <p>SISTEMA PARA CONSULTÓRIOS DE PSICOLOGIA</p>
+        </div>
+    </header>
+
+    <div class="brand-dashboard-card">
+        <%- include('partials/sidebar', { activePage: 'patients' }) %>
+
+        <main class="invite-created-main">
+            <section class="invite-created-card">
+                <span class="professional-form-eyebrow">PACIENTES</span>
+                <h2>Convite criado</h2>
+
+                <p><strong><%= patientName %></strong> foi cadastrado(a) com o e-mail <strong><%= patientEmail %></strong>. O acesso permanecerá inativo até que o paciente crie a própria senha.</p>
+
+                <div class="invite-created-status">
+                    Nesta etapa de teste, copie o link abaixo e abra em outra aba. Depois configuraremos o envio automático do convite por e-mail.
+                </div>
+
+                <div class="invite-created-linkbox">
+                    <label for="inviteUrl">Link de ativação</label>
+                    <div class="invite-created-row">
+                        <input id="inviteUrl" type="text" value="<%= inviteUrl %>" readonly>
+                        <button type="button" class="invite-created-button" id="copyInvite">Copiar link</button>
+                    </div>
+                </div>
+
+                <p>Para a apresentação acadêmica, utilize apenas dados fictícios.</p>
+
+                <div class="invite-created-actions">
+                    <a class="invite-created-button" href="/patients">Ver pacientes</a>
+                    <a class="invite-created-button invite-created-secondary" href="/patients/new">Cadastrar outro paciente</a>
+                </div>
+            </section>
+        </main>
+    </div>
+</div>
+
+<%- include('partials/priority-alert') %>
+
+<script>
+    const copyButton = document.getElementById('copyInvite');
+    const inviteInput = document.getElementById('inviteUrl');
+
+    copyButton.addEventListener('click', async () => {
+        try {
+            await navigator.clipboard.writeText(inviteInput.value);
+        } catch (error) {
+            inviteInput.select();
+            document.execCommand('copy');
+        }
+
+        copyButton.textContent = 'Copiado ✓';
+    });
+</script>
+</body>
+</html>

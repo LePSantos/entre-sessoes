@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ativar acesso - EntreSessões</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <style>
+        .activation-page { min-height: 100vh; display: grid; place-items: center; padding: 24px; background: #f6f4ef; box-sizing: border-box; }
+        .activation-card { width: 100%; max-width: 520px; background: #fff; border: 1px solid #e2e7e3; border-radius: 22px; padding: 34px; box-sizing: border-box; box-shadow: 0 18px 45px rgba(45, 62, 53, .08); }
+        .activation-brand { text-align: center; margin-bottom: 28px; }
+        .activation-brand img { width: 86px; height: 86px; object-fit: contain; }
+        .activation-brand h1, .activation-card h2 { font-family: Georgia, serif; color: #31473b; }
+        .activation-brand h1 { margin: 8px 0 4px; font-size: 30px; }
+        .activation-brand p, .activation-text { color: #718078; line-height: 1.6; }
+        .activation-card h2 { margin: 0 0 10px; font-size: 27px; }
+        .activation-error { margin: 16px 0; padding: 14px 16px; border-radius: 12px; background: #fff1ef; color: #8a4941; }
+        .activation-success { margin: 18px 0; padding: 16px; border-radius: 12px; background: #edf5ef; color: #405f50; line-height: 1.6; }
+        .activation-form { display: grid; gap: 16px; margin-top: 20px; }
+        .activation-field label { display: block; margin-bottom: 7px; font-weight: 700; color: #3f5549; }
+        .activation-field input { width: 100%; height: 50px; border: 1px solid #dbe2dd; border-radius: 11px; padding: 0 13px; box-sizing: border-box; font-size: 16px; }
+        .activation-button { width: 100%; min-height: 50px; border: 0; border-radius: 11px; background: #58796a; color: #fff; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; text-decoration: none; box-sizing: border-box; }
+        .activation-help { color: #839088; font-size: 14px; line-height: 1.5; }
+        @media (max-width: 560px) { .activation-page { padding: 0; align-items: start; } .activation-card { min-height: 100vh; border: 0; border-radius: 0; padding: 30px 22px; box-shadow: none; } }
+    </style>
+</head>
+<body>
+<main class="activation-page">
+    <section class="activation-card">
+        <div class="activation-brand">
+            <img src="/images/simbolo-bruna.png" alt="">
+            <h1>EntreSessões</h1>
+            <p>Acompanhamento entre sessões</p>
+        </div>
+
+        <% if (success) { %>
+            <h2>Acesso ativado</h2>
+            <div class="activation-success">
+                <strong>Tudo certo<%= patientName ? ', ' + patientName : '' %>.</strong><br>
+                Sua senha foi criada e seu acesso está ativo.
+            </div>
+            <p class="activation-text">Agora você pode entrar usando seu e-mail e a senha que acabou de criar.</p>
+            <a class="activation-button" href="/login">Ir para o login</a>
+        <% } else { %>
+            <h2>Crie sua senha</h2>
+
+            <% if (patientName) { %>
+                <p class="activation-text">Olá, <strong><%= patientName %></strong>. Defina sua senha para ativar seu acesso ao EntreSessões.</p>
+            <% } %>
+
+            <% if (error) { %>
+                <div class="activation-error"><%= error %></div>
+            <% } %>
+
+            <% if (token) { %>
+                <form action="/activate/<%= token %>" method="POST" class="activation-form">
+                    <div class="activation-field">
+                        <label for="password">Nova senha</label>
+                        <input type="password" id="password" name="password" minlength="8" autocomplete="new-password" required>
+                    </div>
+                    <div class="activation-field">
+                        <label for="password_confirmation">Confirmar senha</label>
+                        <input type="password" id="password_confirmation" name="password_confirmation" minlength="8" autocomplete="new-password" required>
+                    </div>
+                    <button type="submit" class="activation-button">Criar senha e ativar acesso</button>
+                </form>
+                <p class="activation-help">A senha deve ter pelo menos 8 caracteres. O convite pode ser utilizado uma única vez.</p>
+            <% } else { %>
+                <a class="activation-button" href="/login">Voltar para o login</a>
+            <% } %>
+        <% } %>
+    </section>
+</main>
+</body>
+</html>
