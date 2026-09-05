@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="pt-BR">
 
 <head>
@@ -56,7 +57,9 @@
             <!-- NOME -->
 
             <h1 class="bn-brand-name">
+
                 Bruna Nascimento
+
             </h1>
 
 
@@ -188,7 +191,7 @@
 
                 <!-- SENHA -->
 
-                <div class="bn-login-input">
+                <div class="bn-login-input bn-password-input">
 
                     <span>
                         ◇
@@ -197,10 +200,37 @@
                     <input
                         type="password"
                         name="password"
+                        id="loginPassword"
                         placeholder="Senha"
                         autocomplete="current-password"
                         required
                     >
+
+                    <button
+                        type="button"
+                        class="bn-password-toggle"
+                        id="passwordToggle"
+                        aria-label="Mostrar senha"
+                        title="Mostrar senha"
+                    >
+
+                        <svg
+                            class="bn-eye-icon"
+                            viewBox="0 0 24 24"
+                            aria-hidden="true"
+                        >
+                            <path
+                                d="M2.5 12s3.5-6 9.5-6 9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6Z"
+                            ></path>
+
+                            <circle
+                                cx="12"
+                                cy="12"
+                                r="2.8"
+                            ></circle>
+                        </svg>
+
+                    </button>
 
                 </div>
 
@@ -238,7 +268,9 @@
                     type="submit"
                     class="bn-login-button"
                 >
+
                     Entrar
+
                 </button>
 
 
@@ -270,6 +302,62 @@
 
 
 </div>
+
+
+
+<script>
+
+    const passwordInput =
+        document.getElementById(
+            'loginPassword'
+        );
+
+    const passwordToggle =
+        document.getElementById(
+            'passwordToggle'
+        );
+
+
+    passwordToggle.addEventListener(
+        'click',
+        () => {
+
+            const passwordIsVisible =
+                passwordInput.type ===
+                'text';
+
+
+            passwordInput.type =
+                passwordIsVisible
+                    ? 'password'
+                    : 'text';
+
+
+            passwordToggle.setAttribute(
+                'aria-label',
+                passwordIsVisible
+                    ? 'Mostrar senha'
+                    : 'Ocultar senha'
+            );
+
+
+            passwordToggle.setAttribute(
+                'title',
+                passwordIsVisible
+                    ? 'Mostrar senha'
+                    : 'Ocultar senha'
+            );
+
+
+            passwordToggle.classList.toggle(
+                'is-visible',
+                !passwordIsVisible
+            );
+
+        }
+    );
+
+</script>
 
 
 </body>

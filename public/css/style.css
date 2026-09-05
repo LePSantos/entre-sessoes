@@ -9673,3 +9673,73 @@ span:first-child {
         background: #e7efea;
     }
 }
+/* ======================================================
+   LOGIN - MOSTRAR / OCULTAR SENHA
+====================================================== */
+
+.bn-password-input {
+    position: relative;
+}
+
+
+.bn-password-input input {
+    min-width: 0;
+}
+
+
+.bn-password-toggle {
+    width: 36px;
+    height: 36px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0;
+
+    border: 0;
+    border-radius: 9px;
+
+    background: transparent;
+
+    color: #7b8982;
+
+    cursor: pointer;
+
+    transition:
+        background 0.18s ease,
+        color 0.18s ease;
+}
+
+
+.bn-password-toggle:hover {
+    background: #edf1ee;
+    color: #496a5a;
+}
+
+
+.bn-password-toggle:focus-visible {
+    outline: 2px solid #789183;
+    outline-offset: 2px;
+}
+
+
+.bn-eye-icon {
+    width: 20px;
+    height: 20px;
+
+    fill: none;
+
+    stroke: currentColor;
+    stroke-width: 1.7;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+
+.bn-password-toggle.is-visible
+.bn-eye-icon {
+    color: #496a5a;
+}
