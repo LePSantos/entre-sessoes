@@ -1,10 +1,45 @@
 // ======================================================
 // SERVICE WORKER - ENTRESESSÕES
-// Recebe notificações Push em segundo plano
+// PWA + NOTIFICAÇÕES PUSH
 // ======================================================
 
 
-// QUANDO UMA NOTIFICAÇÃO PUSH CHEGAR
+// ======================================================
+// INSTALAÇÃO
+// ======================================================
+
+self.addEventListener(
+    'install',
+
+    () => {
+
+        // Faz a nova versão do Service Worker
+        // assumir mais rapidamente.
+
+        self.skipWaiting();
+    }
+);
+
+
+// ======================================================
+// ATIVAÇÃO
+// ======================================================
+
+self.addEventListener(
+    'activate',
+
+    event => {
+
+        event.waitUntil(
+            clients.claim()
+        );
+    }
+);
+
+
+// ======================================================
+// NOTIFICAÇÃO PUSH
+// ======================================================
 
 self.addEventListener(
     'push',
@@ -12,19 +47,26 @@ self.addEventListener(
     event => {
 
         let data = {
-            title: 'EntreSessões',
-            body: 'Você recebeu uma nova solicitação prioritária.'
+
+            title:
+                'EntreSessões',
+
+            body:
+                'Você recebeu uma nova solicitação prioritária.',
+
+            url:
+                '/support-requests'
         };
 
 
-        // Se o servidor enviou informações,
-        // usamos essas informações.
-
-        if (event.data) {
+        if (
+            event.data
+        ) {
 
             try {
 
-                data = event.data.json();
+                data =
+                    event.data.json();
 
             } catch (error) {
 
@@ -32,21 +74,24 @@ self.addEventListener(
                     'Erro ao ler notificação:',
                     error
                 );
-
             }
-
         }
 
 
         const options = {
 
-            // IMPORTANTE:
-            // não mostramos o nome do paciente
+            // Não exibimos nome de paciente
             // na notificação externa.
 
             body:
                 data.body ||
                 'Um paciente solicitou contato com prioridade.',
+
+            icon:
+                '/images/simbolo-bruna.png',
+
+            badge:
+                '/images/simbolo-bruna.png',
 
             tag:
                 'priority-request',
@@ -58,6 +103,7 @@ self.addEventListener(
                 true,
 
             data: {
+
                 url:
                     data.url ||
                     '/support-requests'
@@ -67,21 +113,21 @@ self.addEventListener(
 
         event.waitUntil(
 
-            self.registration.showNotification(
-                data.title ||
-                'EntreSessões - Solicitação prioritária',
+            self.registration
+                .showNotification(
 
-                options
-            )
+                    data.title ||
+                    'EntreSessões - Solicitação prioritária',
 
+                    options
+                )
         );
-
     }
 );
 
 
 // ======================================================
-// QUANDO A PSICÓLOGA CLICAR NA NOTIFICAÇÃO
+// CLIQUE NA NOTIFICAÇÃO
 // ======================================================
 
 self.addEventListener(
@@ -99,49 +145,57 @@ self.addEventListener(
 
         event.waitUntil(
 
-            clients.matchAll({
-                type: 'window',
-                includeUncontrolled: true
-            })
-            .then(windowClients => {
+            clients
+                .matchAll({
 
-                // Se EntreSessões já estiver aberto,
-                // usamos a janela existente.
+                    type:
+                        'window',
 
-                for (
-                    const client of windowClients
-                ) {
+                    includeUncontrolled:
+                        true
+                })
 
-                    if (
-                        'focus' in client
-                    ) {
+                .then(
+                    windowClients => {
 
-                        client.navigate(
-                            destination
-                        );
 
-                        return client.focus();
+                        // Se o EntreSessões já estiver
+                        // aberto, utiliza essa janela.
+
+                        for (
+                            const client
+                            of windowClients
+                        ) {
+
+                            if (
+                                'focus' in client
+                            ) {
+
+                                client.navigate(
+                                    destination
+                                );
+
+                                return client.focus();
+                            }
+                        }
+
+
+                        // Caso contrário,
+                        // abre uma nova janela.
+
+                        if (
+                            clients.openWindow
+                        ) {
+
+                            return clients.openWindow(
+                                destination
+                            );
+                        }
+
+
+                        return null;
                     }
-
-                }
-
-
-                // Caso contrário,
-                // abre uma nova janela.
-
-                if (
-                    clients.openWindow
-                ) {
-
-                    return clients.openWindow(
-                        destination
-                    );
-
-                }
-
-            })
-
+                )
         );
-
     }
 );
